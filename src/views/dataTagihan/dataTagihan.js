@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { CardBody, Spinner } from "reactstrap";
+import { Spinner, Table } from "reactstrap";
 import { getListSiswa } from "store/actions/AuthAction";
 import { getListTypeTagihan } from "store/actions/jenisTagihanAction";
 import { getListKelas } from "store/actions/KelasAction";
-import { getListTagihan } from "store/actions/TagihanAction";
+import { deleteTagihan, getListTagihan } from "store/actions/TagihanAction";
+import Swal from "sweetalert2";
 
 class dataTagihan extends Component {
   componentDidMount() {
@@ -13,6 +14,21 @@ class dataTagihan extends Component {
     this.props.dispatch(getListKelas());
     this.props.dispatch(getListSiswa());
     this.props.dispatch(getListTypeTagihan());
+  }
+
+  removeData = (namaSiswa, tagihanDetailSiswa, id) => {
+    this.props.dispatch(deleteTagihan(namaSiswa, tagihanDetailSiswa, id));
+  };
+
+  componentDidUpdate(prevProps) {
+    const { deleteTagihanResult } = this.props;
+    if (
+      deleteTagihanResult &&
+      prevProps.deleteTagihanResult !== deleteTagihanResult
+    ) {
+      Swal.fire("Success", deleteTagihanResult, "success");
+      this.props.dispatch(getListTagihan());
+    }
   }
 
   render() {
@@ -23,8 +39,8 @@ class dataTagihan extends Component {
       getListKelasResult,
       getListSiswaResult,
       getListJenisTagihanResult,
+      deleteTagihanLoading,
     } = this.props;
-    console.log("List Tagihan : ", getListTagihanResult);
     return (
       <div className="content">
         <Link to="/admin/tagihan/tambah" className="btn btn-primary float-left">
@@ -34,8 +50,8 @@ class dataTagihan extends Component {
           Tambah Jenis Tagihan
         </Link>
 
-        <table class="table table-primary">
-          <thead>
+        <Table striped>
+          <thead className="text-primary">
             <tr>
               <th scope="col">Tanggal</th>
               <th scope="col">Nama Siswa</th>
@@ -48,16 +64,21 @@ class dataTagihan extends Component {
           <tbody>
             {getListTagihanResult ? (
               Object.keys(getListTagihanResult).map((key) => {
-                console.log("Cek : ", getListTagihanResult[key].detailTagihans);
                 return (
                   <>
                     {getListTagihanResult[key].detailTagihans ? (
                       Object.keys(getListTagihanResult[key].detailTagihans).map(
                         (id) => {
+                          const namaSiswa = getListTagihanResult[key];
+                          const tagihanDetailSiswa =
+                            getListTagihanResult[key].detailTagihans[id];
+
+                          console.log("nama Siswa", namaSiswa);
                           console.log(
-                            "Cek 2 :",
-                            getListTagihanResult[key].detailTagihans[id]
+                            "tagihanDetailSiswa ",
+                            tagihanDetailSiswa
                           );
+
                           return (
                             <tr>
                               {/* Data Tanggal */}
@@ -139,35 +160,54 @@ class dataTagihan extends Component {
                               </td>
                               <td>
                                 <a
-                                  href="#"
-                                  class="btn btn-warning stretched-link"
+                                  {...this.props}
+                                  href={"/admin/tagihan/edit/" + key + "/" + id}
+                                  class="btn btn-warning "
                                 >
                                   Edit
                                 </a>
 
-                                <button
-                                  type="submit"
-                                  className="btn btn-danger ml-2"
-                                  onClick={() => this.removeData(key)}
-                                >
-                                  <i className="nc-icon nc-basket"></i> Hapus
-                                </button>
+                                {deleteTagihanLoading ? (
+                                  <button
+                                    type="submit"
+                                    className="btn btn-primary"
+                                  >
+                                    <div
+                                      class="spinner-border text-light"
+                                      role="status"
+                                    >
+                                      <span class="visually-hidden"></span>
+                                    </div>
+                                  </button>
+                                ) : (
+                                  <button
+                                    type="submit"
+                                    className="btn btn-danger ml-2"
+                                    onClick={() =>
+                                      this.removeData(
+                                        namaSiswa,
+                                        tagihanDetailSiswa,
+                                        id
+                                      )
+                                    }
+                                  >
+                                    <i className="nc-icon nc-basket"></i> Hapus
+                                  </button>
+                                )}
                               </td>
                             </tr>
                           );
                         }
                       )
                     ) : (
-                      <div>
-                        <p>Kosong</p>
-                      </div>
+                      <div></div>
                     )}
                   </>
                 );
               })
             ) : getListTagihanLoading ? (
               <tr>
-                <td colSpan="5" align="center">
+                <td colSpan="6" align="center">
                   <Spinner color="primary">Loading...</Spinner>
                 </td>
               </tr>
@@ -179,13 +219,13 @@ class dataTagihan extends Component {
               </tr>
             ) : (
               <tr>
-                <td colSpan="5" align="center">
+                <td colSpan="6" align="center">
                   Data Kosong
                 </td>
               </tr>
             )}
           </tbody>
-        </table>
+        </Table>
       </div>
     );
   }
@@ -200,6 +240,10 @@ const mapStateToProps = (state) => ({
     state.jenisTagihanReducer.getListJenisTagihanResult,
   getListSiswaResult: state.AuthReducer.getListSiswaResult,
   getListKelasResult: state.KelasReducer.getListKelasResult,
+
+  deleteTagihanLoading: state.TagihanReducer.deleteTagihanLoading,
+  deleteTagihanResult: state.TagihanReducer.deleteTagihanLoading,
+  deleteTagihanError: state.TagihanReducer.deleteTagihanLoading,
 });
 
 export default connect(mapStateToProps, null)(dataTagihan);

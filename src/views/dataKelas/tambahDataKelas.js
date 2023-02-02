@@ -14,9 +14,6 @@ class tambahDataKelas extends Component {
     };
   }
 
-  componentDidMount() {
-    // this.props.dispatch(getListKelas())
-  }
   componentDidUpdate(prevProps) {
     const { tambahKelasResult } = this.props;
     if (

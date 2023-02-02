@@ -6,6 +6,7 @@ import dataSiswa from "views/dataSiswa/dataSiswa";
 import editDataSiwa from "views/dataSiswa/editDataSiwa";
 import tambahDataSiswa from "views/dataSiswa/tambahDataSiswa";
 import dataTagihan from "views/dataTagihan/dataTagihan";
+import editDataTagihan from "views/dataTagihan/editDataTagihan";
 import editJenisTagihan from "views/dataTagihan/jenisTagihan/editJenisTagihan";
 import jenisTagihan from "views/dataTagihan/jenisTagihan/jenisTagihan";
 import tambahJenisTagihan from "views/dataTagihan/jenisTagihan/tambahJenisTagihan";
@@ -85,6 +86,13 @@ var routes = [
     path: "/tagihan/tambah",
     name: "Tambah Data Tagihan",
     component: tambahDataTagihan,
+    layout: "/admin",
+    sidebar: false,
+  },
+  {
+    path: "/tagihan/edit/:key/:id",
+    name: "Edit Tagihan Siswa",
+    component: editDataTagihan,
     layout: "/admin",
     sidebar: false,
   },

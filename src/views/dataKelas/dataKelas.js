@@ -49,7 +49,7 @@ class dataKelas extends Component {
             <Col md="12">
               <Card>
                 <CardBody>
-                  <Table>
+                  <Table striped>
                     <thead className="text-primary">
                       <tr>
                         <th>Nama Kelas</th>

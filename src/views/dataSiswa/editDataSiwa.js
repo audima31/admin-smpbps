@@ -106,6 +106,7 @@ class editDataSiswa extends Component {
       noHandphoneSiswa,
       namaOrangTua,
       noHandphoneOrangTua,
+      id,
     } = this.state;
     event.preventDefault();
     if (NIS && nama && jenisKelamin && kelas && email && password) {
@@ -120,6 +121,7 @@ class editDataSiswa extends Component {
         noHandphoneSiswa: noHandphoneSiswa,
         namaOrangTua: namaOrangTua,
         noHandphoneOrangTua: noHandphoneOrangTua,
+        id: id,
         status: "siswa",
       };
       //ke Auth Action
@@ -157,7 +159,7 @@ class editDataSiswa extends Component {
       prevProps.updateSiswaResult !== updateSiswaResult
     ) {
       Swal.fire("Good job!", "Update kelas telah berhasil", "success");
-      this.props.history.push("/admin/kelas");
+      this.props.history.push("/admin/siswa");
     }
   }
 

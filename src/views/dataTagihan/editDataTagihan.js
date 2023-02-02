@@ -1,60 +1,36 @@
 import React, { Component } from "react";
-import { getListSiswa, registerSiswa } from "../../store/actions/AuthAction";
 import { connect } from "react-redux";
-import { Button, FormGroup, Input, Spinner } from "reactstrap";
-import { getListKelas } from "store/actions/KelasAction";
-import Swal from "sweetalert2";
-import "../../assets/css/dataSiswa.css";
-import { Link } from "react-router-dom";
+import { Spinner, Table } from "reactstrap";
 import { getListTypeTagihan } from "store/actions/jenisTagihanAction";
-import { getListBulan } from "store/actions/WaktuAction";
-import { tambahTagihan } from "store/actions/TagihanAction";
+import { getDetailSiswaTagihan } from "store/actions/TagihanAction";
+import { updateTagihan } from "store/actions/TagihanAction";
+import { getDetailTagihan } from "store/actions/TagihanAction";
+import Swal from "sweetalert2";
 
-class tambahDataTagihan extends Component {
+class editDataTagihan extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      kelas: "",
-      nama: "",
+      key: this.props.match.params.key,
+      id: this.props.match.params.id,
       jenisTagihan: "",
+      keterangan: "",
       bulan: "",
       tahun: "",
+      status: false,
       nominal: "",
-      keterangan: "",
-      status: "PENDING",
+      waktu: "",
     };
   }
 
   componentDidMount() {
+    const { key, id } = this.state;
+
+    this.props.dispatch(getDetailTagihan(key, id));
+    this.props.dispatch(getDetailSiswaTagihan(key));
     this.props.dispatch(getListTypeTagihan());
-    this.props.dispatch(getListKelas());
-    this.props.dispatch(getListSiswa());
-    this.props.dispatch(getListBulan());
   }
-
-  componentDidUpdate(prevProps) {
-    const { tambahTagihanResult } = this.props;
-
-    if (
-      tambahTagihanResult &&
-      prevProps.tambahTagihanResult !== tambahTagihanResult
-    ) {
-      this.props.history.push("/admin/tagihan");
-    }
-  }
-
-  handleKelas = (event) => {
-    this.setState({
-      kelas: event.target.value,
-    });
-  };
-
-  handleNama = (event) => {
-    this.setState({
-      nama: event.target.value,
-    });
-  };
 
   handleJenisTagihan = (event) => {
     this.setState({
@@ -80,18 +56,6 @@ class tambahDataTagihan extends Component {
     });
   };
 
-  handleNamaOrtu = (event) => {
-    this.setState({
-      namaOrangTua: event.target.value,
-    });
-  };
-
-  handleNoHandphoneOrtu = (event) => {
-    this.setState({
-      noHandphoneOrangTua: event.target.value,
-    });
-  };
-
   handleKeterangan = (event) => {
     this.setState({
       keterangan: event.target.value,
@@ -99,38 +63,24 @@ class tambahDataTagihan extends Component {
   };
 
   handleSubmit = (event) => {
-    const {
-      kelas,
-      nama,
-      jenisTagihan,
-      bulan,
-      tahun,
-      keterangan,
-      nominal,
-      status,
-    } = this.state;
+    const { jenisTagihan, keterangan, bulan, tahun, nominal, status, key, id } =
+      this.state;
+
     event.preventDefault();
-    if (
-      kelas &&
-      nama &&
-      jenisTagihan &&
-      nominal &&
-      bulan &&
-      tahun &&
-      keterangan
-    ) {
+
+    if (jenisTagihan && keterangan && nominal && bulan && tahun) {
       const data = {
-        kelas: kelas,
-        nama: nama,
         jenisTagihan: jenisTagihan,
         bulan: bulan,
         tahun: tahun,
         nominal: nominal,
         keterangan: keterangan,
-        status: status,
+        status: "PENDING",
+        key: key,
+        id: id,
       };
       //ke Auth Action
-      this.props.dispatch(tambahTagihan(data));
+      this.props.dispatch(updateTagihan(key, id, data));
       Swal.fire("Tagihan berhasil dibuat", "", "success");
     } else {
       Swal.fire({
@@ -141,82 +91,112 @@ class tambahDataTagihan extends Component {
     }
   };
 
-  render() {
-    const { nama, kelas, jenisTagihan, nominal, bulan, tahun, keterangan } =
-      this.state;
+  componentDidUpdate(prevProps) {
     const {
-      getListKelasResult,
-      registerSiswaLoading,
-      getListSiswaResult,
-      getListBulanResult,
-      getListJenisTagihanResult,
+      getDetailTagihanResult,
+      updateTagihanResult,
+      getDetailSiswaTagihanResult,
     } = this.props;
 
-    console.log("Kelas : ", kelas);
-    console.log("Tagihan : ", jenisTagihan);
-    console.log("Nama : ", nama);
-    console.log("Bulan : ", getListBulanResult);
+    if (
+      getDetailTagihanResult &&
+      prevProps.getDetailTagihanResult !== getDetailTagihanResult
+    ) {
+      this.setState({
+        jenisTagihan: getDetailTagihanResult.jenisTagihan,
+        keterangan: getDetailTagihanResult.keterangan,
+        bulan: getDetailTagihanResult.bulan,
+        tahun: getDetailTagihanResult.tahun,
+        status: getDetailTagihanResult.status,
+        nominal: getDetailTagihanResult.nominal,
+      });
+    }
 
+    if (
+      updateTagihanResult &&
+      prevProps.updateTagihanResult !== updateTagihanResult
+    ) {
+      Swal.fire(
+        "Good job!",
+        `Update tagihan ${getDetailSiswaTagihanResult.nama} telah berhasil`,
+        "success"
+      );
+      // this.props.history.push("/admin/tagihan");
+    }
+  }
+
+  render() {
+    const { key, id, jenisTagihan, keterangan, bulan, tahun, nominal } =
+      this.state;
+
+    const {
+      getDetailTagihanResult,
+      getDetailSiswaTagihanResult,
+      getListJenisTagihanResult,
+      updateTagihanLoading,
+    } = this.props;
+
+    console.log("detail Tagihan: ", getDetailTagihanResult);
     return (
       <div className="content">
-        <Link to="/admin/tagihan" class="button button1">
-          Kembali
-        </Link>
         <div className="page">
+          <div>
+            <h2>Rincian Pembayaran</h2>
+          </div>
+
+          <div>
+            <p>Nama : {getDetailSiswaTagihanResult.nama}</p>
+            <p>Kelas : {getDetailSiswaTagihanResult.kelas}</p>
+          </div>
+
+          <Table>
+            <thead className="text-primary">
+              <tr>
+                <th>Waktu</th>
+                <th>Jenis Tagihan</th>
+                <th>Nominal Tagihan</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {getDetailTagihanResult ? (
+                <>
+                  <tr>
+                    <td>{getDetailTagihanResult.waktu}</td>
+                    <td>
+                      {Object.keys(getListJenisTagihanResult).map((key) => {
+                        return (
+                          <p>
+                            {getListJenisTagihanResult[key].jenisTagihanId ===
+                            getDetailTagihanResult.jenisTagihan
+                              ? getListJenisTagihanResult[key].namaJenisTagihan
+                              : []}
+                          </p>
+                        );
+                      })}
+                    </td>
+                    <td>{getDetailTagihanResult.nominal}</td>
+                    <td>{getDetailTagihanResult.status}</td>
+                  </tr>
+                  <tr className="table-secondary">
+                    <td className="fw-bold ">Total Harga</td>
+                    <td className="fw-bold" colSpan={"3"} align="center">
+                      {getDetailTagihanResult.nominal}
+                    </td>
+                  </tr>
+                </>
+              ) : (
+                <tr>
+                  <td colSpan={"4"} align="center">
+                    <Spinner color="primary">Loading...</Spinner>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </Table>
+
           <form onSubmit={(event) => this.handleSubmit(event)}>
-            {/* Form Kelas */}
-            <div className="mb-3">
-              <label>
-                Kelas<label className="btg-wajib">*</label> :
-              </label>
-              <select
-                class="form-select"
-                aria-label="Default select example"
-                value={kelas}
-                onChange={(event) => this.handleKelas(event)}
-                data-testid="select-kelas"
-              >
-                <option value="">Pilih kelas</option>
-                {Object.keys(getListKelasResult).map((key) => {
-                  return (
-                    <option value={key} key={key}>
-                      {getListKelasResult[key].namaKelas}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-
-            {/* Form Nama Siswa */}
-            <div className="mb-3">
-              <label>
-                Nama<label className="btg-wajib">*</label> :
-              </label>
-              <select
-                class="form-select"
-                aria-label="Default select example"
-                value={nama}
-                onChange={(event) => this.handleNama(event)}
-                data-testid="select-kelas"
-              >
-                <option value="">Pilih nama</option>
-                {Object.keys(getListSiswaResult).map((key) => {
-                  console.log(getListSiswaResult[key]);
-                  return (
-                    <>
-                      {getListSiswaResult[key].kelas === kelas ? (
-                        <option value={key} key={key}>
-                          {getListSiswaResult[key].nama}
-                        </option>
-                      ) : (
-                        []
-                      )}
-                    </>
-                  );
-                })}
-              </select>
-            </div>
-
             {/* Form Jenis Tagihan */}
             <div className="mb-3">
               <label>
@@ -239,7 +219,7 @@ class tambahDataTagihan extends Component {
                 })}
               </select>
             </div>
-
+            {/* END Form Jenis Tagihan */}
             {/* Form Bulan */}
             <div className="mb-3">
               <label>
@@ -250,7 +230,6 @@ class tambahDataTagihan extends Component {
                 aria-label="Default select example"
                 value={bulan}
                 onChange={(event) => this.handleBulan(event)}
-                data-testid="select-kelas"
               >
                 <option value="">-- PILIH --</option>
                 <option value={"Januari"}>Januari</option>
@@ -267,7 +246,6 @@ class tambahDataTagihan extends Component {
                 <option value={"Desember"}>Desember</option>
               </select>
             </div>
-
             {/* Form Tahun */}
             <div className="mb-3">
               <label>
@@ -278,7 +256,6 @@ class tambahDataTagihan extends Component {
                 aria-label="Default select example"
                 value={tahun}
                 onChange={(event) => this.handleTahun(event)}
-                data-testid="select-kelas"
               >
                 <option value="">-- PILIH --</option>
                 <option value={"2023"}>2023</option>
@@ -294,7 +271,6 @@ class tambahDataTagihan extends Component {
                 <option value={"2033"}>2033</option>
               </select>
             </div>
-
             {/* Form Jumlah Nominal Tagihan*/}
             <div className="mb-3">
               <label htmlFor="inputNominal" className="form-label">
@@ -308,33 +284,42 @@ class tambahDataTagihan extends Component {
                 onChange={(event) => this.handleNominal(event)}
               />
             </div>
-
-            {/* Form Keterangna Tagihan*/}
+            {/* Form Jumlah Nominal Tagihan*/}
+            {/* Form Keterangan*/}
             <div className="mb-3">
-              <label htmlFor="inputNominal" className="form-label">
-                Keterangan Tagihan <label className="btg-wajib">*</label>
+              <label htmlFor="inputKeterangan" className="form-label">
+                Keterangan <label className="btg-wajib">*</label>
               </label>
               <input
                 className="form-control"
-                id="inputNominal"
+                id="inputKeterangan"
                 value={keterangan}
                 onChange={(event) => this.handleKeterangan(event)}
               />
             </div>
-
-            <div>
-              {registerSiswaLoading ? (
-                <button type="submit" color="primary" disabled>
-                  <div class="spinner-border" role="status">
-                    <span class="visually-hidden">Loading...</span>
+            {/* End Form Keterangan*/}
+            {updateTagihanLoading ? (
+              <div class="vstack gap-2 col-md-5 mx-auto">
+                <button type="submit" className="btn btn-primary">
+                  <div class="spinner-border text-light" role="status">
+                    <span class="visually-hidden"></span>
                   </div>
                 </button>
-              ) : (
+              </div>
+            ) : (
+              <div class="vstack gap-2 col-md-5 mx-auto">
                 <button type="submit" className="btn btn-primary">
-                  Submit
+                  SIMPAN
                 </button>
-              )}
-            </div>
+                <a
+                  class="btn btn-outline-secondary"
+                  href="/admin/tagihan/"
+                  style={{ color: "#FFFFFF" }}
+                >
+                  BATAL
+                </a>
+              </div>
+            )}
           </form>
         </div>
       </div>
@@ -343,13 +328,14 @@ class tambahDataTagihan extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  getListKelasLoading: state.KelasReducer.getListKelasLoading,
-  getListKelasResult: state.KelasReducer.getListKelasResult,
-  getListKelasError: state.KelasReducer.getListKelasError,
+  getDetailSiswaTagihanLoading:
+    state.TagihanReducer.getDetailSiswaTagihanLoading,
+  getDetailSiswaTagihanResult: state.TagihanReducer.getDetailSiswaTagihanResult,
+  getDetailSiswaTagihanError: state.TagihanReducer.getDetailSiswaTagihanError,
 
-  getListSiswaLoading: state.AuthReducer.getListSiswaLoading,
-  getListSiswaResult: state.AuthReducer.getListSiswaResult,
-  getListSiswaError: state.AuthReducer.getListSiswaError,
+  getDetailTagihanLoading: state.TagihanReducer.getDetailTagihanLoading,
+  getDetailTagihanResult: state.TagihanReducer.getDetailTagihanResult,
+  getDetailTagihanError: state.TagihanReducer.getDetailTagihanError,
 
   getListJenisTagihanLoading:
     state.jenisTagihanReducer.getListJenisTagihanLoading,
@@ -357,11 +343,9 @@ const mapStateToProps = (state) => ({
     state.jenisTagihanReducer.getListJenisTagihanResult,
   getListJenisTagihanError: state.jenisTagihanReducer.getListJenisTagihanError,
 
-  getListBulanResult: state.WaktuReducer.getListBulanResult,
-
-  tambahTagihanLoading: state.TagihanReducer.tambahTagihanLoading,
-  tambahTagihanResult: state.TagihanReducer.tambahTagihanLoading,
-  tambahTagihanError: state.TagihanReducer.tambahTagihanLoading,
+  updateTagihanLoading: state.TagihanReducer.updateTagihanLoading,
+  updateTagihanResult: state.TagihanReducer.updateTagihanLoading,
+  updateTagihanError: state.TagihanReducer.updateTagihanLoading,
 });
 
-export default connect(mapStateToProps, null)(tambahDataTagihan);
+export default connect(mapStateToProps, null)(editDataTagihan);

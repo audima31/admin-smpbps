@@ -46,17 +46,27 @@ export const getDetailSiswa = (id) => {
 };
 
 export const updateSiswa = (data) => {
+  console.log("action : ", data);
   return (dispatch) => {
     dispatchLoading(dispatch, UPDATE_SISWA);
 
     const dataBaru = {
-      namaKelas: data.namaKelas,
+      NIS: data.NIS,
+      alamatRumah: data.alamatRumah,
+      email: data.email,
+      jenisKelamin: data.jenisKelamin,
+      kelas: data.kelas,
+      nama: data.nama,
+      namaOrangTua: data.namaOrangTua,
+      noHandphoneOrangTua: data.noHandphoneOrangTua,
+      noHandphoneSiswa: data.noHandphoneSiswa,
     };
 
     FIREBASE.database()
       .ref("siswa/" + data.id)
       .update(dataBaru)
       .then((response) => {
+        console.log("action : ", response);
         dispatchSuccess(dispatch, UPDATE_SISWA, response ? response : []);
       })
       .catch((error) => {
