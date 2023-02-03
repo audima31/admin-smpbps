@@ -145,6 +145,7 @@ class editDataSiswa extends Component {
       this.setState({
         NIS: detailSiswaResult.NIS,
         nama: detailSiswaResult.nama,
+        jenisKelamin: detailSiswaResult.jenisKelamin,
         email: detailSiswaResult.email,
         password: detailSiswaResult.password,
         alamatRumah: detailSiswaResult.alamatRumah,

@@ -84,7 +84,7 @@ class dataSiswa extends Component {
             <Col md="12">
               <Card>
                 <CardBody>
-                  <Table striped>
+                  <Table striped className="text-center table-hover">
                     <thead className="text-primary">
                       <tr>
                         <th>NIS</th>

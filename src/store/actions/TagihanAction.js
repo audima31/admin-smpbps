@@ -7,6 +7,7 @@ export const UPDATE_TAGIHAN = "UPDATE_TAGIHAN";
 export const GET_DETAIL_TAGIHAN = "GET_DETAIL_TAGIHAN";
 export const GET_DETAIL_SISWA_TAGIHAN = "GET_DETAIL_SISWA_TAGIHAN";
 export const DELETE_TAGIHAN = "DELETE_TAGIHAN";
+export const LUNAS_TAGIHAN = "LUNAS_TAGIHAN";
 
 export const tambahTagihan = (data) => {
   return (dispatch) => {
@@ -105,7 +106,6 @@ export const updateTagihan = (key, id, data) => {
       .child(id)
       .update(dataBaru)
       .then((response) => {
-        console.log("Data Update Action:", response);
         //Hasil
         dispatchSuccess(dispatch, UPDATE_TAGIHAN, response ? response : []);
       })
@@ -145,7 +145,6 @@ export const getDetailSiswaTagihan = (key) => {
       .once("value", (querySnapshot) => {
         //Hasil
         let data = querySnapshot.val();
-        console.log("data nama: ", data);
         dispatchSuccess(dispatch, GET_DETAIL_SISWA_TAGIHAN, data);
       })
       .catch((error) => {
@@ -167,7 +166,6 @@ export const getDetailTagihan = (key, id, data) => {
       .once("value", (querySnapshot) => {
         //Hasil
         let data = querySnapshot.val();
-        console.log("data action: ", data);
         dispatchSuccess(dispatch, GET_DETAIL_TAGIHAN, data);
       })
       .catch((error) => {
@@ -179,20 +177,16 @@ export const getDetailTagihan = (key, id, data) => {
 
 //DELETE TAGIHAN
 export const deleteTagihan = (namaSiswa, tagihanDetailSiswa, id) => {
-  console.log("Delete Action : ", namaSiswa, tagihanDetailSiswa);
   return (dispatch) => {
     dispatchLoading(dispatch, DELETE_TAGIHAN);
 
-    //NGECEK APA KAH TAGIHANNYA MASIH ADA APA BELOM
-
-    //KALO TERNYATA SI SISWA NYA INI MASIH ADA TAGIHAN LAIN
+    //MENGHAPUS DATA DETAIL TAGIHAN
     FIREBASE.database()
       .ref("tagihans/" + namaSiswa.nama)
       .child("detailTagihans")
       .child(id)
       .remove()
-      .then((response) => {
-        console.log("Data Delete Action:", response);
+      .then(() => {
         dispatchSuccess(dispatch, DELETE_TAGIHAN, "Tagihan Berhasil Dihapus");
       })
       .catch((error) => {
@@ -200,19 +194,23 @@ export const deleteTagihan = (namaSiswa, tagihanDetailSiswa, id) => {
         alert(error);
       });
 
+    //NGECEK APA KAH TAGIHANNYA MASIH ADA APA BELOM
     FIREBASE.database()
       .ref("tagihans/" + namaSiswa.nama)
       .child("detailTagihans")
       .once("value", (querySnapshot) => {
-        console.log("CEK DATA DI DELETE : ", querySnapshot.val());
-
+        //KALO MISAL TAGIHANNYA UDAH GADA, MAKA HAPUS DATA SISWANYA DI TAGIHAN
         if (querySnapshot.val() === null) {
           FIREBASE.database()
             .ref("tagihans/")
             .child(namaSiswa.nama)
             .remove()
-            .then((response) => {
-              dispatchSuccess(dispatch, DELETE_TAGIHAN, "");
+            .then(() => {
+              dispatchSuccess(
+                dispatch,
+                DELETE_TAGIHAN,
+                "Tagihan Berhasil Dihapus"
+              );
             })
             .catch((error) => {
               dispatchError(dispatch, DELETE_TAGIHAN, error);
@@ -220,6 +218,31 @@ export const deleteTagihan = (namaSiswa, tagihanDetailSiswa, id) => {
             });
         }
       });
-    //HAPUS DATA TAGIHAN UTAMA BERDASRAKAN NAMA
+  };
+};
+
+export const lunasTagihan = (key, id, data) => {
+  console.log("ACTION MASUK :", data, key, id);
+  return (dispatch) => {
+    dispatchLoading(dispatch, LUNAS_TAGIHAN);
+
+    const dataBaru = {
+      status: data.status,
+    };
+
+    FIREBASE.database()
+      .ref("tagihans/" + key)
+      .child("detailTagihans")
+      .child(id)
+      .update(dataBaru)
+      .then((response) => {
+        //Hasil
+        console.log("SUKSES : ", response);
+        dispatchSuccess(dispatch, LUNAS_TAGIHAN, response ? response : []);
+      })
+      .catch((error) => {
+        dispatchError(dispatch, LUNAS_TAGIHAN, error);
+        alert(error);
+      });
   };
 };

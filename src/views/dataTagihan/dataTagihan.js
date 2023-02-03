@@ -26,7 +26,7 @@ class dataTagihan extends Component {
       deleteTagihanResult &&
       prevProps.deleteTagihanResult !== deleteTagihanResult
     ) {
-      Swal.fire("Success", deleteTagihanResult, "success");
+      Swal.fire("Success", "Berhasil Dihapus", "success");
       this.props.dispatch(getListTagihan());
     }
   }
@@ -43,32 +43,41 @@ class dataTagihan extends Component {
     } = this.props;
     return (
       <div className="content">
-        <Link to="/admin/tagihan/tambah" className="btn btn-primary float-left">
-          + Tambah Tagihan Baru
-        </Link>
-        <Link to="/admin/jenistagihan" class="btn btn-primary float-left  ">
-          Tambah Jenis Tagihan
-        </Link>
+        <div className="row">
+          <div className="col">
+            <Link
+              to="/admin/tagihan/tambah"
+              className="btn btn-primary float-left"
+            >
+              + Tambah Tagihan Baru
+            </Link>
+            <Link to="/admin/jenistagihan" class="btn btn-primary float-left  ">
+              Tambah Jenis Tagihan
+            </Link>
+          </div>
+        </div>
 
-        <Table striped>
-          <thead className="text-primary">
-            <tr>
-              <th scope="col">Tanggal</th>
-              <th scope="col">Nama Siswa</th>
-              <th scope="col">Kelas</th>
-              <th scope="col">Tagihan</th>
-              <th scope="col">Status</th>
-              <th scope="col">Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            {getListTagihanResult ? (
-              Object.keys(getListTagihanResult).map((key) => {
-                return (
-                  <>
-                    {getListTagihanResult[key].detailTagihans ? (
-                      Object.keys(getListTagihanResult[key].detailTagihans).map(
-                        (id) => {
+        <div className="col card">
+          <Table responsive striped className="text-center table-hover">
+            <thead className="text-primary">
+              <tr>
+                <th scope="col">Tanggal</th>
+                <th scope="col">Nama Siswa</th>
+                <th scope="col">Kelas</th>
+                <th scope="col">Tagihan</th>
+                <th scope="col">Status</th>
+                <th scope="col">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              {getListTagihanResult ? (
+                Object.keys(getListTagihanResult).map((key) => {
+                  return (
+                    <>
+                      {getListTagihanResult[key].detailTagihans ? (
+                        Object.keys(
+                          getListTagihanResult[key].detailTagihans
+                        ).map((id) => {
                           const namaSiswa = getListTagihanResult[key];
                           const tagihanDetailSiswa =
                             getListTagihanResult[key].detailTagihans[id];
@@ -89,37 +98,35 @@ class dataTagihan extends Component {
                                 }
                               </td>
                               {/* END Data Tanggal */}
-
                               {/* Data Nama */}
                               <td>
                                 {getListSiswaResult ? (
                                   Object.keys(getListSiswaResult).map((id) => {
                                     return (
-                                      <p>
+                                      <>
                                         {getListSiswaResult[id].uid ===
                                         getListTagihanResult[key].nama
                                           ? getListSiswaResult[id].nama
                                           : []}
-                                      </p>
+                                      </>
                                     );
                                   })
                                 ) : (
-                                  <p>Nama Siswa Tidak Ditemukan</p>
+                                  <>Nama Siswa Tidak Ditemukan</>
                                 )}
                               </td>
                               {/* END Data Nama */}
-
                               {/* Data Kelas */}
                               <td>
                                 {getListKelas ? (
                                   Object.keys(getListKelasResult).map((id) => {
                                     return (
-                                      <p>
+                                      <>
                                         {getListKelasResult[id].kelasId ===
                                         getListTagihanResult[key].kelas
                                           ? getListKelasResult[id].namaKelas
                                           : []}
-                                      </p>
+                                      </>
                                     );
                                   })
                                 ) : (
@@ -127,14 +134,13 @@ class dataTagihan extends Component {
                                 )}
                               </td>
                               {/* End Data Kelas */}
-
                               {/* Data Jenis Tagihan */}
                               <td>
                                 {getListJenisTagihanResult ? (
                                   Object.keys(getListJenisTagihanResult).map(
                                     (x) => {
                                       return (
-                                        <p>
+                                        <>
                                           {getListJenisTagihanResult[x]
                                             .jenisTagihanId ===
                                           getListTagihanResult[key]
@@ -142,7 +148,7 @@ class dataTagihan extends Component {
                                             ? getListJenisTagihanResult[x]
                                                 .namaJenisTagihan
                                             : []}
-                                        </p>
+                                        </>
                                       );
                                     }
                                   )
@@ -151,81 +157,122 @@ class dataTagihan extends Component {
                                 )}
                               </td>
                               {/* END Data Jenis Tagihan */}
-
                               <td>
-                                {
-                                  getListTagihanResult[key].detailTagihans[id]
-                                    .status
-                                }
-                              </td>
-                              <td>
-                                <a
-                                  {...this.props}
-                                  href={"/admin/tagihan/edit/" + key + "/" + id}
-                                  class="btn btn-warning "
-                                >
-                                  Edit
-                                </a>
-
-                                {deleteTagihanLoading ? (
-                                  <button
-                                    type="submit"
-                                    className="btn btn-primary"
-                                  >
-                                    <div
-                                      class="spinner-border text-light"
-                                      role="status"
-                                    >
-                                      <span class="visually-hidden"></span>
-                                    </div>
-                                  </button>
-                                ) : (
-                                  <button
-                                    type="submit"
-                                    className="btn btn-danger ml-2"
-                                    onClick={() =>
-                                      this.removeData(
-                                        namaSiswa,
-                                        tagihanDetailSiswa,
+                                {getListTagihanResult[key].detailTagihans[id]
+                                  .status === "PENDING" ? (
+                                  <p className="badge bg-danger text-wrap p-2 my-1">
+                                    {
+                                      getListTagihanResult[key].detailTagihans[
                                         id
-                                      )
+                                      ].status
                                     }
-                                  >
-                                    <i className="nc-icon nc-basket"></i> Hapus
-                                  </button>
+                                  </p>
+                                ) : (
+                                  <p className="badge bg-success text-wrap px-3 py-2 my-1">
+                                    {
+                                      getListTagihanResult[key].detailTagihans[
+                                        id
+                                      ].status
+                                    }
+                                  </p>
                                 )}
                               </td>
+                              {/* BUTTON */}
+
+                              <td>
+                                {getListTagihanResult[key].detailTagihans[id]
+                                  .status === "LUNAS" ? (
+                                  <>
+                                    <p></p>
+                                  </>
+                                ) : (
+                                  <>
+                                    <a
+                                      {...this.props}
+                                      href={
+                                        "/admin/tagihan/detail/" +
+                                        key +
+                                        "/" +
+                                        id
+                                      }
+                                      class="btn btn-primary mr-2 "
+                                    >
+                                      Detail
+                                    </a>
+
+                                    <a
+                                      {...this.props}
+                                      href={
+                                        "/admin/tagihan/edit/" + key + "/" + id
+                                      }
+                                      class="btn btn-warning "
+                                    >
+                                      Edit
+                                    </a>
+
+                                    {deleteTagihanLoading ? (
+                                      <button
+                                        type="submit"
+                                        className="btn btn-primary"
+                                      >
+                                        <div
+                                          class="spinner-border text-light"
+                                          role="status"
+                                        >
+                                          <span class="visually-hidden"></span>
+                                        </div>
+                                      </button>
+                                    ) : (
+                                      <button
+                                        type="submit"
+                                        className="btn btn-danger ml-2"
+                                        onClick={() =>
+                                          this.removeData(
+                                            namaSiswa,
+                                            tagihanDetailSiswa,
+                                            id
+                                          )
+                                        }
+                                      >
+                                        <i className="nc-icon nc-basket"></i>{" "}
+                                        Hapus
+                                      </button>
+                                    )}
+                                  </>
+                                )}
+                              </td>
+                              {/* END BUTTON */}
                             </tr>
                           );
-                        }
-                      )
-                    ) : (
-                      <div></div>
-                    )}
-                  </>
-                );
-              })
-            ) : getListTagihanLoading ? (
-              <tr>
-                <td colSpan="6" align="center">
-                  <Spinner color="primary">Loading...</Spinner>
-                </td>
-              </tr>
-            ) : getListTagihanError ? (
-              <tr>
-                <td colSpan="5" align="center">
-                  {getListTagihanError}
-                </td>
-              </tr>
-            ) : (
-              <tr>
-                <td colSpan="6" align="center">
-                  Data Kosong
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </Table>
+                        })
+                      ) : (
+                        <></>
+                      )}
+                    </>
+                  );
+                })
+              ) : getListTagihanLoading ? (
+                <tr>
+                  <td colSpan="6" align="center">
+                    <Spinner color="primary">Loading...</Spinner>
+                  </td>
+                </tr>
+              ) : getListTagihanError ? (
+                <tr>
+                  <td colSpan="5" align="center">
+                    {getListTagihanError}
+                  </td>
+                </tr>
+              ) : (
+                <tr>
+                  <td colSpan="6" align="center">
+                    Data Kosong
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </Table>
+        </div>
       </div>
     );
   }
@@ -242,8 +289,8 @@ const mapStateToProps = (state) => ({
   getListKelasResult: state.KelasReducer.getListKelasResult,
 
   deleteTagihanLoading: state.TagihanReducer.deleteTagihanLoading,
-  deleteTagihanResult: state.TagihanReducer.deleteTagihanLoading,
-  deleteTagihanError: state.TagihanReducer.deleteTagihanLoading,
+  deleteTagihanResult: state.TagihanReducer.deleteTagihanResult,
+  deleteTagihanError: state.TagihanReducer.deleteTagihanError,
 });
 
 export default connect(mapStateToProps, null)(dataTagihan);

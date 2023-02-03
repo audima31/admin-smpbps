@@ -1,11 +1,13 @@
 import Dashboard from "views/Dashboard.js";
 import dataKelas from "views/dataKelas/dataKelas";
+import detailDataKelas from "views/dataKelas/detailDataKelas";
 import editDataKelas from "views/dataKelas/editDataKelas";
 import tambahDataKelas from "views/dataKelas/tambahDataKelas";
 import dataSiswa from "views/dataSiswa/dataSiswa";
 import editDataSiwa from "views/dataSiswa/editDataSiwa";
 import tambahDataSiswa from "views/dataSiswa/tambahDataSiswa";
 import dataTagihan from "views/dataTagihan/dataTagihan";
+import detailDataTagihan from "views/dataTagihan/detailDataTagihan";
 import editDataTagihan from "views/dataTagihan/editDataTagihan";
 import editJenisTagihan from "views/dataTagihan/jenisTagihan/editJenisTagihan";
 import jenisTagihan from "views/dataTagihan/jenisTagihan/jenisTagihan";
@@ -75,6 +77,13 @@ var routes = [
     sidebar: false,
   },
   {
+    path: "/kelas/detail/:id",
+    name: "Detail Data Kelas",
+    component: detailDataKelas,
+    layout: "/admin",
+    sidebar: false,
+  },
+  {
     path: "/tagihan",
     name: "Data Tagihan",
     icon: "nc-icon nc-money-coins",
@@ -93,6 +102,13 @@ var routes = [
     path: "/tagihan/edit/:key/:id",
     name: "Edit Tagihan Siswa",
     component: editDataTagihan,
+    layout: "/admin",
+    sidebar: false,
+  },
+  {
+    path: "/tagihan/detail/:key/:id",
+    name: "Detail Tagihan Siswa",
+    component: detailDataTagihan,
     layout: "/admin",
     sidebar: false,
   },

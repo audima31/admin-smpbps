@@ -49,7 +49,7 @@ class dataKelas extends Component {
             <Col md="12">
               <Card>
                 <CardBody>
-                  <Table striped>
+                  <Table striped className="text-center table-hover">
                     <thead className="text-primary">
                       <tr>
                         <th>Nama Kelas</th>
@@ -63,10 +63,13 @@ class dataKelas extends Component {
                             <tr key={key}>
                               <td>{getListKelasResult[key].namaKelas}</td>
                               <td>
-                                <Button color="primary">
+                                <Link
+                                  className="btn btn-primary ml-2"
+                                  to={"/admin/kelas/detail/" + key}
+                                >
                                   <i className="nc-icon nc-ruler-pencil"></i>{" "}
                                   Detail
-                                </Button>
+                                </Link>
                                 <Link
                                   className="btn btn-warning ml-2"
                                   to={"/admin/kelas/edit/" + key}

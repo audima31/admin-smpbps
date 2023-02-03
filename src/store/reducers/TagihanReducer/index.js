@@ -5,6 +5,7 @@ import {
   GET_DETAIL_SISWA_TAGIHAN,
   UPDATE_TAGIHAN,
   DELETE_TAGIHAN,
+  LUNAS_TAGIHAN,
 } from "store/actions/TagihanAction";
 
 const initialState = {
@@ -31,6 +32,10 @@ const initialState = {
   deleteTagihanLoading: false,
   deleteTagihanResult: false,
   deleteTagihanError: false,
+
+  lunasTagihanLoading: false,
+  lunasTagihanResult: false,
+  lunasTagihanError: false,
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -83,6 +88,14 @@ export default function (state = initialState, action) {
         deleteTagihanLoading: action.payload.loading,
         deleteTagihanResult: action.payload.data,
         deleteTagihanError: action.payload.errorMessage,
+      };
+
+    case LUNAS_TAGIHAN:
+      return {
+        ...state,
+        lunasTagihanLoading: action.payload.loading,
+        lunasTagihanResult: action.payload.data,
+        lunasTagihanError: action.payload.errorMessage,
       };
     default:
       return state;
