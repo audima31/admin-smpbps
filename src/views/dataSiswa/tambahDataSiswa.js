@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { Button, FormGroup, Input, Spinner } from "reactstrap";
 import { getListKelas } from "store/actions/KelasAction";
 import Swal from "sweetalert2";
-import "../../assets/css/dataSiswa.css";
 import { Link } from "react-router-dom";
 
 class tambahDataSiswa extends Component {

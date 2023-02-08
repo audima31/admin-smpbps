@@ -1,19 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import {
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  CardTitle,
-  Col,
-  FormGroup,
-  Input,
-  Row,
-  Spinner,
-  Table,
-} from "reactstrap";
+import { Button, Card, CardBody, Col, Row, Spinner, Table } from "reactstrap";
 import { getListSiswa } from "store/actions/AuthAction";
 import { getListKelas } from "store/actions/KelasAction";
 import { getDetailSiswa } from "store/actions/SiswaAction";

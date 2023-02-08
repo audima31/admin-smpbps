@@ -3,11 +3,9 @@ import { registerSiswa } from "../../store/actions/AuthAction";
 import { connect } from "react-redux";
 import { getListKelas } from "store/actions/KelasAction";
 import Swal from "sweetalert2";
-import "../../assets/css/dataSiswa.css";
 import { Link } from "react-router-dom";
 import { getDetailSiswa } from "store/actions/SiswaAction";
 import { updateSiswa } from "store/actions/SiswaAction";
-import { FormGroup, Input } from "reactstrap";
 
 class editDataSiswa extends Component {
   constructor(props) {
