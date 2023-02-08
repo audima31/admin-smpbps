@@ -62,8 +62,8 @@ class Finish extends Component {
 
               <CardBody className="text-center">
                 <p style={{ color: "red" }}>
-                  {transaction_status === "PENDING" &&
-                    "Untuk Selanjutnya Harap Selesaikan Pembayarannya jika belum bayar, dan Silahkan Update Status Pembayaran di Halaman History"}
+                  {transaction_status === "pending" &&
+                    "Untuk Selanjutnya Harap Selesaikan Pembayarannya jika belum bayar, dan apabila telah bayar maka update status pembayaran di halaman riwayat"}
                 </p>
                 <p>
                   ORDER ID :<strong>{order_id}</strong>

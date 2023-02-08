@@ -58,7 +58,7 @@ class dataTagihan extends Component {
         </div>
 
         <div className="col card">
-          <Table responsive striped className="text-center table-hover">
+          <Table striped className="text-center table-hover">
             <thead className="text-primary">
               <tr>
                 <th scope="col">Tanggal</th>

@@ -4,9 +4,7 @@ export default class detailDataKelas extends Component {
   render() {
     return (
       <div className="content">
-        <div className="card">
-          <p>PELER</p>
-
+        <div className="card p-4">
           <table className="table table-striped table-hover ">
             <thead>
               <tr className="text-primary">

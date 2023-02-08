@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import { getDetailSiswa } from "store/actions/SiswaAction";
 import { updateSiswa } from "store/actions/SiswaAction";
+import "../../assets/css/dataSiswa.css";
 
 class editDataSiswa extends Component {
   constructor(props) {

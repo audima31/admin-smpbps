@@ -96,123 +96,130 @@ class detailDataTagihan extends Component {
               KEMBALI
             </a>
           </div>
-          <h2 className=" mt-4 ml-3">Rincian Pembayaran</h2>
-          <hr></hr>
-          <div className="ml-3">
-            <p>
-              Nama :{" "}
-              {getListSiswaResult ? (
-                Object.keys(getListSiswaResult).map((id) => {
-                  return (
-                    <>
-                      {getListSiswaResult[id].uid ===
-                      getDetailSiswaTagihanResult.nama
-                        ? getListSiswaResult[id].nama
-                        : []}
-                    </>
-                  );
-                })
-              ) : (
-                <>Nama Siswa Tidak Ditemukan</>
-              )}
-            </p>
-            <p>
-              Kelas :{" "}
-              {getListKelasResult ? (
-                Object.keys(getListKelasResult).map((id) => {
-                  return (
-                    <>
-                      {getListKelasResult[id].kelasId ===
-                      getDetailSiswaTagihanResult.kelas
-                        ? getListKelasResult[id].namaKelas
-                        : []}
-                    </>
-                  );
-                })
-              ) : (
-                <>Kelas Tidak Ditemukan</>
-              )}
-            </p>
-          </div>
-          <table className="table table-bordered text-center">
-            <thead className="text-primary">
-              <tr>
-                <th scope="col">Tanggal</th>
-                <th scope="col">Jenis Tagihan</th>
-                <th scope="col">Nominal</th>
-                <th scope="col">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {getDetailTagihanResult ? (
-                <>
-                  <tr>
-                    <td>{getDetailTagihanResult.waktu}</td>
-                    <td>
-                      {Object.keys(getListJenisTagihanResult).map((key) => {
-                        return (
-                          <p key={key}>
-                            {getListJenisTagihanResult[key].jenisTagihanId ===
-                            getDetailTagihanResult.jenisTagihan
-                              ? getListJenisTagihanResult[key].namaJenisTagihan
-                              : []}
-                          </p>
-                        );
-                      })}
-                    </td>
-                    <td>{getDetailTagihanResult.nominal}</td>
-                    <td>
-                      <p className="badge bg-danger text-wrap p-2 my-1">
-                        {getDetailTagihanResult.status}
-                      </p>
-                    </td>
-                  </tr>
-                  <tr className="table-secondary">
-                    <td className="fw-bold ">Total Harga</td>
-                    <td className="fw-bold" colSpan={"3"} align="center">
-                      {getDetailTagihanResult.nominal}
-                    </td>
-                  </tr>
-                </>
-              ) : (
-                <tr>
-                  <td colSpan={"4"} align="center">
-                    <div className="spinner-border text-primary" role="status">
-                      <span className="visually-hidden">Loading...</span>
-                    </div>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
 
-          <div>
-            {lunasTagihanLoading ? (
-              <div className="vstack gap-2 col-md-5 mx-auto">
-                <button type="submit" className="btn btn-primary">
-                  <div className="spinner-border text-light" role="status">
-                    <span className="visually-hidden"></span>
-                  </div>
-                </button>
-              </div>
-            ) : (
-              <div className="vstack gap-2 col-md-5 mx-auto">
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  onClick={(event) => this.handleSubmit(event)}
-                >
-                  SIMPAN
-                </button>
-                <a
-                  href={"/admin/tagihan/"}
-                  style={{ color: "#FFFFFF" }}
-                  className="btn btn-danger"
-                >
-                  BATAL
-                </a>
-              </div>
-            )}
+          <div className="card p-4">
+            <h2 className=" mt-4 ml-3">Rincian Pembayaran</h2>
+            <hr></hr>
+            <div className="ml-3">
+              <p>
+                Nama :{" "}
+                {getListSiswaResult ? (
+                  Object.keys(getListSiswaResult).map((id) => {
+                    return (
+                      <>
+                        {getListSiswaResult[id].uid ===
+                        getDetailSiswaTagihanResult.nama
+                          ? getListSiswaResult[id].nama
+                          : []}
+                      </>
+                    );
+                  })
+                ) : (
+                  <>Nama Siswa Tidak Ditemukan</>
+                )}
+              </p>
+              <p>
+                Kelas :{" "}
+                {getListKelasResult ? (
+                  Object.keys(getListKelasResult).map((id) => {
+                    return (
+                      <>
+                        {getListKelasResult[id].kelasId ===
+                        getDetailSiswaTagihanResult.kelas
+                          ? getListKelasResult[id].namaKelas
+                          : []}
+                      </>
+                    );
+                  })
+                ) : (
+                  <>Kelas Tidak Ditemukan</>
+                )}
+              </p>
+            </div>
+            <table className="table table-bordered text-center">
+              <thead className="text-primary">
+                <tr>
+                  <th scope="col">Tanggal</th>
+                  <th scope="col">Jenis Tagihan</th>
+                  <th scope="col">Nominal</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {getDetailTagihanResult ? (
+                  <>
+                    <tr>
+                      <td>{getDetailTagihanResult.waktu}</td>
+                      <td>
+                        {Object.keys(getListJenisTagihanResult).map((key) => {
+                          return (
+                            <p key={key}>
+                              {getListJenisTagihanResult[key].jenisTagihanId ===
+                              getDetailTagihanResult.jenisTagihan
+                                ? getListJenisTagihanResult[key]
+                                    .namaJenisTagihan
+                                : []}
+                            </p>
+                          );
+                        })}
+                      </td>
+                      <td>{getDetailTagihanResult.nominal}</td>
+                      <td>
+                        <p className="badge bg-danger text-wrap p-2 my-1">
+                          {getDetailTagihanResult.status}
+                        </p>
+                      </td>
+                    </tr>
+                    <tr className="table-secondary">
+                      <td className="fw-bold ">Total Harga</td>
+                      <td className="fw-bold" colSpan={"3"} align="center">
+                        {getDetailTagihanResult.nominal}
+                      </td>
+                    </tr>
+                  </>
+                ) : (
+                  <tr>
+                    <td colSpan={"4"} align="center">
+                      <div
+                        className="spinner-border text-primary"
+                        role="status"
+                      >
+                        <span className="visually-hidden">Loading...</span>
+                      </div>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+
+            <div>
+              {lunasTagihanLoading ? (
+                <div className="vstack gap-2 col-md-5 mx-auto">
+                  <button type="submit" className="btn btn-primary">
+                    <div className="spinner-border text-light" role="status">
+                      <span className="visually-hidden"></span>
+                    </div>
+                  </button>
+                </div>
+              ) : (
+                <div className="vstack gap-2 col-md-5 mx-auto">
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    onClick={(event) => this.handleSubmit(event)}
+                  >
+                    BAYAR SEKARANG
+                  </button>
+                  <a
+                    href={"/admin/tagihan/"}
+                    style={{ color: "#FFFFFF" }}
+                    className="btn btn-danger"
+                  >
+                    BATAL
+                  </a>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
