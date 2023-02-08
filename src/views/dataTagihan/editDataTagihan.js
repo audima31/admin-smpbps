@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Spinner, Table } from "reactstrap";
 import { getListSiswa } from "store/actions/AuthAction";
 import { getListTypeTagihan } from "store/actions/jenisTagihanAction";
 import { getListKelas } from "store/actions/KelasAction";
@@ -69,7 +68,7 @@ class editDataTagihan extends Component {
   };
 
   handleSubmit = (event) => {
-    const { jenisTagihan, keterangan, bulan, tahun, nominal, status, key, id } =
+    const { jenisTagihan, keterangan, bulan, tahun, nominal, key, id } =
       this.state;
 
     event.preventDefault();

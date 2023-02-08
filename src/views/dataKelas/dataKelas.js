@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { getListKelas, deleteKelas } from "store/actions/KelasAction";
-import { Button, Card, CardBody, Col, Row, Spinner, Table } from "reactstrap";
+import { Card, CardBody, Col, Row, Spinner, Table } from "reactstrap";
 import Swal from "sweetalert2";
 
 class dataKelas extends Component {

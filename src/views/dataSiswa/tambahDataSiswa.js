@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { registerSiswa } from "../../store/actions/AuthAction";
 import { connect } from "react-redux";
-import { Button, FormGroup, Input, Spinner } from "reactstrap";
 import { getListKelas } from "store/actions/KelasAction";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
@@ -153,8 +152,7 @@ class tambahDataSiswa extends Component {
       namaOrangTua,
       noHandphoneOrangTua,
     } = this.state;
-    const { getListKelasResult, registerSiswaLoading, registerSiswaError } =
-      this.props;
+    const { getListKelasResult, registerSiswaLoading } = this.props;
 
     return (
       <div className="content">

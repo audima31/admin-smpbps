@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { getListSiswa, registerSiswa } from "../../store/actions/AuthAction";
+import { getListSiswa } from "../../store/actions/AuthAction";
 import { connect } from "react-redux";
-import { Button, FormGroup, Input, Spinner } from "reactstrap";
 import { getListKelas } from "store/actions/KelasAction";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";

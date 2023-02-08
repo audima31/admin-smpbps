@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { registerSiswa } from "../../store/actions/AuthAction";
 import { connect } from "react-redux";
 import { getListKelas } from "store/actions/KelasAction";
 import Swal from "sweetalert2";
