@@ -25,7 +25,6 @@ export const tambahKelas = (data) => {
           ...dataBaru,
           kelasId: response._delegate._path.pieces_[1],
         };
-        console.log(dataId);
 
         //SIMPAN BARU
         FIREBASE.database()

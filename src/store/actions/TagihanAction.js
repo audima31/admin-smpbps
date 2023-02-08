@@ -60,7 +60,10 @@ export const tambahTagihan = (data) => {
 
 export const tagihanDetail = (data) => {
   return (dispatch) => {
+    console.log("data action : ", data);
     const detailTagihans = {
+      nama: data.nama,
+      kelas: data.kelas,
       jenisTagihan: data.jenisTagihan,
       nominal: data.nominal,
       waktu: new Date().toDateString(),
@@ -68,6 +71,7 @@ export const tagihanDetail = (data) => {
       bulan: data.bulan,
       tahun: data.tahun,
       status: data.status,
+      tagihanDetailId: "",
     };
 
     FIREBASE.database()
@@ -75,6 +79,26 @@ export const tagihanDetail = (data) => {
       .child("detailTagihans")
       .push(detailTagihans)
       .then((response) => {
+        console.log("Tagihan Id : ", response);
+
+        //Menambah ID Tagihan pada data detailTagihans
+        const tagihanDetailId = {
+          tagihanDetailId: response._delegate._path.pieces_[3],
+        };
+
+        console.log("Data Lengkap : ", tagihanDetailId);
+
+        //Simpan Id Tagihan
+        FIREBASE.database()
+          .ref("tagihans/" + data.nama)
+          .child("detailTagihans")
+          .child(response._delegate._path.pieces_[3])
+          .update(tagihanDetailId)
+          .then((response) => {
+            console.log("SUKSES : ", response);
+            dispatchSuccess(dispatch, TAMBAH_TAGIHAN, response ? response : []);
+          });
+
         dispatchSuccess(dispatch, TAMBAH_TAGIHAN, response);
       })
       .catch((error) => {

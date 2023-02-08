@@ -160,7 +160,16 @@ class dataTagihan extends Component {
                               <td>
                                 {getListTagihanResult[key].detailTagihans[id]
                                   .status === "PENDING" ? (
-                                  <p className="badge bg-danger text-wrap p-2 my-1">
+                                  <p className="badge bg-warning text-wrap p-2 my-1">
+                                    {
+                                      getListTagihanResult[key].detailTagihans[
+                                        id
+                                      ].status
+                                    }
+                                  </p>
+                                ) : getListTagihanResult[key].detailTagihans[id]
+                                    .status === "BELUM DIBAYAR" ? (
+                                  <p className="badge bg-danger text-wrap px-3 py-2 my-1">
                                     {
                                       getListTagihanResult[key].detailTagihans[
                                         id

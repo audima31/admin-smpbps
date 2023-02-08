@@ -22,7 +22,7 @@ class tambahDataTagihan extends Component {
       tahun: "",
       nominal: "",
       keterangan: "",
-      status: "PENDING",
+      status: "BELUM DIBAYAR",
     };
   }
 

@@ -5,6 +5,7 @@ import SiswaReducer from "./SiswaReducer";
 import jenisTagihanReducer from "./JenisTagihanReducer";
 import WaktuReducer from "./WaktuReducer";
 import TagihanReducer from "./TagihanReducer";
+import PaymentReducer from "./PaymentReducer";
 
 const rootReducer = combineReducers({
   AuthReducer,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   SiswaReducer,
   jenisTagihanReducer,
   WaktuReducer,
+  PaymentReducer,
   TagihanReducer,
 });
 
