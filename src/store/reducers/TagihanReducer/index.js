@@ -6,6 +6,7 @@ import {
   UPDATE_TAGIHAN,
   DELETE_TAGIHAN,
   LUNAS_TAGIHAN,
+  GET_LIST_TAGIHAN_SISWA_BY_ID,
 } from "store/actions/TagihanAction";
 
 const initialState = {
@@ -36,6 +37,10 @@ const initialState = {
   lunasTagihanLoading: false,
   lunasTagihanResult: false,
   lunasTagihanError: false,
+
+  getListTagihanSiswaByIdLoading: false,
+  getListTagihanSiswaByIdResult: false,
+  getListTagihanSiswaByIdError: false,
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -96,6 +101,14 @@ export default function (state = initialState, action) {
         lunasTagihanLoading: action.payload.loading,
         lunasTagihanResult: action.payload.data,
         lunasTagihanError: action.payload.errorMessage,
+      };
+
+    case GET_LIST_TAGIHAN_SISWA_BY_ID:
+      return {
+        ...state,
+        getListTagihanSiswaByIdLoading: action.payload.loading,
+        getListTagihanSiswaByIdResult: action.payload.data,
+        getListTagihanSiswaByIdError: action.payload.errorMessage,
       };
     default:
       return state;

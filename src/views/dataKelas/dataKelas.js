@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { getListKelas, deleteKelas } from "store/actions/KelasAction";
 import { Card, CardBody, Col, Row, Spinner, Table } from "reactstrap";
 import Swal from "sweetalert2";
+import "../../assets/css/table.css";
 
 class dataKelas extends Component {
   componentDidMount() {
@@ -64,6 +65,7 @@ class dataKelas extends Component {
                               <td>{getListKelasResult[key].namaKelas}</td>
                               <td>
                                 <Link
+                                  {...this.props}
                                   className="btn btn-primary ml-2"
                                   to={"/admin/kelas/detail/" + key}
                                 >

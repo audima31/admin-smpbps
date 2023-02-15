@@ -26,22 +26,13 @@ class dataSiswa extends Component {
   };
 
   componentDidUpdate(prevProps) {
-    const { deleteSiswaResult, getListKelasResult } = this.props;
+    const { deleteSiswaResult } = this.props;
     if (
       deleteSiswaResult &&
       prevProps.deleteSiswaResult !== deleteSiswaResult
     ) {
       Swal.fire("Success", deleteSiswaResult, "success");
       this.props.dispatch(getListSiswa());
-    }
-
-    if (
-      getListKelasResult &&
-      prevProps.getListKelasResult !== getListKelasResult
-    ) {
-      this.setState({
-        kelas: getListKelasResult.namaKelas,
-      });
     }
   }
 
@@ -86,7 +77,7 @@ class dataSiswa extends Component {
                       {getListSiswaResult ? (
                         Object.keys(getListSiswaResult).map((key) => {
                           return (
-                            <tr key={key}>
+                            <tr id={key}>
                               <td>{getListSiswaResult[key].NIS}</td>
                               <td>{getListSiswaResult[key].nama}</td>
                               <td>{getListSiswaResult[key].jenisKelamin}</td>
@@ -109,10 +100,14 @@ class dataSiswa extends Component {
                                 )}
                               </td>
                               <td>
-                                <Button color="primary">
-                                  <i className="nc-icon nc-ruler-pencil"></i>{" "}
+                                <a
+                                  {...this.props}
+                                  class="btn btn-primary mr-2 "
+                                  href={"/admin/siswa/detail/" + key}
+                                >
                                   Detail
-                                </Button>
+                                </a>
+
                                 <Link
                                   className="btn btn-warning ml-2"
                                   to={"/admin/siswa/edit/" + key}

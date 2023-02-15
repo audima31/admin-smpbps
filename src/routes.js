@@ -4,6 +4,7 @@ import detailDataKelas from "views/dataKelas/detailDataKelas";
 import editDataKelas from "views/dataKelas/editDataKelas";
 import tambahDataKelas from "views/dataKelas/tambahDataKelas";
 import dataSiswa from "views/dataSiswa/dataSiswa";
+import detailDataSiswa from "views/dataSiswa/detailDataSiswa";
 import editDataSiwa from "views/dataSiswa/editDataSiwa";
 import tambahDataSiswa from "views/dataSiswa/tambahDataSiswa";
 import dataTagihan from "views/dataTagihan/dataTagihan";
@@ -51,6 +52,13 @@ var routes = [
     path: "/siswa/edit/:id",
     name: "Edit Data Siswa",
     component: editDataSiwa,
+    layout: "/admin",
+    sidebar: false,
+  },
+  {
+    path: "/siswa/detail/:id",
+    name: "Detail Data Siswa",
+    component: detailDataSiswa,
     layout: "/admin",
     sidebar: false,
   },

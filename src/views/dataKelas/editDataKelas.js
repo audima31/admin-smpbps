@@ -66,9 +66,16 @@ class editDataKelas extends Component {
       <div className="content">
         <Row>
           <Col md={12}>
-            <Link to="/admin/kelas" className="btn btn-primary">
-              Kembali
-            </Link>
+            <div className="mt-3">
+              <a
+                href={"/admin/kelas/"}
+                style={{ color: "#FFFFFF" }}
+                className="btn btn-warning"
+              >
+                <i className="bi bi-caret-left-fill"> </i>
+                KEMBALI
+              </a>
+            </div>
           </Col>
           <Col md={8}>
             <form onSubmit={(event) => this.handleSubmit(event)}>

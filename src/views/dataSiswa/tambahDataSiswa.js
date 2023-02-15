@@ -156,10 +156,16 @@ class tambahDataSiswa extends Component {
 
     return (
       <div className="content">
-        <Link to="/admin/siswa" class="button button1">
-          Kembali
-        </Link>
-
+        <div className="mt-3">
+          <a
+            href={"/admin/siswa/"}
+            style={{ color: "#FFFFFF" }}
+            className="btn btn-warning"
+          >
+            <i className="bi bi-caret-left-fill"> </i>
+            KEMBALI
+          </a>
+        </div>
         <div className="page">
           <form onSubmit={(event) => this.handleSubmit(event)}>
             {/* Form NIS */}
@@ -319,15 +325,19 @@ class tambahDataSiswa extends Component {
 
             <div>
               {registerSiswaLoading ? (
-                <button type="submit" color="primary" disabled>
-                  <div class="spinner-border" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                  </div>
-                </button>
+                <div className="vstack gap-2 col-md-5 mx-auto">
+                  <button type="submit" color="primary" disabled>
+                    <div class="spinner-border" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                  </button>
+                </div>
               ) : (
-                <button type="submit" className="btn btn-primary">
-                  Submit
-                </button>
+                <div className="vstack gap-2 col-md-5 mx-auto">
+                  <button type="submit" className="btn btn-primary">
+                    Submit
+                  </button>
+                </div>
               )}
             </div>
           </form>

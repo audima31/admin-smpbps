@@ -8,6 +8,7 @@ export const GET_DETAIL_TAGIHAN = "GET_DETAIL_TAGIHAN";
 export const GET_DETAIL_SISWA_TAGIHAN = "GET_DETAIL_SISWA_TAGIHAN";
 export const DELETE_TAGIHAN = "DELETE_TAGIHAN";
 export const LUNAS_TAGIHAN = "LUNAS_TAGIHAN";
+export const GET_LIST_TAGIHAN_SISWA_BY_ID = "GET_LIST_TAGIHAN_SISWA_BY_ID";
 
 export const tambahTagihan = (data) => {
   return (dispatch) => {
@@ -58,6 +59,7 @@ export const tambahTagihan = (data) => {
   };
 };
 
+//Ini masih bagian dari tambah tagihan
 export const tagihanDetail = (data) => {
   return (dispatch) => {
     console.log("data action : ", data);
@@ -267,6 +269,40 @@ export const lunasTagihan = (key, id, data) => {
       .catch((error) => {
         dispatchError(dispatch, LUNAS_TAGIHAN, error);
         alert(error);
+      });
+  };
+};
+
+export const getListTagihanSiswaById = (id) => {
+  return (dispatch) => {
+    //Loading
+    dispatchLoading(dispatch, GET_LIST_TAGIHAN_SISWA_BY_ID);
+
+    FIREBASE.database()
+      .ref("tagihans/" + id)
+      .once("value", (querySnapshot) => {
+        console.log("querySnapshot : ", querySnapshot.val());
+
+        //hasil
+        let data = querySnapshot.val();
+
+        console.log("Data Keranjang Action : ", data);
+
+        if (data) {
+          dispatchSuccess(
+            dispatch,
+            GET_LIST_TAGIHAN_SISWA_BY_ID,
+            data ? data : []
+          );
+        } else {
+          dispatchError(dispatch, GET_LIST_TAGIHAN_SISWA_BY_ID, "");
+        }
+      })
+      .catch((error) => {
+        //KALO TERJADI ERROR
+        dispatchError(dispatch, GET_LIST_TAGIHAN_SISWA_BY_ID, error);
+
+        alert(error.message);
       });
   };
 };

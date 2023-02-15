@@ -23,6 +23,8 @@ class detailDataTagihan extends Component {
 
   componentDidMount() {
     const { key, id } = this.state;
+    console.log("key ", key);
+    console.log("id ", id);
 
     this.props.dispatch(getDetailTagihan(key, id));
     this.props.dispatch(getDetailSiswaTagihan(key));
