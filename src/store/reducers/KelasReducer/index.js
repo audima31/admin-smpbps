@@ -4,6 +4,7 @@ import {
   GET_DETAIL_KELAS,
   UPDATE_KELAS,
   DELETE_KELAS,
+  TOTAL_KELAS,
 } from "store/actions/KelasAction";
 
 const initialState = {
@@ -26,6 +27,10 @@ const initialState = {
   deleteKelasLoading: false,
   deleteKelasResult: false,
   deleteKelasError: false,
+
+  totalKelasLoading: false,
+  totalKelasResult: false,
+  totalKelasError: false,
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -69,6 +74,14 @@ export default function (state = initialState, action) {
         deleteKelasLoading: action.payload.loading,
         deleteKelasResult: action.payload.data,
         deleteKelasError: action.payload.errorMessage,
+      };
+
+    case TOTAL_KELAS:
+      return {
+        ...state,
+        totalKelasLoading: action.payload.loading,
+        totalKelasResult: action.payload.data,
+        totalKelasError: action.payload.errorMessage,
       };
     default:
       return state;

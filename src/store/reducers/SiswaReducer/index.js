@@ -3,6 +3,7 @@ import {
   GET_DETAIL_SISWA,
   UPDATE_SISWA,
   DELETE_SISWA,
+  TOTAL_SISWA,
 } from "store/actions/SiswaAction";
 
 const initialState = {
@@ -21,6 +22,10 @@ const initialState = {
   deleteSiswaLoading: false,
   deleteSiswaResult: false,
   deleteSiswaError: false,
+
+  totalSiswaLoading: false,
+  totalSiswaResult: false,
+  totalSiswaError: false,
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -56,6 +61,14 @@ export default function (state = initialState, action) {
         deleteSiswaLoading: action.payload.loading,
         deleteSiswaResult: action.payload.data,
         deleteSiswaError: action.payload.errorMessage,
+      };
+
+    case TOTAL_SISWA:
+      return {
+        ...state,
+        totalSiswaLoading: action.payload.loading,
+        totalSiswaResult: action.payload.data,
+        totalSiswaError: action.payload.errorMessage,
       };
     default:
       return state;

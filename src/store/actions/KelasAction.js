@@ -6,6 +6,7 @@ export const GET_LIST_KELAS = "GET_LIST_KELAS";
 export const GET_DETAIL_KELAS = "GET_DETAIL_KELAS";
 export const UPDATE_KELAS = "UPDATE_KELAS";
 export const DELETE_KELAS = "DELETE_KELAS";
+export const TOTAL_KELAS = "TOTAL_KELAS";
 
 export const tambahKelas = (data) => {
   return (dispatch) => {
@@ -112,6 +113,22 @@ export const deleteKelas = (id) => {
       .catch((error) => {
         dispatchError(dispatch, DELETE_KELAS, error);
         alert(error);
+      });
+  };
+};
+
+export const totalKelas = () => {
+  return (dispatch) => {
+    dispatchLoading(dispatch, TOTAL_KELAS);
+
+    FIREBASE.database()
+      .ref("kelas/")
+      .once("value", (querySnapshot) => {
+        var count = querySnapshot.numChildren();
+        dispatchSuccess(dispatch, TOTAL_KELAS, count);
+      })
+      .catch((error) => {
+        dispatchError(dispatch, TOTAL_KELAS, error);
       });
   };
 };

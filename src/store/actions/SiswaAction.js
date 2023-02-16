@@ -5,6 +5,7 @@ export const GET_KELAS = "GET_KELAS";
 export const GET_DETAIL_SISWA = "GET_DETAIL_SISWA";
 export const UPDATE_SISWA = "UPDATE_SISWA";
 export const DELETE_SISWA = "DELETE_SISWA";
+export const TOTAL_SISWA = "TOTAL_SISWA";
 
 //INI BIAR NAMPILIN NAMA KELAS DI GET LIST SISWA
 export const getKelasSiswa = (id) => {
@@ -89,6 +90,22 @@ export const deleteSiswa = (id) => {
       .catch((error) => {
         dispatchError(dispatch, DELETE_SISWA, error);
         alert(error);
+      });
+  };
+};
+
+export const totalSiswa = () => {
+  return (dispatch) => {
+    dispatchLoading(dispatch, TOTAL_SISWA);
+
+    FIREBASE.database()
+      .ref("siswa/")
+      .once("value", (querySnapshot) => {
+        var count = querySnapshot.numChildren();
+        dispatchSuccess(dispatch, TOTAL_SISWA, count);
+      })
+      .catch((error) => {
+        dispatchError(dispatch, TOTAL_SISWA, error);
       });
   };
 };

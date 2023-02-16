@@ -7,6 +7,8 @@ import {
   DELETE_TAGIHAN,
   LUNAS_TAGIHAN,
   GET_LIST_TAGIHAN_SISWA_BY_ID,
+  LIST_PEMBAYARAN_SISWA,
+  PEMBAYARAN_BERHASIL,
 } from "store/actions/TagihanAction";
 
 const initialState = {
@@ -41,6 +43,14 @@ const initialState = {
   getListTagihanSiswaByIdLoading: false,
   getListTagihanSiswaByIdResult: false,
   getListTagihanSiswaByIdError: false,
+
+  listPembayaranSiswaLoading: false,
+  listPembayaranSiswaResult: false,
+  listPembayaranSiswaError: false,
+
+  pembayaranBerhasilLoading: false,
+  pembayaranBerhasilResult: false,
+  pembayaranBerhasilError: false,
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -71,7 +81,6 @@ export default function (state = initialState, action) {
       };
 
     case GET_DETAIL_SISWA_TAGIHAN:
-      console.log("Reducers : ", action);
       return {
         ...state,
         getDetailSiswaTagihanLoading: action.payload.loading,
@@ -109,6 +118,23 @@ export default function (state = initialState, action) {
         getListTagihanSiswaByIdLoading: action.payload.loading,
         getListTagihanSiswaByIdResult: action.payload.data,
         getListTagihanSiswaByIdError: action.payload.errorMessage,
+      };
+
+    case LIST_PEMBAYARAN_SISWA:
+      return {
+        ...state,
+        listPembayaranSiswaLoading: action.payload.loading,
+        listPembayaranSiswaResult: action.payload.data,
+        listPembayaranSiswaError: action.payload.errorMessage,
+      };
+
+    case PEMBAYARAN_BERHASIL:
+      console.log("Reducer");
+      return {
+        ...state,
+        pembayaranBerhasilLoading: action.payload.loading,
+        pembayaranBerhasilResult: action.payload.data,
+        pembayaranBerhasilError: action.payload.errorMessage,
       };
     default:
       return state;

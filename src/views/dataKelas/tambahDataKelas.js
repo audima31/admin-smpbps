@@ -14,16 +14,6 @@ class tambahDataKelas extends Component {
     };
   }
 
-  componentDidUpdate(prevProps) {
-    const { tambahKelasResult } = this.props;
-    if (
-      tambahKelasResult &&
-      prevProps.tambahKelasResult !== tambahKelasResult
-    ) {
-      window.location = "/admin/kelas";
-    }
-  }
-
   handleNamaKelas = (event) => {
     this.setState({
       namaKelas: event.target.value,
@@ -49,7 +39,7 @@ class tambahDataKelas extends Component {
       prevProps.tambahKelasResult !== tambahKelasResult
     ) {
       Swal.fire("Good job!", "Tambah kelas telah berhasil", "success");
-      // this.props.history.push("/admin/kelas");
+      window.location = "/admin/kelas";
     }
   }
 

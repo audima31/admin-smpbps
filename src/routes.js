@@ -14,7 +14,7 @@ import editJenisTagihan from "views/dataTagihan/jenisTagihan/editJenisTagihan";
 import jenisTagihan from "views/dataTagihan/jenisTagihan/jenisTagihan";
 import tambahJenisTagihan from "views/dataTagihan/jenisTagihan/tambahJenisTagihan";
 import tambahDataTagihan from "views/dataTagihan/tambahDataTagihan";
-import Icons from "views/Icons.js";
+import Laporan from "views/Laporan/Laporan";
 
 var routes = [
   {
@@ -22,14 +22,6 @@ var routes = [
     name: "Dashboard",
     icon: "nc-icon nc-bank",
     component: Dashboard,
-    layout: "/admin",
-    sidebar: true,
-  },
-  {
-    path: "/icons",
-    name: "Icons",
-    icon: "nc-icon nc-diamond",
-    component: Icons,
     layout: "/admin",
     sidebar: true,
   },
@@ -140,6 +132,14 @@ var routes = [
     component: editJenisTagihan,
     layout: "/admin",
     sidebar: false,
+  },
+  {
+    path: "/laporan",
+    name: "Laporan Pembayaran",
+    icon: "nc-icon nc-single-copy-04",
+    component: Laporan,
+    layout: "/admin",
+    sidebar: true,
   },
 ];
 export default routes;

@@ -18,7 +18,6 @@ class editDataKelas extends Component {
   componentDidMount() {
     //this.props.match.params.id = Merupakan ID dari FIREBASE
     this.props.dispatch(getDetailKelas(this.props.match.params.id));
-    console.log("ID : ", this.props.match.params.id);
   }
 
   handleNamaKelas = (event) => {

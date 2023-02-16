@@ -51,7 +51,10 @@ class dataTagihan extends Component {
             >
               + Tambah Tagihan Baru
             </Link>
-            <Link to="/admin/jenistagihan" class="btn btn-primary float-left  ">
+            <Link
+              to="/admin/jenistagihan"
+              class="btn btn-primary float-left ml-3"
+            >
               Tambah Jenis Tagihan
             </Link>
           </div>
@@ -61,6 +64,7 @@ class dataTagihan extends Component {
           <Table striped className="text-center table-hover">
             <thead className="text-primary">
               <tr>
+                <th scope="col">No</th>
                 <th scope="col">Tanggal</th>
                 <th scope="col">Nama Siswa</th>
                 <th scope="col">Kelas</th>
@@ -77,7 +81,7 @@ class dataTagihan extends Component {
                       {getListTagihanResult[key].detailTagihans ? (
                         Object.keys(
                           getListTagihanResult[key].detailTagihans
-                        ).map((id) => {
+                        ).map((id, index) => {
                           const namaSiswa = getListTagihanResult[key];
                           const tagihanDetailSiswa =
                             getListTagihanResult[key].detailTagihans[id];
@@ -90,15 +94,13 @@ class dataTagihan extends Component {
 
                           return (
                             <tr>
-                              {/* Data Tanggal */}
+                              <td>{index + 1 + "."}</td>
                               <td>
                                 {
                                   getListTagihanResult[key].detailTagihans[id]
                                     .waktu
                                 }
                               </td>
-                              {/* END Data Tanggal */}
-                              {/* Data Nama */}
                               <td>
                                 {getListSiswaResult ? (
                                   Object.keys(getListSiswaResult).map((id) => {
@@ -115,8 +117,6 @@ class dataTagihan extends Component {
                                   <>Nama Siswa Tidak Ditemukan</>
                                 )}
                               </td>
-                              {/* END Data Nama */}
-                              {/* Data Kelas */}
                               <td>
                                 {getListKelas ? (
                                   Object.keys(getListKelasResult).map((id) => {
@@ -133,8 +133,6 @@ class dataTagihan extends Component {
                                   <p>Kelas Tidak Ditemukan</p>
                                 )}
                               </td>
-                              {/* End Data Kelas */}
-                              {/* Data Jenis Tagihan */}
                               <td>
                                 {getListJenisTagihanResult ? (
                                   Object.keys(getListJenisTagihanResult).map(
@@ -156,7 +154,6 @@ class dataTagihan extends Component {
                                   <p>Tidak Ditermukan</p>
                                 )}
                               </td>
-                              {/* END Data Jenis Tagihan */}
                               <td>
                                 {getListTagihanResult[key].detailTagihans[id]
                                   .status === "PENDING" ? (
@@ -262,19 +259,19 @@ class dataTagihan extends Component {
                 })
               ) : getListTagihanLoading ? (
                 <tr>
-                  <td colSpan="6" align="center">
+                  <td colSpan="7" align="center">
                     <Spinner color="primary">Loading...</Spinner>
                   </td>
                 </tr>
               ) : getListTagihanError ? (
                 <tr>
-                  <td colSpan="5" align="center">
+                  <td colSpan="7" align="center">
                     {getListTagihanError}
                   </td>
                 </tr>
               ) : (
                 <tr>
-                  <td colSpan="6" align="center">
+                  <td colSpan="7" align="center">
                     Data Kosong
                   </td>
                 </tr>

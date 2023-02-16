@@ -66,18 +66,20 @@ class dataSiswa extends Component {
                   <Table striped className="text-center table-hover">
                     <thead className="text-primary">
                       <tr>
-                        <th>NIS</th>
-                        <th>Nama Siswa</th>
-                        <th>Jenis Kelamin</th>
-                        <th>Kelas</th>
-                        <th>Aksi</th>
+                        <th scope="col">NO</th>
+                        <th scope="col">NIS</th>
+                        <th scope="col">Nama Siswa</th>
+                        <th scope="col">Jenis Kelamin</th>
+                        <th scope="col">Kelas</th>
+                        <th scope="col">Aksi</th>
                       </tr>
                     </thead>
                     <tbody>
                       {getListSiswaResult ? (
-                        Object.keys(getListSiswaResult).map((key) => {
+                        Object.keys(getListSiswaResult).map((key, index) => {
                           return (
-                            <tr id={key}>
+                            <tr key={key}>
+                              <td>{index + 1 + "."}</td>
                               <td>{getListSiswaResult[key].NIS}</td>
                               <td>{getListSiswaResult[key].nama}</td>
                               <td>{getListSiswaResult[key].jenisKelamin}</td>
@@ -143,19 +145,19 @@ class dataSiswa extends Component {
                         })
                       ) : getListSiswaLoading ? (
                         <tr>
-                          <td colSpan="5" align="center">
+                          <td colSpan="6" align="center">
                             <Spinner color="primary">Loading...</Spinner>
                           </td>
                         </tr>
                       ) : getListSiswaError ? (
                         <tr>
-                          <td colSpan="5" align="center">
+                          <td colSpan="6" align="center">
                             {getListSiswaError}
                           </td>
                         </tr>
                       ) : (
                         <tr>
-                          <td colSpan="5" align="center">
+                          <td colSpan="6" align="center">
                             Data Kosong
                           </td>
                         </tr>

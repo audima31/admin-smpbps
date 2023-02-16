@@ -53,15 +53,18 @@ class dataKelas extends Component {
                   <Table striped className="text-center table-hover">
                     <thead className="text-primary">
                       <tr>
-                        <th>Nama Kelas</th>
-                        <th>Aksi</th>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama Kelas</th>
+                        <th scope="col">Aksi</th>
                       </tr>
                     </thead>
                     <tbody>
                       {getListKelasResult ? (
-                        Object.keys(getListKelasResult).map((key) => {
+                        Object.keys(getListKelasResult).map((key, index) => {
+                          console.log("Cek index : ", index);
                           return (
                             <tr key={key}>
+                              <td>{index + 1 + "."}</td>
                               <td>{getListKelasResult[key].namaKelas}</td>
                               <td>
                                 <Link

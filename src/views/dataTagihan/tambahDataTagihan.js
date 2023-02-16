@@ -199,7 +199,6 @@ class tambahDataTagihan extends Component {
               >
                 <option value="">Pilih nama</option>
                 {Object.keys(getListSiswaResult).map((key) => {
-                  console.log(getListSiswaResult[key]);
                   return (
                     <>
                       {getListSiswaResult[key].kelas === kelas ? (

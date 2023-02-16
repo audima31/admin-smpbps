@@ -1,59 +1,72 @@
-/*!
+import React, { Component } from "react";
+import { connect } from "react-redux";
 
-=========================================================
-* Paper Dashboard React - v1.3.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/paper-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-* Licensed under MIT (https://github.com/creativetimofficial/paper-dashboard-react/blob/main/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-import React from "react";
-// react plugin used to create charts
-import { Line, Pie } from "react-chartjs-2";
-// reactstrap components
 import {
   Card,
-  CardHeader,
   CardBody,
   CardFooter,
   CardTitle,
   Row,
-  Col
+  Col,
+  Table,
 } from "reactstrap";
-// core components
-import {
-  dashboard24HoursPerformanceChart,
-  dashboardEmailStatisticsChart,
-  dashboardNASDAQChart
-} from "variables/charts.js";
+import { totalKelas } from "store/actions/KelasAction";
+import { totalSiswa } from "store/actions/SiswaAction";
+import { pembayaranBerhasilSiswa } from "store/actions/TagihanAction";
+import { listPembayaranSiswa } from "store/actions/TagihanAction";
+import { CSVLink, CSVDownload } from "react-csv";
 
-function Dashboard() {
-  return (
-    <>
+class Dashboard extends Component {
+  componentDidMount() {
+    const { listPembayaranSiswaResult } = this.props;
+
+    this.props.dispatch(totalSiswa());
+    this.props.dispatch(totalKelas());
+    this.props.dispatch(listPembayaranSiswa());
+
+    // eslint-disable-next-line no-lone-blocks
+    {
+      listPembayaranSiswaResult
+        ? Object.keys(listPembayaranSiswaResult).map((key) => {
+            console.log("List Id : ", listPembayaranSiswaResult);
+            this.props.dispatch(pembayaranBerhasilSiswa(key));
+            return <></>;
+          })
+        : console.log("error");
+    }
+  }
+
+  render() {
+    const {
+      totalSiswaResult,
+      totalKelasResult,
+      listPembayaranSiswaResult,
+      pembayaranBerhasilResult,
+    } = this.props;
+
+    const dataExcel = Object.entries(pembayaranBerhasilResult);
+    console.log("data excel", dataExcel);
+    console.log("data excel", dataExcel[2]);
+
+    console.log("Pembayaran Riwayats : ", listPembayaranSiswaResult);
+    console.log("Pembayaran Berhasil : ", pembayaranBerhasilResult);
+
+    return (
       <div className="content">
         <Row>
-          <Col lg="3" md="6" sm="6">
+          <Col lg="4" md="6" sm="6">
             <Card className="card-stats">
               <CardBody>
                 <Row>
                   <Col md="4" xs="5">
-                    <div className="icon-big text-center icon-warning">
-                      <i className="nc-icon nc-globe text-warning" />
+                    <div className="text-center ">
+                      <i class="bi bi-people-fill fa-4x text-primary"></i>
                     </div>
                   </Col>
                   <Col md="8" xs="7">
                     <div className="numbers">
-                      <p className="card-category">Capacity</p>
-                      <CardTitle tag="p">150GB</CardTitle>
+                      <p className="card-category">Total Siswa</p>
+                      <CardTitle tag="p">{totalSiswaResult}</CardTitle>
                       <p />
                     </div>
                   </Col>
@@ -61,51 +74,45 @@ function Dashboard() {
               </CardBody>
               <CardFooter>
                 <hr />
-                <div className="stats">
-                  <i className="fas fa-sync-alt" /> Update Now
-                </div>
               </CardFooter>
             </Card>
           </Col>
-          <Col lg="3" md="6" sm="6">
+          <Col lg="4" md="6" sm="6">
             <Card className="card-stats">
               <CardBody>
                 <Row>
                   <Col md="4" xs="5">
-                    <div className="icon-big text-center icon-warning">
-                      <i className="nc-icon nc-money-coins text-success" />
+                    <div className="text-center ">
+                      <i class="bi bi-buildings-fill fa-4x text-warning"></i>
                     </div>
                   </Col>
                   <Col md="8" xs="7">
                     <div className="numbers">
-                      <p className="card-category">Revenue</p>
-                      <CardTitle tag="p">$ 1,345</CardTitle>
+                      <p className="card-category">Total Kelas</p>
+                      <CardTitle tag="p">{totalKelasResult}</CardTitle>
                       <p />
                     </div>
                   </Col>
                 </Row>
               </CardBody>
+
               <CardFooter>
                 <hr />
-                <div className="stats">
-                  <i className="far fa-calendar" /> Last day
-                </div>
               </CardFooter>
             </Card>
           </Col>
-          <Col lg="3" md="6" sm="6">
+          <Col lg="4" md="6" sm="6">
             <Card className="card-stats">
               <CardBody>
                 <Row>
                   <Col md="4" xs="5">
-                    <div className="icon-big text-center icon-warning">
-                      <i className="nc-icon nc-vector text-danger" />
+                    <div className="text-center ">
+                      <i class="bi bi-cash fa-4x text-success"></i>
                     </div>
                   </Col>
                   <Col md="8" xs="7">
                     <div className="numbers">
-                      <p className="card-category">Errors</p>
-                      <CardTitle tag="p">23</CardTitle>
+                      <p className="card-category">Pembayaran Berhasil</p>
                       <p />
                     </div>
                   </Col>
@@ -113,35 +120,6 @@ function Dashboard() {
               </CardBody>
               <CardFooter>
                 <hr />
-                <div className="stats">
-                  <i className="far fa-clock" /> In the last hour
-                </div>
-              </CardFooter>
-            </Card>
-          </Col>
-          <Col lg="3" md="6" sm="6">
-            <Card className="card-stats">
-              <CardBody>
-                <Row>
-                  <Col md="4" xs="5">
-                    <div className="icon-big text-center icon-warning">
-                      <i className="nc-icon nc-favourite-28 text-primary" />
-                    </div>
-                  </Col>
-                  <Col md="8" xs="7">
-                    <div className="numbers">
-                      <p className="card-category">Followers</p>
-                      <CardTitle tag="p">+45K</CardTitle>
-                      <p />
-                    </div>
-                  </Col>
-                </Row>
-              </CardBody>
-              <CardFooter>
-                <hr />
-                <div className="stats">
-                  <i className="fas fa-sync-alt" /> Update now
-                </div>
               </CardFooter>
             </Card>
           </Col>
@@ -149,84 +127,61 @@ function Dashboard() {
         <Row>
           <Col md="12">
             <Card>
-              <CardHeader>
-                <CardTitle tag="h5">Users Behavior</CardTitle>
-                <p className="card-category">24 Hours performance</p>
-              </CardHeader>
-              <CardBody>
-                <Line
-                  data={dashboard24HoursPerformanceChart.data}
-                  options={dashboard24HoursPerformanceChart.options}
-                  width={400}
-                  height={100}
-                />
-              </CardBody>
-              <CardFooter>
-                <hr />
-                <div className="stats">
-                  <i className="fa fa-history" /> Updated 3 minutes ago
-                </div>
-              </CardFooter>
-            </Card>
-          </Col>
-        </Row>
-        <Row>
-          <Col md="4">
-            <Card>
-              <CardHeader>
-                <CardTitle tag="h5">Email Statistics</CardTitle>
-                <p className="card-category">Last Campaign Performance</p>
-              </CardHeader>
-              <CardBody style={{ height: "266px" }}>
-                <Pie
-                  data={dashboardEmailStatisticsChart.data}
-                  options={dashboardEmailStatisticsChart.options}
-                />
-              </CardBody>
-              <CardFooter>
-                <div className="legend">
-                  <i className="fa fa-circle text-primary" /> Opened{" "}
-                  <i className="fa fa-circle text-warning" /> Read{" "}
-                  <i className="fa fa-circle text-danger" /> Deleted{" "}
-                  <i className="fa fa-circle text-gray" /> Unopened
-                </div>
-                <hr />
-                <div className="stats">
-                  <i className="fa fa-calendar" /> Number of emails sent
-                </div>
-              </CardFooter>
-            </Card>
-          </Col>
-          <Col md="8">
-            <Card className="card-chart">
-              <CardHeader>
-                <CardTitle tag="h5">NASDAQ: AAPL</CardTitle>
-                <p className="card-category">Line Chart with Points</p>
-              </CardHeader>
-              <CardBody>
-                <Line
-                  data={dashboardNASDAQChart.data}
-                  options={dashboardNASDAQChart.options}
-                  width={400}
-                  height={100}
-                />
-              </CardBody>
-              <CardFooter>
-                <div className="chart-legend">
-                  <i className="fa fa-circle text-info" /> Tesla Model S{" "}
-                  <i className="fa fa-circle text-warning" /> BMW 5 Series
-                </div>
-                <hr />
-                <div className="card-stats">
-                  <i className="fa fa-check" /> Data information certified
-                </div>
-              </CardFooter>
+              <Table>
+                <td>
+                  {listPembayaranSiswaResult ? (
+                    Object.keys(listPembayaranSiswaResult).map((key) => {
+                      return (
+                        <>
+                          {listPembayaranSiswaResult[key].status === "LUNAS" ? (
+                            <>{listPembayaranSiswaResult[key].bulan}</>
+                          ) : (
+                            <> </>
+                          )}
+                        </>
+                      );
+                    })
+                  ) : (
+                    <></>
+                  )}
+                </td>
+
+                <td>
+                  {pembayaranBerhasilResult ? (
+                    <>{pembayaranBerhasilResult.nama}</>
+                  ) : (
+                    <></>
+                  )}
+                </td>
+
+                <td>
+                  <CSVLink data={dataExcel}>Download me</CSVLink>;
+                </td>
+              </Table>
             </Card>
           </Col>
         </Row>
       </div>
-    </>
-  );
+    );
+  }
 }
 
-export default Dashboard;
+const mapStateToProps = (state) => ({
+  totalSiswaLoading: state.SiswaReducer.totalSiswaLoading,
+  totalSiswaResult: state.SiswaReducer.totalSiswaResult,
+  totalSiswaError: state.SiswaReducer.totalSiswaError,
+
+  totalKelasLoading: state.KelasReducer.totalKelasLoading,
+  totalKelasResult: state.KelasReducer.totalKelasResult,
+  totalKelasError: state.KelasReducer.totalKelasError,
+
+  listPembayaranSiswaLoading: state.TagihanReducer.listPembayaranSiswaLoading,
+  listPembayaranSiswaResult: state.TagihanReducer.listPembayaranSiswaResult,
+  listPembayaranSiswaError: state.TagihanReducer.listPembayaranSiswaError,
+
+  pembayaranBerhasilLoading: state.TagihanReducer.pembayaranBerhasilLoading,
+  pembayaranBerhasilResult: state.TagihanReducer.pembayaranBerhasilResult,
+  pembayaranBerhasilError: state.TagihanReducer.pembayaranBerhasilError,
+});
+
+export default connect(mapStateToProps, null)(Dashboard);

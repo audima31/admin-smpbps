@@ -72,17 +72,15 @@ class detailDataSiswa extends Component {
         <div className="card">
           {detailSiswaResult ? (
             <>
-              <div className=" p-4">
-                <h5 className=" mt-4 ml-3 text-primary fw-bold">
-                  {detailSiswaResult.NIS}
-                </h5>
-                <h5 className=" mt-4 ml-3 text-primary fw-bold">
-                  {detailSiswaResult.nama}
+              <div className=" ps-4">
+                <h5 className="mt-4 ml-3 text-dark fw-bold">
+                  {detailSiswaResult.nama} {""}
+                  <label>( {detailSiswaResult.NIS} )</label>
                 </h5>
                 <hr></hr>
               </div>
 
-              <div className="p-4">
+              <div className="ps-4 ml-3">
                 <div className="row">
                   <div className="col-3">
                     <p>Kelas</p>

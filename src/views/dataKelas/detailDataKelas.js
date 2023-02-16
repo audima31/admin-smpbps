@@ -17,8 +17,6 @@ class detailDataKelas extends Component {
   }
 
   componentDidMount() {
-    const { id } = this.state;
-
     this.props.dispatch(getListSiswa());
     this.props.dispatch(getListKelas());
   }
@@ -59,8 +57,28 @@ class detailDataKelas extends Component {
             KEMBALI
           </a>
         </div>
-        <div className="card p-4">
-          <table className="table table-striped table-hover text-center ">
+        <div className="card p-4 ">
+          <label className="fw-bold fs-3 text-dark">
+            {getListKelasResult ? (
+              Object.keys(getListKelasResult).map((id) => {
+                return (
+                  <>
+                    {idKelas === getListKelasResult[id].kelasId ? (
+                      <>{getListKelasResult[id].namaKelas}</>
+                    ) : (
+                      <> </>
+                    )}
+                  </>
+                );
+              })
+            ) : (
+              <></>
+            )}
+          </label>
+
+          <br />
+
+          <table className="table table-hover text-center ">
             <thead>
               <tr className="text-primary">
                 <th scope="col">NIS</th>
@@ -73,11 +91,12 @@ class detailDataKelas extends Component {
             <tbody>
               {getListSiswaResult ? (
                 Object.keys(getListSiswaResult).map((key) => {
+                  console.log("List Siswa:", getListSiswaResult.length);
+
                   console.log("getSiswa :", getListSiswaResult[key].kelas);
                   console.log("idKelas : ", idKelas);
-
                   return (
-                    <tr>
+                    <tr key={key}>
                       {getListSiswaResult[key].kelas === idKelas ? (
                         <>
                           <td>{getListSiswaResult[key].NIS}</td>
@@ -140,9 +159,7 @@ class detailDataKelas extends Component {
                           </td>
                         </>
                       ) : (
-                        <td colSpan="5" align="center">
-                          Data Kosong
-                        </td>
+                        []
                       )}
                     </tr>
                   );

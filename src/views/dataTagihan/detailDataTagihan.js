@@ -155,7 +155,7 @@ class detailDataTagihan extends Component {
                       <td>
                         {Object.keys(getListJenisTagihanResult).map((key) => {
                           return (
-                            <p key={key}>
+                            <p>
                               {getListJenisTagihanResult[key].jenisTagihanId ===
                               getDetailTagihanResult.jenisTagihan
                                 ? getListJenisTagihanResult[key]

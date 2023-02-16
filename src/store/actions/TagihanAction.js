@@ -9,6 +9,8 @@ export const GET_DETAIL_SISWA_TAGIHAN = "GET_DETAIL_SISWA_TAGIHAN";
 export const DELETE_TAGIHAN = "DELETE_TAGIHAN";
 export const LUNAS_TAGIHAN = "LUNAS_TAGIHAN";
 export const GET_LIST_TAGIHAN_SISWA_BY_ID = "GET_LIST_TAGIHAN_SISWA_BY_ID";
+export const LIST_PEMBAYARAN_SISWA = "LIST_PEMBAYARAN_SISWA";
+export const PEMBAYARAN_BERHASIL = "PEMBAYARAN_BERHASIL";
 
 export const tambahTagihan = (data) => {
   return (dispatch) => {
@@ -142,7 +144,7 @@ export const updateTagihan = (key, id, data) => {
   };
 };
 
-//
+//Untuk Data Tagihan Page
 export const getListTagihan = () => {
   return (dispatch) => {
     dispatchLoading(dispatch, GET_LIST_TAGIHAN);
@@ -247,6 +249,7 @@ export const deleteTagihan = (namaSiswa, tagihanDetailSiswa, id) => {
   };
 };
 
+//Mengganti status tagihan menjadi lunas
 export const lunasTagihan = (key, id, data) => {
   console.log("ACTION MASUK :", data, key, id);
   return (dispatch) => {
@@ -273,6 +276,7 @@ export const lunasTagihan = (key, id, data) => {
   };
 };
 
+//Untuk detail siswa pages
 export const getListTagihanSiswaById = (id) => {
   return (dispatch) => {
     //Loading
@@ -303,6 +307,47 @@ export const getListTagihanSiswaById = (id) => {
         dispatchError(dispatch, GET_LIST_TAGIHAN_SISWA_BY_ID, error);
 
         alert(error.message);
+      });
+  };
+};
+
+export const listPembayaranSiswa = () => {
+  return (dispatch) => {
+    dispatchLoading(dispatch, LIST_PEMBAYARAN_SISWA);
+
+    FIREBASE.database()
+      .ref("riwayats/")
+      .once("value", (querySnapshot) => {
+        let data = querySnapshot.val();
+        console.log("TESTTEST", data);
+        dispatchSuccess(dispatch, LIST_PEMBAYARAN_SISWA, data);
+      })
+      .catch((error) => {
+        dispatchError(dispatch, LIST_PEMBAYARAN_SISWA, error);
+      });
+  };
+};
+
+export const pembayaranBerhasilSiswa = (id) => {
+  return (dispatch) => {
+    dispatchLoading(dispatch, PEMBAYARAN_BERHASIL);
+
+    FIREBASE.database()
+      .ref("riwayats/")
+      .child(id)
+      .once("value", (querySnapshot) => {
+        let data = querySnapshot.val();
+
+        if (data.status === "LUNAS") {
+          dispatchSuccess(dispatch, PEMBAYARAN_BERHASIL, data ? data : []);
+          console.log("Cek data : ", data);
+        } else {
+        }
+        // var count = querySnapshot.numChildren();
+        // console.log("Jumlah :  ", count);
+      })
+      .catch((error) => {
+        dispatchError(dispatch, PEMBAYARAN_BERHASIL, error);
       });
   };
 };

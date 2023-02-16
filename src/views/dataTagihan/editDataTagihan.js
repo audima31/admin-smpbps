@@ -22,7 +22,7 @@ class editDataTagihan extends Component {
       keterangan: "",
       bulan: "",
       tahun: "",
-      status: false,
+      status: "",
       nominal: "",
       waktu: "",
     };
@@ -68,20 +68,26 @@ class editDataTagihan extends Component {
     });
   };
 
+  handleStatusPembayaran = (event) => {
+    this.setState({
+      status: event.target.value,
+    });
+  };
+
   handleSubmit = (event) => {
-    const { jenisTagihan, keterangan, bulan, tahun, nominal, key, id } =
+    const { jenisTagihan, keterangan, bulan, tahun, nominal, status, key, id } =
       this.state;
 
     event.preventDefault();
 
-    if (jenisTagihan && keterangan && nominal && bulan && tahun) {
+    if (jenisTagihan && keterangan && nominal && bulan && tahun && status) {
       const data = {
         jenisTagihan: jenisTagihan,
         bulan: bulan,
         tahun: tahun,
         nominal: nominal,
         keterangan: keterangan,
-        status: "PENDING",
+        status: status,
         key: key,
         id: id,
       };
@@ -131,7 +137,8 @@ class editDataTagihan extends Component {
   }
 
   render() {
-    const { jenisTagihan, keterangan, bulan, tahun, nominal } = this.state;
+    const { jenisTagihan, keterangan, bulan, tahun, nominal, status } =
+      this.state;
 
     const {
       getDetailTagihanResult,
@@ -217,21 +224,27 @@ class editDataTagihan extends Component {
                       <td>
                         {Object.keys(getListJenisTagihanResult).map((key) => {
                           return (
-                            <p>
+                            <>
                               {getListJenisTagihanResult[key].jenisTagihanId ===
                               getDetailTagihanResult.jenisTagihan
                                 ? getListJenisTagihanResult[key]
                                     .namaJenisTagihan
                                 : []}
-                            </p>
+                            </>
                           );
                         })}
                       </td>
                       <td>{getDetailTagihanResult.nominal}</td>
                       <td>
-                        <p className="badge bg-danger text-wrap p-2 my-1">
-                          {getDetailTagihanResult.status}
-                        </p>
+                        {getDetailTagihanResult.status === "BELUM DIBAYAR" ? (
+                          <p className="badge bg-danger text-wrap p-2 my-1">
+                            {getDetailTagihanResult.status}
+                          </p>
+                        ) : (
+                          <p className="badge bg-warning text-wrap p-2 my-1">
+                            {getDetailTagihanResult.status}
+                          </p>
+                        )}
                       </td>
                     </tr>
                     <tr className="table-secondary">
@@ -260,7 +273,7 @@ class editDataTagihan extends Component {
               {/* Form Jenis Tagihan */}
               <div className="mb-3">
                 <strong>
-                  Jenis Tagihan<label style={{ color: "red" }}>*</label> :
+                  Jenis Tagihan : <label style={{ color: "red" }}>*</label>
                 </strong>
                 <select
                   className="form-select"
@@ -283,7 +296,7 @@ class editDataTagihan extends Component {
               {/* Form Bulan */}
               <div className="mb-3">
                 <strong>
-                  Bulan<label style={{ color: "red" }}>*</label> :
+                  Bulan : <label style={{ color: "red" }}>*</label>
                 </strong>
                 <select
                   className="form-select"
@@ -309,7 +322,7 @@ class editDataTagihan extends Component {
               {/* Form Tahun */}
               <div className="mb-3">
                 <strong>
-                  Tahun<label style={{ color: "red" }}>*</label> :
+                  Tahun : <label style={{ color: "red" }}>*</label>
                 </strong>
                 <select
                   className="form-select"
@@ -331,10 +344,11 @@ class editDataTagihan extends Component {
                   <option value={"2033"}>2033</option>
                 </select>
               </div>
+
               {/* Form Jumlah Nominal Tagihan*/}
               <div className="mb-3">
                 <strong htmlFor="inputNominal" className="form-label">
-                  Jumlah Nominal <label style={{ color: "red" }}>*</label>
+                  Jumlah Nominal : <label style={{ color: "red" }}>*</label>
                 </strong>
                 <input
                   type="number"
@@ -344,11 +358,12 @@ class editDataTagihan extends Component {
                   onChange={(event) => this.handleNominal(event)}
                 />
               </div>
-              {/* Form Jumlah Nominal Tagihan*/}
+              {/* End Form Jumlah Nominal Tagihan*/}
+
               {/* Form Keterangan*/}
               <div className="mb-3">
                 <strong htmlFor="inputKeterangan" className="form-label">
-                  Keterangan <label style={{ color: "red" }}>*</label>
+                  Keterangan : <label style={{ color: "red" }}>*</label>
                 </strong>
                 <input
                   className="form-control"
@@ -358,6 +373,24 @@ class editDataTagihan extends Component {
                 />
               </div>
               {/* End Form Keterangan*/}
+
+              {/* Form Status Pembayaran */}
+              <div className="mb-3">
+                <strong htmlFor="inputStatus" className="form-label">
+                  Status : <label style={{ color: "red" }}>*</label>
+                </strong>
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  value={status}
+                  onChange={(event) => this.handleStatusPembayaran(event)}
+                  data-testid="select-status"
+                >
+                  <option value="">-- PILIH --</option>
+                  <option value="BELUM DIBAYAR">BELUM DIBAYAR</option>
+                  <option value="PENDING">PENDING</option>
+                </select>
+              </div>
               {updateTagihanLoading ? (
                 <div className="vstack gap-2 col-md-5 mx-auto">
                   <button type="submit" className="btn btn-primary">
