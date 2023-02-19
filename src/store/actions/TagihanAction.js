@@ -1,4 +1,5 @@
 import FIREBASE from "config/FIREBASE";
+import Swal from "sweetalert2";
 import { dispatchError, dispatchLoading, dispatchSuccess } from "../../utils";
 
 export const TAMBAH_TAGIHAN = "TAMBAH_TAGIHAN";
@@ -319,7 +320,6 @@ export const listPembayaranSiswa = () => {
       .ref("riwayats/")
       .once("value", (querySnapshot) => {
         let data = querySnapshot.val();
-        console.log("TESTTEST", data);
         dispatchSuccess(dispatch, LIST_PEMBAYARAN_SISWA, data);
       })
       .catch((error) => {
@@ -328,26 +328,41 @@ export const listPembayaranSiswa = () => {
   };
 };
 
-export const pembayaranBerhasilSiswa = (id) => {
+export const pembayaranBerhasilSiswa = (id, bulan, tahun) => {
   return (dispatch) => {
     dispatchLoading(dispatch, PEMBAYARAN_BERHASIL);
 
     FIREBASE.database()
       .ref("riwayats/")
-      .child(id)
       .once("value", (querySnapshot) => {
-        let data = querySnapshot.val();
+        let count = querySnapshot.numChildren();
 
-        if (data.status === "LUNAS") {
-          dispatchSuccess(dispatch, PEMBAYARAN_BERHASIL, data ? data : []);
-          console.log("Cek data : ", data);
-        } else {
-        }
-        // var count = querySnapshot.numChildren();
-        // console.log("Jumlah :  ", count);
+        //Masuk ke detail
+        FIREBASE.database()
+          .ref("riwayats/")
+          .child(id)
+          .once("value", (querySnapshot) => {
+            let data = querySnapshot.val();
+
+            if (
+              data.status === "LUNAS" &&
+              data.bulan === bulan &&
+              data.tahun === tahun
+            ) {
+              dispatchSuccess(dispatch, PEMBAYARAN_BERHASIL, data ? data : []);
+              console.log("Cek : ", data);
+            } else {
+            }
+            // var count = querySnapshot.numChildren();
+            // console.log("Jumlah :  ", count);
+          })
+          .catch((error) => {
+            dispatchError(dispatch, PEMBAYARAN_BERHASIL, error);
+            Swal.fire("Data tidak ditemukan", "", "error");
+          });
       })
       .catch((error) => {
-        dispatchError(dispatch, PEMBAYARAN_BERHASIL, error);
+        dispatchError(dispatch, LIST_PEMBAYARAN_SISWA, error);
       });
   };
 };

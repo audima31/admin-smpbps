@@ -14,7 +14,6 @@ import { totalKelas } from "store/actions/KelasAction";
 import { totalSiswa } from "store/actions/SiswaAction";
 import { pembayaranBerhasilSiswa } from "store/actions/TagihanAction";
 import { listPembayaranSiswa } from "store/actions/TagihanAction";
-import { CSVLink, CSVDownload } from "react-csv";
 
 class Dashboard extends Component {
   componentDidMount() {
@@ -43,13 +42,6 @@ class Dashboard extends Component {
       listPembayaranSiswaResult,
       pembayaranBerhasilResult,
     } = this.props;
-
-    const dataExcel = Object.entries(pembayaranBerhasilResult);
-    console.log("data excel", dataExcel);
-    console.log("data excel", dataExcel[2]);
-
-    console.log("Pembayaran Riwayats : ", listPembayaranSiswaResult);
-    console.log("Pembayaran Berhasil : ", pembayaranBerhasilResult);
 
     return (
       <div className="content">
@@ -121,43 +113,6 @@ class Dashboard extends Component {
               <CardFooter>
                 <hr />
               </CardFooter>
-            </Card>
-          </Col>
-        </Row>
-        <Row>
-          <Col md="12">
-            <Card>
-              <Table>
-                <td>
-                  {listPembayaranSiswaResult ? (
-                    Object.keys(listPembayaranSiswaResult).map((key) => {
-                      return (
-                        <>
-                          {listPembayaranSiswaResult[key].status === "LUNAS" ? (
-                            <>{listPembayaranSiswaResult[key].bulan}</>
-                          ) : (
-                            <> </>
-                          )}
-                        </>
-                      );
-                    })
-                  ) : (
-                    <></>
-                  )}
-                </td>
-
-                <td>
-                  {pembayaranBerhasilResult ? (
-                    <>{pembayaranBerhasilResult.nama}</>
-                  ) : (
-                    <></>
-                  )}
-                </td>
-
-                <td>
-                  <CSVLink data={dataExcel}>Download me</CSVLink>;
-                </td>
-              </Table>
             </Card>
           </Col>
         </Row>

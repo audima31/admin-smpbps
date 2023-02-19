@@ -8,6 +8,9 @@ import Footer from "components/Footer/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 
 import routes from "routes.js";
+import { connect, useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { checkLogin } from "store/actions/AuthAction";
 
 var ps;
 
@@ -28,6 +31,13 @@ function Dashboard(props) {
       }
     };
   });
+
+  //Supaya kalo user belom login, gabakal bisa masuk ke sistem
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(checkLogin(props.history));
+  });
+
   React.useEffect(() => {
     mainPanel.current.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -38,6 +48,7 @@ function Dashboard(props) {
   const handleBgClick = (color) => {
     setBackgroundColor(color);
   };
+
   return (
     <div className="wrapper">
       <Sidebar
@@ -66,4 +77,4 @@ function Dashboard(props) {
   );
 }
 
-export default Dashboard;
+export default connect()(Dashboard);

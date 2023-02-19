@@ -13,6 +13,8 @@ import { Provider } from "react-redux";
 import Finish from "views/Midtrans/Finish";
 import Unfinish from "views/Midtrans/Unfinish";
 import Gagal from "views/Midtrans/Gagal";
+import Login from "views/Login/Login";
+import RegisterAdmin from "views/Login/RegisterAdmin";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -21,12 +23,13 @@ root.render(
     <BrowserRouter>
       <Switch>
         <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
-        {/* <Route path="/login" component={Login} exact /> */}
+        <Route path="/login" component={Login} exact />
+        <Route path="/register" component={RegisterAdmin} exact />
         <Route path="/payment/finish" component={Finish} exact />
         <Route path="/payment/unfinish" component={Unfinish} exact />
         <Route path="/payment/error" component={Gagal} exact />
 
-        <Redirect to="/admin/dashboard" />
+        <Redirect to="/login" />
       </Switch>
     </BrowserRouter>
   </Provider>

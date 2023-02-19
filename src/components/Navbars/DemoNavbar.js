@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import {
   Collapse,
@@ -19,6 +20,7 @@ import {
 } from "reactstrap";
 
 import routes from "routes.js";
+import { logoutUser } from "store/actions/AuthAction";
 
 function Header(props) {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -123,7 +125,12 @@ function Header(props) {
               </DropdownToggle>
               <DropdownMenu right>
                 <DropdownItem tag="a">Edit Profile</DropdownItem>
-                <DropdownItem tag="a">Logout</DropdownItem>
+                <DropdownItem
+                  tag="a"
+                  onClick={() => props.dispatch(logoutUser(props.history))}
+                >
+                  Logout
+                </DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </Nav>
@@ -133,4 +140,4 @@ function Header(props) {
   );
 }
 
-export default Header;
+export default connect()(Header);
