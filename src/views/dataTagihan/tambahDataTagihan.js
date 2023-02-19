@@ -157,7 +157,8 @@ class tambahDataTagihan extends Component {
 
     return (
       <div className="content">
-        <Link to="/admin/tagihan" class="button button1">
+        <Link to="/admin/tagihan" className="btn btn-secondary">
+          <i className="bi bi-caret-left-fill"> </i>
           Kembali
         </Link>
         <div className="page">
@@ -165,7 +166,7 @@ class tambahDataTagihan extends Component {
             {/* Form Kelas */}
             <div className="mb-3">
               <label>
-                Kelas<label className="btg-wajib">*</label> :
+                Kelas : <label className="btg-wajib">*</label>
               </label>
               <select
                 class="form-select"
@@ -188,7 +189,7 @@ class tambahDataTagihan extends Component {
             {/* Form Nama Siswa */}
             <div className="mb-3">
               <label>
-                Nama<label className="btg-wajib">*</label> :
+                Nama : <label className="btg-wajib">*</label>
               </label>
               <select
                 class="form-select"
@@ -217,7 +218,7 @@ class tambahDataTagihan extends Component {
             {/* Form Jenis Tagihan */}
             <div className="mb-3">
               <label>
-                Jenis Tagihan<label className="btg-wajib">*</label> :
+                Jenis Tagihan : <label className="btg-wajib">*</label>
               </label>
               <select
                 class="form-select"
@@ -240,7 +241,7 @@ class tambahDataTagihan extends Component {
             {/* Form Bulan */}
             <div className="mb-3">
               <label>
-                Bulan<label className="btg-wajib">*</label> :
+                Bulan : <label className="btg-wajib">*</label>
               </label>
               <select
                 class="form-select"
@@ -268,7 +269,7 @@ class tambahDataTagihan extends Component {
             {/* Form Tahun */}
             <div className="mb-3">
               <label>
-                Tahun<label className="btg-wajib">*</label> :
+                Tahun : <label className="btg-wajib">*</label>
               </label>
               <select
                 class="form-select"
@@ -295,7 +296,7 @@ class tambahDataTagihan extends Component {
             {/* Form Jumlah Nominal Tagihan*/}
             <div className="mb-3">
               <label htmlFor="inputNominal" className="form-label">
-                Jumlah Nominal <label className="btg-wajib">*</label>
+                Jumlah Nominal : <label className="btg-wajib">*</label>
               </label>
               <input
                 type="number"
@@ -309,7 +310,7 @@ class tambahDataTagihan extends Component {
             {/* Form Keterangna Tagihan*/}
             <div className="mb-3">
               <label htmlFor="inputNominal" className="form-label">
-                Keterangan Tagihan <label className="btg-wajib">*</label>
+                Keterangan Tagihan : <label className="btg-wajib">*</label>
               </label>
               <input
                 className="form-control"
@@ -327,9 +328,11 @@ class tambahDataTagihan extends Component {
                   </div>
                 </button>
               ) : (
-                <button type="submit" className="btn btn-primary">
-                  Submit
-                </button>
+                <div className="vstack gap-2 col-md-5 mx-auto">
+                  <button type="submit" className="btn btn-primary">
+                    Submit
+                  </button>
+                </div>
               )}
             </div>
           </form>

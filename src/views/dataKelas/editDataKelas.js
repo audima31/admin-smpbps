@@ -69,7 +69,7 @@ class editDataKelas extends Component {
               <a
                 href={"/admin/kelas/"}
                 style={{ color: "#FFFFFF" }}
-                className="btn btn-warning"
+                className="btn btn-secondary"
               >
                 <i className="bi bi-caret-left-fill"> </i>
                 KEMBALI

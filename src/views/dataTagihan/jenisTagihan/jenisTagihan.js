@@ -42,20 +42,23 @@ class jenisTagihan extends Component {
         <div>
           <Row>
             <Col>
-              <Link to="/admin/tagihan" className="btn btn-primary float-left">
-                Kembali
-              </Link>
-
               <Link
-                to="/admin/jenistagihan/tambah"
-                className="btn btn-primary float-left"
+                to="/admin/tagihan"
+                className="btn btn-secondary float-left"
               >
-                + Tambah Jenis Tagihan
+                <i className="bi bi-caret-left-fill"> </i>
+                Kembali
               </Link>
             </Col>
             <Col md="12">
               <Card>
                 <CardBody>
+                  <Link
+                    to="/admin/jenistagihan/tambah"
+                    className="btn btn-primary float-left"
+                  >
+                    + Tambah Jenis Tagihan
+                  </Link>
                   <Table>
                     <thead className="text-primary">
                       <tr>

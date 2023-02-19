@@ -42,41 +42,23 @@ class Laporan extends Component {
   };
 
   handleSubmit = (event) => {
-    const { bulan, tahun } = this.state;
-    const { listPembayaranSiswaResult } = this.props;
     event.preventDefault();
 
-    console.log("tahun : ", tahun);
-    if (bulan && tahun) {
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Error...",
-        text: "Bulan atau tahun tidak boleh kosong!",
-      });
-    }
+    Swal.fire({
+      icon: "success",
+      title: "Berhasil",
+      text: "Download data keuangan telah berhasil",
+    });
   };
 
   render() {
     const {
-      pembayaranBerhasilResult,
-      pembayaranBerhasilLoading,
       listPembayaranSiswaResult,
       getListKelasResult,
       getListSiswaResult,
       getListJenisTagihanResult,
     } = this.props;
     const { bulan, tahun } = this.state;
-
-    console.log("Table ref :", this.tableRef);
-
-    // var dataTampung = [];
-    // const dataExcel = Object.entries(pembayaranBerhasilResult);
-    // var dataTambah = dataTampung.push(dataExcel);
-    // console.log("dataExcel  : ", dataExcel);
-    // console.log("Data tambah : ", dataTambah);
-
-    console.log("Cek result : ", pembayaranBerhasilResult);
 
     return (
       <div className="content">
@@ -160,7 +142,7 @@ class Laporan extends Component {
                       currentTableRef={this.tableRef.current}
                     >
                       <button type="submit" className="btn btn-primary">
-                        Unduh Laporan
+                        <i class="bi bi-filetype-xls"></i> Unduh Laporan
                       </button>
                     </DownloadTableExcel>
                   </div>

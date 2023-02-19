@@ -134,6 +134,10 @@ class editDataSiswa extends Component {
     }
   };
 
+  handleBack = () => {
+    this.props.history.goBack();
+  };
+
   componentDidUpdate(prevProps) {
     const { detailSiswaResult, updateSiswaResult } = this.props;
     if (
@@ -181,14 +185,14 @@ class editDataSiswa extends Component {
     return (
       <div className="content">
         <div className="mt-3">
-          <a
-            href={"/admin/siswa/"}
-            style={{ color: "#FFFFFF" }}
-            className="btn btn-warning"
+          <button
+            type="submit"
+            className="btn btn-secondary"
+            onClick={this.handleBack}
           >
             <i className="bi bi-caret-left-fill"> </i>
-            KEMBALI
-          </a>
+            Kembali
+          </button>
         </div>
 
         <div className="page">

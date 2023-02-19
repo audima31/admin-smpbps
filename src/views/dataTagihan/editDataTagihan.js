@@ -102,6 +102,10 @@ class editDataTagihan extends Component {
     }
   };
 
+  handleBack = () => {
+    this.props.history.goBack();
+  };
+
   componentDidUpdate(prevProps) {
     const {
       getDetailTagihanResult,
@@ -153,15 +157,15 @@ class editDataTagihan extends Component {
     return (
       <div className="content">
         <div className="page">
-          <div className="my-3">
-            <a
-              href={"/admin/tagihan/"}
-              style={{ color: "#FFFFFF" }}
-              className="btn btn-warning"
+          <div className="mt-3">
+            <button
+              type="submit"
+              className="btn btn-secondary"
+              onClick={this.handleBack}
             >
               <i className="bi bi-caret-left-fill"> </i>
-              KEMBALI
-            </a>
+              Kembali
+            </button>
           </div>
 
           <div className="card p-4">

@@ -55,6 +55,7 @@ class dataTagihan extends Component {
               to="/admin/jenistagihan"
               class="btn btn-primary float-left ml-3"
             >
+              <i class="bi bi-clipboard-plus"> </i>
               Tambah Jenis Tagihan
             </Link>
           </div>

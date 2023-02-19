@@ -1,14 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { Table } from "reactstrap";
 import { getListTypeTagihan } from "store/actions/jenisTagihanAction";
 import { getListKelas } from "store/actions/KelasAction";
 import { getDetailSiswa } from "store/actions/SiswaAction";
 import { deleteTagihan } from "store/actions/TagihanAction";
 import { getListTagihanSiswaById } from "store/actions/TagihanAction";
 import Swal from "sweetalert2";
-
 class detailDataSiswa extends Component {
   constructor(props) {
     super(props);
@@ -44,6 +41,10 @@ class detailDataSiswa extends Component {
     }
   }
 
+  handleBack = () => {
+    this.props.history.goBack();
+  };
+
   render() {
     const {
       detailSiswaResult,
@@ -53,20 +54,19 @@ class detailDataSiswa extends Component {
       getListKelasResult,
       deleteTagihanLoading,
     } = this.props;
-    console.log("Detail : ", getListTagihanSiswaByIdResult);
 
     const { idSiswa } = this.state;
     return (
       <div className="content">
         <div className="mt-3">
-          <a
-            href={"/admin/siswa/"}
-            style={{ color: "#FFFFFF" }}
-            className="btn btn-warning"
+          <button
+            type="submit"
+            className="btn btn-secondary"
+            onClick={this.handleBack}
           >
             <i className="bi bi-caret-left-fill"> </i>
-            KEMBALI
-          </a>
+            Kembali
+          </button>
         </div>
 
         <div className="card">

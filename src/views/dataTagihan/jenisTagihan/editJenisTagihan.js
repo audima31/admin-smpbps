@@ -68,8 +68,9 @@ class editJenisTagihan extends Component {
     return (
       <div className="content">
         <Row>
-          <Col md={12}>
-            <Link to="/admin/jenistagihan" className="btn btn-primary">
+          <Col md={12} className="mb-3">
+            <Link to="/admin/jenistagihan" className="btn btn-secondary">
+              <i className="bi bi-caret-left-fill"> </i>
               Kembali
             </Link>
           </Col>
