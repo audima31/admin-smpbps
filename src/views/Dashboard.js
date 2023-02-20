@@ -12,27 +12,13 @@ import {
 } from "reactstrap";
 import { totalKelas } from "store/actions/KelasAction";
 import { totalSiswa } from "store/actions/SiswaAction";
-import { pembayaranBerhasilSiswa } from "store/actions/TagihanAction";
 import { listPembayaranSiswa } from "store/actions/TagihanAction";
 
 class Dashboard extends Component {
   componentDidMount() {
-    const { listPembayaranSiswaResult } = this.props;
-
     this.props.dispatch(totalSiswa());
     this.props.dispatch(totalKelas());
     this.props.dispatch(listPembayaranSiswa());
-
-    // eslint-disable-next-line no-lone-blocks
-    {
-      listPembayaranSiswaResult
-        ? Object.keys(listPembayaranSiswaResult).map((key) => {
-            console.log("List Id : ", listPembayaranSiswaResult);
-            this.props.dispatch(pembayaranBerhasilSiswa(key));
-            return <></>;
-          })
-        : console.log("error");
-    }
   }
 
   render() {
@@ -133,10 +119,6 @@ const mapStateToProps = (state) => ({
   listPembayaranSiswaLoading: state.TagihanReducer.listPembayaranSiswaLoading,
   listPembayaranSiswaResult: state.TagihanReducer.listPembayaranSiswaResult,
   listPembayaranSiswaError: state.TagihanReducer.listPembayaranSiswaError,
-
-  pembayaranBerhasilLoading: state.TagihanReducer.pembayaranBerhasilLoading,
-  pembayaranBerhasilResult: state.TagihanReducer.pembayaranBerhasilResult,
-  pembayaranBerhasilError: state.TagihanReducer.pembayaranBerhasilError,
 });
 
 export default connect(mapStateToProps, null)(Dashboard);

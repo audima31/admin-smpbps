@@ -175,7 +175,7 @@ class detailDataSiswa extends Component {
                                 <td>
                                   {
                                     getListTagihanSiswaByIdResult
-                                      .detailTagihans[key].waktu
+                                      .detailTagihans[key].waktuTagihan
                                   }
                                 </td>
 

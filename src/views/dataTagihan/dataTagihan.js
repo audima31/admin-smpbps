@@ -58,6 +58,14 @@ class dataTagihan extends Component {
               <i class="bi bi-clipboard-plus"> </i>
               Tambah Jenis Tagihan
             </Link>
+
+            <Link
+              to="/admin/listPembayaranLunas"
+              class="btn btn-success float-right ml-3"
+            >
+              <i class="bi bi-clipboard-check"> </i>
+              List Pembayaran Lunas
+            </Link>
           </div>
         </div>
 
@@ -65,7 +73,6 @@ class dataTagihan extends Component {
           <Table striped className="text-center table-hover">
             <thead className="text-primary">
               <tr>
-                <th scope="col">No</th>
                 <th scope="col">Tanggal</th>
                 <th scope="col">Nama Siswa</th>
                 <th scope="col">Kelas</th>
@@ -82,7 +89,7 @@ class dataTagihan extends Component {
                       {getListTagihanResult[key].detailTagihans ? (
                         Object.keys(
                           getListTagihanResult[key].detailTagihans
-                        ).map((id, index) => {
+                        ).map((id) => {
                           const namaSiswa = getListTagihanResult[key];
                           const tagihanDetailSiswa =
                             getListTagihanResult[key].detailTagihans[id];
@@ -95,11 +102,10 @@ class dataTagihan extends Component {
 
                           return (
                             <tr>
-                              <td>{index + 1 + "."}</td>
                               <td>
                                 {
                                   getListTagihanResult[key].detailTagihans[id]
-                                    .waktu
+                                    .waktuTagihan
                                 }
                               </td>
                               <td>

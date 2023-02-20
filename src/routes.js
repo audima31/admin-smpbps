@@ -13,6 +13,8 @@ import editDataTagihan from "views/dataTagihan/editDataTagihan";
 import editJenisTagihan from "views/dataTagihan/jenisTagihan/editJenisTagihan";
 import jenisTagihan from "views/dataTagihan/jenisTagihan/jenisTagihan";
 import tambahJenisTagihan from "views/dataTagihan/jenisTagihan/tambahJenisTagihan";
+import detailTagihanLunas from "views/dataTagihan/listTagihanLunas/detailTagihanLunas";
+import listTagihanLunas from "views/dataTagihan/listTagihanLunas/listTagihanLunas";
 import tambahDataTagihan from "views/dataTagihan/tambahDataTagihan";
 import Laporan from "views/Laporan/Laporan";
 
@@ -130,6 +132,20 @@ var routes = [
     path: "/jenistagihan/edit/:id",
     name: "Edit Jenis Tagihan",
     component: editJenisTagihan,
+    layout: "/admin",
+    sidebar: false,
+  },
+  {
+    path: "/listPembayaranLunas",
+    name: "List Pembayaran Lunas",
+    component: listTagihanLunas,
+    layout: "/admin",
+    sidebar: false,
+  },
+  {
+    path: "/listPembayaranLunas/detail/:id",
+    name: "Detail Tagihan Lunas",
+    component: detailTagihanLunas,
     layout: "/admin",
     sidebar: false,
   },

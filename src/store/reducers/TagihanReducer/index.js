@@ -8,7 +8,8 @@ import {
   LUNAS_TAGIHAN,
   GET_LIST_TAGIHAN_SISWA_BY_ID,
   LIST_PEMBAYARAN_SISWA,
-  PEMBAYARAN_BERHASIL,
+  DELETE_TAGIHAN_LUNAS,
+  GET_DETAIL_TAGIHAN_LUNAS,
 } from "store/actions/TagihanAction";
 
 const initialState = {
@@ -48,9 +49,13 @@ const initialState = {
   listPembayaranSiswaResult: false,
   listPembayaranSiswaError: false,
 
-  pembayaranBerhasilLoading: false,
-  pembayaranBerhasilResult: false,
-  pembayaranBerhasilError: false,
+  getDetailTagihanLunasLoading: false,
+  getDetailTagihanLunasResult: false,
+  getDetailTagihanLunasError: false,
+
+  deleteTagihanLunasLoading: false,
+  deleteTagihanLunasResult: false,
+  deleteTagihanLunasError: false,
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -128,14 +133,22 @@ export default function (state = initialState, action) {
         listPembayaranSiswaError: action.payload.errorMessage,
       };
 
-    case PEMBAYARAN_BERHASIL:
-      console.log("Reducer");
+    case GET_DETAIL_TAGIHAN_LUNAS:
       return {
         ...state,
-        pembayaranBerhasilLoading: action.payload.loading,
-        pembayaranBerhasilResult: action.payload.data,
-        pembayaranBerhasilError: action.payload.errorMessage,
+        getDetailTagihanLunasLoading: action.payload.loading,
+        getDetailTagihanLunasResult: action.payload.data,
+        getDetailTagihanLunasError: action.payload.errorMessage,
       };
+
+    case DELETE_TAGIHAN_LUNAS:
+      return {
+        ...state,
+        deleteTagihanLunasLoading: action.payload.loading,
+        deleteTagihanLunasResult: action.payload.data,
+        deleteTagihanLunasError: action.payload.errorMessage,
+      };
+
     default:
       return state;
   }

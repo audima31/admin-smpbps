@@ -71,7 +71,7 @@ class detailDataTagihan extends Component {
         `Tagihan ${getDetailSiswaTagihanResult.nama} telah lunas`,
         "success"
       );
-      this.props.history.push("/admin/tagihan");
+      // this.props.history.push("/admin/tagihan");
     }
   }
 
@@ -155,7 +155,7 @@ class detailDataTagihan extends Component {
                 {getDetailTagihanResult ? (
                   <>
                     <tr>
-                      <td>{getDetailTagihanResult.waktu}</td>
+                      <td>{getDetailTagihanResult.waktuTagihan}</td>
                       <td>
                         {Object.keys(getListJenisTagihanResult).map((key) => {
                           return (

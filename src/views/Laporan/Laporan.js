@@ -63,7 +63,7 @@ class Laporan extends Component {
     return (
       <div className="content">
         <div className="row">
-          <div className="col-5">
+          <div className="col-4">
             <div className="card">
               <div className=" px-4">
                 <h5 className="mt-4  text-primary fw-bold">
@@ -151,8 +151,11 @@ class Laporan extends Component {
             </div>
           </div>
 
-          <div className="col-7 card">
-            <table ref={this.tableRef} className="table table-hover">
+          <div className="col-8 card">
+            <table
+              ref={this.tableRef}
+              className="table table-hover text-center"
+            >
               <thead className="text-primary">
                 <tr>
                   <th>Tanggal Pembayaran</th>
@@ -264,10 +267,6 @@ const mapStateToProps = (state) => ({
   listPembayaranSiswaLoading: state.TagihanReducer.listPembayaranSiswaLoading,
   listPembayaranSiswaResult: state.TagihanReducer.listPembayaranSiswaResult,
   listPembayaranSiswaError: state.TagihanReducer.listPembayaranSiswaError,
-
-  pembayaranBerhasilLoading: state.TagihanReducer.pembayaranBerhasilLoading,
-  pembayaranBerhasilResult: state.TagihanReducer.pembayaranBerhasilResult,
-  pembayaranBerhasilError: state.TagihanReducer.pembayaranBerhasilError,
 
   getListJenisTagihanResult:
     state.jenisTagihanReducer.getListJenisTagihanResult,

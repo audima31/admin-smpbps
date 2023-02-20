@@ -224,7 +224,7 @@ class editDataTagihan extends Component {
                 {getDetailTagihanResult ? (
                   <>
                     <tr>
-                      <td>{getDetailTagihanResult.waktu}</td>
+                      <td>{getDetailTagihanResult.Tagihan}</td>
                       <td>
                         {Object.keys(getListJenisTagihanResult).map((key) => {
                           return (
