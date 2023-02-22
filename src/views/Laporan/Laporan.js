@@ -9,6 +9,7 @@ import { getListTagihan } from "store/actions/TagihanAction";
 import { getListKelas } from "store/actions/KelasAction";
 import { getListSiswa } from "store/actions/AuthAction";
 import { getListTypeTagihan } from "store/actions/jenisTagihanAction";
+import { numberWithCommas } from "utils";
 
 class Laporan extends Component {
   constructor(props) {
@@ -162,6 +163,7 @@ class Laporan extends Component {
                   <th>Nama</th>
                   <th>Kelas</th>
                   <th>Jenis Tagihan</th>
+                  <th>Metode Pembayaran</th>
                   <th>Keterangan</th>
                   <th>Status</th>
                   <th>Nominal</th>
@@ -237,6 +239,12 @@ class Laporan extends Component {
                                 ) : (
                                   <p>Tidak Ditermukan</p>
                                 )}
+                              </td>
+                              <td>
+                                {
+                                  listPembayaranSiswaResult[key]
+                                    .metodePembayaran
+                                }
                               </td>
                               <td>
                                 {listPembayaranSiswaResult[key].keterangan}

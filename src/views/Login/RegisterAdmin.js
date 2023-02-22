@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { checkLogin } from "store/actions/AuthAction";
 import { registerAdmin } from "store/actions/AuthAction";
 import Swal from "sweetalert2";
 
@@ -54,7 +53,12 @@ class RegisterAdmin extends Component {
       };
       //ke Auth Action
       this.props.dispatch(registerAdmin(data));
-      Swal.fire("Akun Admin berhasil dibuat", "", "success");
+      Swal.fire({
+        icon: "success",
+        title: "Akun admin berhasil dibuat",
+        showConfirmButton: false,
+        timer: 3500,
+      });
     } else {
       Swal.fire({
         icon: "error",
@@ -65,17 +69,13 @@ class RegisterAdmin extends Component {
   };
 
   componentDidUpdate(prevProps) {
-    const { registerAdminResult, checkLoginResult } = this.props;
-
-    if (checkLoginResult && prevProps.checkLoginResult !== checkLoginResult) {
-      this.props.history.push("/admin/dashboard");
-    }
+    const { registerAdminResult } = this.props;
 
     if (
       registerAdminResult &&
       prevProps.registerAdminResult !== registerAdminResult
     ) {
-      window.location = "/login";
+      // window.location = "/login";
     }
   }
 
@@ -187,10 +187,6 @@ const mapStateToProps = (state) => ({
   registerAdminLoading: state.AuthReducer.registerAdminLoading,
   registerAdminResult: state.AuthReducer.registerAdminResult,
   registerAdminError: state.AuthReducer.registerAdminError,
-
-  checkLoginLoading: state.AuthReducer.checkLoginLoading,
-  checkLoginResult: state.AuthReducer.checkLoginResult,
-  checkLoginError: state.AuthReducer.checkLoginError,
 });
 
 export default connect(mapStateToProps, null)(RegisterAdmin);

@@ -1,3 +1,5 @@
+import EditProfile from "components/Navbars/EditProfile";
+import UbahPassword from "components/Navbars/UbahPassword";
 import Dashboard from "views/Dashboard.js";
 import dataKelas from "views/dataKelas/dataKelas";
 import detailDataKelas from "views/dataKelas/detailDataKelas";
@@ -26,6 +28,20 @@ var routes = [
     component: Dashboard,
     layout: "/admin",
     sidebar: true,
+  },
+  {
+    path: "/edit-profile",
+    name: "Edit Profile",
+    component: EditProfile,
+    layout: "/admin",
+    sidebar: false,
+  },
+  {
+    path: "/edit-profile/ubahPassword",
+    name: "Edit Profile",
+    component: UbahPassword,
+    layout: "/admin",
+    sidebar: false,
   },
   {
     path: "/siswa",

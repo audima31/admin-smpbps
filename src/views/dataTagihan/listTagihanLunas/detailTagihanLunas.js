@@ -5,6 +5,7 @@ import { getListSiswa } from "store/actions/AuthAction";
 import { getListTypeTagihan } from "store/actions/jenisTagihanAction";
 import { getListKelas } from "store/actions/KelasAction";
 import { getDetailTagihanLunas } from "store/actions/TagihanAction";
+import { numberWithCommas } from "utils";
 
 class detailTagihanLunas extends Component {
   constructor(props) {
@@ -34,6 +35,8 @@ class detailTagihanLunas extends Component {
       getDetailTagihanLunasResult,
       getDetailTagihanLunasLoading,
       getListSiswaResult,
+      getListKelasResult,
+      getListJenisTagihanResult,
     } = this.props;
 
     return (
@@ -53,7 +56,7 @@ class detailTagihanLunas extends Component {
           {getDetailTagihanLunasResult ? (
             <>
               <div className=" ps-4">
-                <h5 className="mt-4 ml-3 text-dark fw-bold">
+                <label className="mt-4 ml-3 text-dark fw-bold fs-5">
                   {getListSiswaResult ? (
                     Object.keys(getListSiswaResult).map((key) => {
                       return (
@@ -68,8 +71,69 @@ class detailTagihanLunas extends Component {
                   ) : (
                     <>Nama Siswa Tidak Ditemukan</>
                   )}
-                </h5>
+                </label>
+                <label className="text-secondary fw-bold fs-6 ml-2">
+                  (
+                  {getListKelasResult ? (
+                    Object.keys(getListKelasResult).map((id) => {
+                      return (
+                        <>
+                          {getDetailTagihanLunasResult.kelas ===
+                          getListKelasResult[id].kelasId ? (
+                            <>{getListKelasResult[id].namaKelas}</>
+                          ) : (
+                            <> </>
+                          )}
+                        </>
+                      );
+                    })
+                  ) : (
+                    <></>
+                  )}
+                  )
+                </label>
                 <hr></hr>
+
+                <div className="row">
+                  <div className="col-3">
+                    <p>Status Pembayaran</p>
+                    <p>Metode Pembayaran</p>
+                    <p>Jenis Tagihan</p>
+                    <p>Order ID</p>
+                    <p>Nominal</p>
+
+                    <p>Waktu Tagihan</p>
+                    <p>Waktu Pembayaran</p>
+                  </div>
+                  <div className="col">
+                    <p>: {getDetailTagihanLunasResult.status} </p>
+                    <p>: {getDetailTagihanLunasResult.metodePembayaran}</p>
+                    <p>
+                      :{" "}
+                      {getListJenisTagihanResult ? (
+                        Object.keys(getListJenisTagihanResult).map((id) => {
+                          return (
+                            <>
+                              {getListJenisTagihanResult[id].jenisTagihanId ===
+                              getDetailTagihanLunasResult.jenisTagihan
+                                ? getListJenisTagihanResult[id].namaJenisTagihan
+                                : []}
+                            </>
+                          );
+                        })
+                      ) : (
+                        <>404</>
+                      )}
+                    </p>
+                    <p>: {getDetailTagihanLunasResult.order_id}</p>
+                    <p>
+                      : Rp.{" "}
+                      {numberWithCommas(getDetailTagihanLunasResult.nominal)}
+                    </p>
+                    <p>: {getDetailTagihanLunasResult.waktuTagihan}</p>
+                    <p>: {getDetailTagihanLunasResult.waktuPembayaran}</p>
+                  </div>
+                </div>
               </div>
             </>
           ) : getDetailTagihanLunasLoading ? (

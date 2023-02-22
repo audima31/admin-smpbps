@@ -9,6 +9,7 @@ import {
   getDetailTagihan,
 } from "store/actions/TagihanAction";
 import Swal from "sweetalert2";
+import { numberWithCommas } from "utils";
 import "../../assets/css/dataSiswa.css";
 
 class editDataTagihan extends Component {
@@ -93,6 +94,7 @@ class editDataTagihan extends Component {
       };
       //ke Auth Action
       this.props.dispatch(updateTagihan(key, id, data));
+      Swal.fire("Berhasil", `Update tagihan telah berhasil`, "success");
     } else {
       Swal.fire({
         icon: "error",
@@ -107,11 +109,7 @@ class editDataTagihan extends Component {
   };
 
   componentDidUpdate(prevProps) {
-    const {
-      getDetailTagihanResult,
-      updateTagihanResult,
-      getDetailSiswaTagihanResult,
-    } = this.props;
+    const { getDetailTagihanResult, updateTagihanResult } = this.props;
 
     if (
       getDetailTagihanResult &&
@@ -131,11 +129,6 @@ class editDataTagihan extends Component {
       updateTagihanResult &&
       prevProps.updateTagihanResult !== updateTagihanResult
     ) {
-      Swal.fire(
-        "Berhasil",
-        `Update tagihan ${getDetailSiswaTagihanResult.nama} telah berhasil`,
-        "success"
-      );
       this.props.history.push("/admin/tagihan");
     }
   }
@@ -238,7 +231,9 @@ class editDataTagihan extends Component {
                           );
                         })}
                       </td>
-                      <td>{getDetailTagihanResult.nominal}</td>
+                      <td>
+                        Rp. {numberWithCommas(getDetailTagihanResult.nominal)}
+                      </td>
                       <td>
                         {getDetailTagihanResult.status === "BELUM DIBAYAR" ? (
                           <p className="badge bg-danger text-wrap p-2 my-1">
@@ -254,7 +249,7 @@ class editDataTagihan extends Component {
                     <tr className="table-secondary">
                       <td className="fw-bold ">Total Harga</td>
                       <td className="fw-bold" colSpan={"3"} align="center">
-                        {getDetailTagihanResult.nominal}
+                        Rp. {numberWithCommas(getDetailTagihanResult.nominal)}
                       </td>
                     </tr>
                   </>
@@ -408,13 +403,13 @@ class editDataTagihan extends Component {
                   <button type="submit" className="btn btn-primary">
                     SIMPAN
                   </button>
-                  <a
-                    className="btn btn-outline-secondary"
-                    href="/admin/tagihan/"
+                  <button
+                    className="btn btn-danger"
+                    onClick={this.handleBack}
                     style={{ color: "#FFFFFF" }}
                   >
                     BATAL
-                  </a>
+                  </button>
                 </div>
               )}
             </form>

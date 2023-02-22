@@ -7,6 +7,7 @@ import { getListTypeTagihan } from "store/actions/jenisTagihanAction";
 import { getListKelas } from "store/actions/KelasAction";
 import { deleteTagihan, getListTagihan } from "store/actions/TagihanAction";
 import Swal from "sweetalert2";
+import { numberWithCommas } from "utils";
 
 class dataTagihan extends Component {
   componentDidMount() {
@@ -17,7 +18,20 @@ class dataTagihan extends Component {
   }
 
   removeData = (namaSiswa, tagihanDetailSiswa, id) => {
-    this.props.dispatch(deleteTagihan(namaSiswa, tagihanDetailSiswa, id));
+    Swal.fire({
+      title: "Apakah anda yakin?",
+      text: "Anda tidak dapat mengembalikan data ini!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya, hapus data tagihan!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Deleted!", "Data tagihan berhasil dihapus.", "success");
+        this.props.dispatch(deleteTagihan(namaSiswa, tagihanDetailSiswa, id));
+      }
+    });
   };
 
   componentDidUpdate(prevProps) {
@@ -64,7 +78,7 @@ class dataTagihan extends Component {
               class="btn btn-success float-right ml-3"
             >
               <i class="bi bi-clipboard-check"> </i>
-              List Pembayaran Lunas
+              List Proses Pembayaran
             </Link>
           </div>
         </div>
@@ -77,6 +91,7 @@ class dataTagihan extends Component {
                 <th scope="col">Nama Siswa</th>
                 <th scope="col">Kelas</th>
                 <th scope="col">Tagihan</th>
+                <th scope="col">Nominal</th>
                 <th scope="col">Status</th>
                 <th scope="col">Aksi</th>
               </tr>
@@ -159,6 +174,13 @@ class dataTagihan extends Component {
                                   )
                                 ) : (
                                   <p>Tidak Ditermukan</p>
+                                )}
+                              </td>
+                              <td>
+                                Rp.{" "}
+                                {numberWithCommas(
+                                  getListTagihanResult[key].detailTagihans[id]
+                                    .nominal
                                 )}
                               </td>
                               <td>

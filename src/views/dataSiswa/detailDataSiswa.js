@@ -3,9 +3,12 @@ import { connect } from "react-redux";
 import { getListTypeTagihan } from "store/actions/jenisTagihanAction";
 import { getListKelas } from "store/actions/KelasAction";
 import { getDetailSiswa } from "store/actions/SiswaAction";
+import { listPembayaranSiswa } from "store/actions/TagihanAction";
+import { deleteTagihanLunas } from "store/actions/TagihanAction";
 import { deleteTagihan } from "store/actions/TagihanAction";
 import { getListTagihanSiswaById } from "store/actions/TagihanAction";
 import Swal from "sweetalert2";
+import { numberWithCommas } from "utils";
 class detailDataSiswa extends Component {
   constructor(props) {
     super(props);
@@ -21,16 +24,21 @@ class detailDataSiswa extends Component {
     this.props.dispatch(getListTagihanSiswaById(idSiswa));
     this.props.dispatch(getListTypeTagihan());
     this.props.dispatch(getListKelas());
+    this.props.dispatch(listPembayaranSiswa());
   }
 
-  removeData = (namaSiswa, tagihanDetailSiswa, id) => {
+  removeDataTagihan = (namaSiswa, tagihanDetailSiswa, id) => {
     this.props.dispatch(deleteTagihan(namaSiswa, tagihanDetailSiswa, id));
+  };
+
+  removeDataPembayaran = (id) => {
+    this.props.dispatch(deleteTagihanLunas(id));
   };
 
   componentDidUpdate(prevProps) {
     const { idSiswa } = this.state;
 
-    const { deleteTagihanResult } = this.props;
+    const { deleteTagihanResult, deleteTagihanLunasResult } = this.props;
     if (
       deleteTagihanResult &&
       prevProps.deleteTagihanResult !== deleteTagihanResult
@@ -38,6 +46,15 @@ class detailDataSiswa extends Component {
       Swal.fire("Success", "Berhasil Dihapus", "success");
       this.props.dispatch(getDetailSiswa(idSiswa));
       this.props.dispatch(getListTagihanSiswaById(idSiswa));
+    }
+
+    if (
+      deleteTagihanLunasResult &&
+      prevProps.deleteTagihanLunasResult !== deleteTagihanLunasResult
+    ) {
+      Swal.fire("Success", "Info pembayaran berhasil di hapus", "success");
+      this.props.dispatch(getDetailSiswa(idSiswa));
+      this.props.dispatch(listPembayaranSiswa());
     }
   }
 
@@ -53,8 +70,9 @@ class detailDataSiswa extends Component {
       getListJenisTagihanResult,
       getListKelasResult,
       deleteTagihanLoading,
+      listPembayaranSiswaResult,
+      deleteTagihanLunasLoading,
     } = this.props;
-
     const { idSiswa } = this.state;
     return (
       <div className="content">
@@ -72,7 +90,7 @@ class detailDataSiswa extends Component {
         <div className="card">
           {detailSiswaResult ? (
             <>
-              <div className=" ps-4">
+              <div className=" ps-4 pe-4">
                 <h5 className="mt-4 ml-3 text-dark fw-bold">
                   {detailSiswaResult.nama} {""}
                   <label>( {detailSiswaResult.NIS} )</label>
@@ -80,7 +98,7 @@ class detailDataSiswa extends Component {
                 <hr></hr>
               </div>
 
-              <div className="ps-4 ml-3">
+              <div className="ps-4 ml-3 pe-4">
                 <div className="row">
                   <div className="col-3">
                     <p>Kelas</p>
@@ -134,13 +152,12 @@ class detailDataSiswa extends Component {
                 </div>
                 <hr></hr>
 
+                {/* Info Tagihan */}
                 <div>
-                  <h5 className=" mt-4 ml-3 text-primary fw-bold">
-                    Info Tagihan
-                  </h5>
+                  <h5 className=" mt-4 ml-3 text-dark fw-bold">Info Tagihan</h5>
 
                   {/* Table */}
-                  <table className="table table-striped text-center ">
+                  <table className="table table-striped text-center">
                     <thead className="text-primary">
                       <tr>
                         <th scope="col">Tanggal Penagihan</th>
@@ -160,15 +177,6 @@ class detailDataSiswa extends Component {
                           const tagihanDetailSiswa =
                             getListTagihanSiswaByIdResult.detailTagihans[key];
 
-                          console.log(
-                            "Nama Siswa Detail data Siswa : ",
-                            namaSiswa
-                          );
-
-                          console.log(
-                            "Tagihan Detail siswa, Detail data Siswa : ",
-                            tagihanDetailSiswa
-                          );
                           return (
                             <>
                               <tr id={key}>
@@ -202,10 +210,11 @@ class detailDataSiswa extends Component {
                                 </td>
 
                                 <td>
-                                  {
+                                  Rp.{" "}
+                                  {numberWithCommas(
                                     getListTagihanSiswaByIdResult
                                       .detailTagihans[key].nominal
-                                  }
+                                  )}
                                 </td>
 
                                 <td>
@@ -216,10 +225,27 @@ class detailDataSiswa extends Component {
                                 </td>
 
                                 <td>
-                                  {
-                                    getListTagihanSiswaByIdResult
-                                      .detailTagihans[key].status
-                                  }
+                                  {getListTagihanSiswaByIdResult.detailTagihans[
+                                    key
+                                  ].status === "PENDING" ? (
+                                    <p className="badge bg-warning p-2 my-1 ">
+                                      {
+                                        getListTagihanSiswaByIdResult
+                                          .detailTagihans[key].status
+                                      }
+                                    </p>
+                                  ) : getListTagihanSiswaByIdResult
+                                      .detailTagihans[key].status ===
+                                    "BELUM BAYAR" ? (
+                                    <label className="badge bg-danger p-2 my-1  ">
+                                      {
+                                        getListTagihanSiswaByIdResult
+                                          .detailTagihans[key].status
+                                      }
+                                    </label>
+                                  ) : (
+                                    <>Data tidak ditemukan</>
+                                  )}
                                 </td>
 
                                 {/* Button */}
@@ -265,7 +291,7 @@ class detailDataSiswa extends Component {
                                       type="submit"
                                       className="btn btn-danger ml-2"
                                       onClick={() =>
-                                        this.removeData(
+                                        this.removeDataTagihan(
                                           namaSiswa,
                                           tagihanDetailSiswa,
                                           key
@@ -278,6 +304,163 @@ class detailDataSiswa extends Component {
                                   )}
                                 </td>
                               </tr>
+                            </>
+                          );
+                        })
+                      ) : (
+                        <tr>
+                          <td colSpan="6" align="center">
+                            Data Kosong
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+                <hr />
+
+                {/* Info Pembayaran */}
+                <div>
+                  <h5 className=" mt-5 ml-3 text-dark fw-bold">
+                    Info Pembayaran
+                  </h5>
+
+                  {/* Table */}
+                  <table className="table table-striped text-center">
+                    <thead className="text-primary">
+                      <tr>
+                        <th scope="col">Tanggal Pembayaran</th>
+                        <th scope="col">Jenis Tagihan</th>
+                        <th scope="col">Nominal</th>
+                        <th scope="col">Keterangan</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {listPembayaranSiswaResult ? (
+                        Object.keys(listPembayaranSiswaResult).map((key) => {
+                          return (
+                            <>
+                              {listPembayaranSiswaResult[key].nama ===
+                              detailSiswaResult.uid ? (
+                                <>
+                                  <tr id={key}>
+                                    <td>
+                                      {
+                                        listPembayaranSiswaResult[key]
+                                          .waktuPembayaran2
+                                      }
+                                    </td>
+
+                                    <td>
+                                      {getListJenisTagihanResult ? (
+                                        Object.keys(
+                                          getListJenisTagihanResult
+                                        ).map((id) => {
+                                          return (
+                                            <>
+                                              {getListJenisTagihanResult[id]
+                                                .jenisTagihanId ===
+                                              listPembayaranSiswaResult[key]
+                                                .jenisTagihan
+                                                ? getListJenisTagihanResult[id]
+                                                    .namaJenisTagihan
+                                                : []}
+                                            </>
+                                          );
+                                        })
+                                      ) : (
+                                        <>404</>
+                                      )}
+                                    </td>
+
+                                    <td>
+                                      Rp.{" "}
+                                      {numberWithCommas(
+                                        listPembayaranSiswaResult[key].nominal
+                                      )}
+                                    </td>
+
+                                    <td>
+                                      {
+                                        listPembayaranSiswaResult[key]
+                                          .keterangan
+                                      }
+                                    </td>
+
+                                    <td>
+                                      {listPembayaranSiswaResult[key].status ===
+                                      "PENDING" ? (
+                                        <p className="badge bg-warning p-2 my-1 ">
+                                          {
+                                            listPembayaranSiswaResult[key]
+                                              .status
+                                          }
+                                        </p>
+                                      ) : listPembayaranSiswaResult[key]
+                                          .status === "LUNAS" ? (
+                                        <p className="badge bg-success p-2 my-1 ">
+                                          {
+                                            listPembayaranSiswaResult[key]
+                                              .status
+                                          }
+                                        </p>
+                                      ) : (
+                                        <>Data tidak ditemukan</>
+                                      )}
+                                    </td>
+
+                                    {/* Button */}
+                                    <td>
+                                      <a
+                                        {...this.props}
+                                        href={
+                                          "/admin/listPembayaranLunas/detail/" +
+                                          key
+                                        }
+                                        class="btn btn-primary mr-2 "
+                                      >
+                                        Detail
+                                      </a>
+
+                                      {listPembayaranSiswaResult[key].status ===
+                                      "LUNAS" ? (
+                                        <></>
+                                      ) : (
+                                        <>
+                                          {deleteTagihanLunasLoading ? (
+                                            <button
+                                              type="submit"
+                                              className="btn btn-danger ml-2"
+                                            >
+                                              <div
+                                                class="spinner-border text-light"
+                                                role="status"
+                                              >
+                                                <span class="visually-hidden"></span>
+                                              </div>
+                                            </button>
+                                          ) : (
+                                            <button
+                                              type="submit"
+                                              className="btn btn-danger ml-2"
+                                              onClick={() =>
+                                                this.removeDataPembayaran(key)
+                                              }
+                                            >
+                                              <i className="nc-icon nc-basket"></i>{" "}
+                                              Hapus
+                                            </button>
+                                          )}
+                                        </>
+                                      )}
+                                    </td>
+                                  </tr>
+                                </>
+                              ) : (
+                                <></>
+                              )}
                             </>
                           );
                         })
@@ -331,6 +514,14 @@ const mapStateToProps = (state) => ({
   deleteTagihanLoading: state.TagihanReducer.deleteTagihanLoading,
   deleteTagihanResult: state.TagihanReducer.deleteTagihanResult,
   deleteTagihanError: state.TagihanReducer.deleteTagihanError,
+
+  listPembayaranSiswaLoading: state.TagihanReducer.listPembayaranSiswaLoading,
+  listPembayaranSiswaResult: state.TagihanReducer.listPembayaranSiswaResult,
+  listPembayaranSiswaError: state.TagihanReducer.listPembayaranSiswaError,
+
+  deleteTagihanLunasLoading: state.TagihanReducer.deleteTagihanLunasLoading,
+  deleteTagihanLunasResult: state.TagihanReducer.deleteTagihanLunasResult,
+  deleteTagihanLunasError: state.TagihanReducer.deleteTagihanLunasError,
 });
 
 export default connect(mapStateToProps, null)(detailDataSiswa);

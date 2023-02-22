@@ -36,11 +36,6 @@ export const registerSiswa = (data) => {
 
         //SUKSES
         dispatchSuccess(dispatch, REGISTER_SISWA, dataBaru);
-
-        //Local Storage (Async Storage)
-        //nampung data, jadi kalo berhasil bakal bawa dataBaru
-        //user ini cuman opsi nama storeData
-        storeData("user", dataBaru);
       })
       .catch((error) => {
         // ERROR
@@ -75,19 +70,24 @@ export const getListSiswa = () => {
 
 export const loginUser = (email, password) => {
   return (dispatch) => {
+    console.log("Masuk Action");
     dispatchLoading(dispatch, LOGIN_ADMIN);
 
     FIREBASE.auth()
       .signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
+        console.log("Masuk ke sign");
         //Nyambungin ke Realtime database, ngecek ada gaa akunnya di realtime database
         FIREBASE.database()
           .ref(`admin/${userCredential.user.uid}`)
           .once("value")
           .then((userCredential) => {
+            console.log("Masuk sign 2", userCredential);
             // Signed in
             if (userCredential.val()) {
               if (userCredential.val().status === "admin") {
+                console.log("Masuk Action 2", userCredential);
+
                 //NGIRIM DATA KE LOCALSTORAGE
                 window.localStorage.setItem(
                   "user",

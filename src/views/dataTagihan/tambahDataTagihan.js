@@ -150,11 +150,6 @@ class tambahDataTagihan extends Component {
       getListJenisTagihanResult,
     } = this.props;
 
-    console.log("Kelas : ", kelas);
-    console.log("Tagihan : ", jenisTagihan);
-    console.log("Nama : ", nama);
-    console.log("Bulan : ", getListBulanResult);
-
     return (
       <div className="content">
         <Link to="/admin/tagihan" className="btn btn-secondary">

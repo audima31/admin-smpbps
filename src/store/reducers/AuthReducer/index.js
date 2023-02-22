@@ -53,6 +53,7 @@ export default function (state = initialState, action) {
       };
 
     case LOGIN_ADMIN:
+      console.log("Reducer");
       return {
         ...state,
         loginLoading: action.payload.loading,

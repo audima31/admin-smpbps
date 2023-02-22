@@ -124,7 +124,9 @@ function Header(props) {
                 </p>
               </DropdownToggle>
               <DropdownMenu right>
-                <DropdownItem tag="a">Edit Profile</DropdownItem>
+                <DropdownItem tag="a" href={"/admin/edit-profile"}>
+                  Edit Profile
+                </DropdownItem>
                 <DropdownItem
                   tag="a"
                   onClick={() => props.dispatch(logoutUser(props.history))}

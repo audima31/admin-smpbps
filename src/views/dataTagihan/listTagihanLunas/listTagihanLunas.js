@@ -8,6 +8,7 @@ import { getListKelas } from "store/actions/KelasAction";
 import { deleteTagihanLunas } from "store/actions/TagihanAction";
 import { listPembayaranSiswa } from "store/actions/TagihanAction";
 import Swal from "sweetalert2";
+import { numberWithCommas } from "utils";
 
 class listTagihanLunas extends Component {
   componentDidMount() {
@@ -61,6 +62,7 @@ class listTagihanLunas extends Component {
                 <th scope="col">Nama Siswa</th>
                 <th scope="col">Kelas</th>
                 <th scope="col">Tagihan</th>
+                <th scope="col">Nominal</th>
                 <th scope="col">Status</th>
                 <th scope="col">Aksi</th>
               </tr>
@@ -118,6 +120,12 @@ class listTagihanLunas extends Component {
                           })
                         ) : (
                           <p>Tidak Ditermukan</p>
+                        )}
+                      </td>
+                      <td>
+                        Rp.{" "}
+                        {numberWithCommas(
+                          listPembayaranSiswaResult[key].nominal
                         )}
                       </td>
                       <td>

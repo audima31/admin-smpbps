@@ -14,7 +14,20 @@ class jenisTagihan extends Component {
   }
 
   removeData = (id) => {
-    this.props.dispatch(deleteTypeTagihan(id));
+    Swal.fire({
+      title: "Apakah anda yakin?",
+      text: "Anda tidak dapat mengembalikan data ini!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya, hapus jenis tagihan!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Deleted!", "Jenis tagihan berhasil dihapus.", "success");
+        this.props.dispatch(deleteTypeTagihan(id));
+      }
+    });
   };
 
   componentDidUpdate(prevProps) {
@@ -23,7 +36,6 @@ class jenisTagihan extends Component {
       deleteJenisTagihanResult &&
       prevProps.deleteJenisTagihanResult !== deleteJenisTagihanResult
     ) {
-      Swal.fire("Success", deleteJenisTagihanResult, "success");
       this.props.dispatch(getListTypeTagihan());
     }
   }

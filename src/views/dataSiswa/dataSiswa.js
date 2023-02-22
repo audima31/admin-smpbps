@@ -22,7 +22,20 @@ class dataSiswa extends Component {
   };
 
   removeData = (id) => {
-    this.props.dispatch(deleteSiswa(id));
+    Swal.fire({
+      title: "Apakah anda yakin?",
+      text: "Anda tidak dapat mengembalikan data ini!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya, hapus data siswa!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Deleted!", "Data siswa berhasil dihapus.", "success");
+        this.props.dispatch(deleteSiswa(id));
+      }
+    });
   };
 
   componentDidUpdate(prevProps) {

@@ -9,6 +9,7 @@ import {
   getDetailTagihan,
 } from "store/actions/TagihanAction";
 import Swal from "sweetalert2";
+import { numberWithCommas } from "utils";
 
 class detailDataTagihan extends Component {
   constructor(props) {
@@ -36,14 +37,24 @@ class detailDataTagihan extends Component {
   handleSubmit = (event) => {
     const { status, key, id } = this.state;
     console.log("Status : ", status);
-
     event.preventDefault();
 
     const data = {
       status: "LUNAS",
     };
-    console.log("data submit : ", data);
-    this.props.dispatch(lunasTagihan(key, id, data));
+    Swal.fire({
+      title: "Apakah anda yakin melunaskan pembayaran?",
+      text: "Anda tidak dapat mengembalikan data ini!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya, lunaskan pembayaran!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.props.dispatch(lunasTagihan(key, id, data));
+      }
+    });
   };
 
   componentDidUpdate(prevProps) {
@@ -66,12 +77,8 @@ class detailDataTagihan extends Component {
       lunasTagihanResult &&
       prevProps.lunasTagihanResult !== lunasTagihanResult
     ) {
-      Swal.fire(
-        "Berhasil",
-        `Tagihan ${getDetailSiswaTagihanResult.nama} telah lunas`,
-        "success"
-      );
-      // this.props.history.push("/admin/tagihan");
+      Swal.fire("Berhasil", `Tagihan telah lunas`, "success");
+      this.props.history.push("/admin/tagihan");
     }
   }
 
@@ -169,17 +176,27 @@ class detailDataTagihan extends Component {
                           );
                         })}
                       </td>
-                      <td>{getDetailTagihanResult.nominal}</td>
                       <td>
-                        <p className="badge bg-danger text-wrap p-2 my-1">
-                          {getDetailTagihanResult.status}
-                        </p>
+                        Rp. {numberWithCommas(getDetailTagihanResult.nominal)}
+                      </td>
+                      <td>
+                        {getDetailTagihanResult.status === "BELUM DIBAYAR" ? (
+                          <p className="badge bg-danger text-wrap p-2 my-1">
+                            {getDetailTagihanResult.status}
+                          </p>
+                        ) : getDetailTagihanResult.status === "PENDING" ? (
+                          <p className="badge bg-warning text-wrap p-2 my-1">
+                            {getDetailTagihanResult.status}
+                          </p>
+                        ) : (
+                          <></>
+                        )}
                       </td>
                     </tr>
                     <tr className="table-secondary">
                       <td className="fw-bold ">Total Harga</td>
                       <td className="fw-bold" colSpan={"3"} align="center">
-                        {getDetailTagihanResult.nominal}
+                        Rp. {numberWithCommas(getDetailTagihanResult.nominal)}
                       </td>
                     </tr>
                   </>
@@ -216,13 +233,13 @@ class detailDataTagihan extends Component {
                   >
                     BAYAR SEKARANG
                   </button>
-                  <a
-                    href={"/admin/tagihan/"}
+                  <button
+                    onClick={this.handleBack}
                     style={{ color: "#FFFFFF" }}
                     className="btn btn-danger"
                   >
                     BATAL
-                  </a>
+                  </button>
                 </div>
               )}
             </div>

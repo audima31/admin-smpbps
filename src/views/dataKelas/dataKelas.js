@@ -12,7 +12,20 @@ class dataKelas extends Component {
   }
 
   removeData = (id) => {
-    this.props.dispatch(deleteKelas(id));
+    Swal.fire({
+      title: "Apakah anda yakin?",
+      text: "Anda tidak dapat mengembalikan data ini!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya, hapus kelas!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Deleted!", "Kelas berhasil dihapus.", "success");
+        this.props.dispatch(deleteKelas(id));
+      }
+    });
   };
 
   componentDidUpdate(prevProps) {
@@ -21,7 +34,6 @@ class dataKelas extends Component {
       deleteKelasResult &&
       prevProps.deleteKelasResult !== deleteKelasResult
     ) {
-      Swal.fire("Success", deleteKelasResult, "success");
       this.props.dispatch(getListKelas());
     }
   }
@@ -85,7 +97,7 @@ class dataKelas extends Component {
                                 {deleteKelasLoading ? (
                                   <button
                                     type="submit"
-                                    className="btn btn-primary"
+                                    className="btn btn-danger ml-2"
                                   >
                                     <div
                                       class="spinner-border text-light"

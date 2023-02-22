@@ -27,8 +27,13 @@ class tambahDataKelas extends Component {
       namaKelas: namaKelas,
     };
     //ke Auth Action
+    Swal.fire({
+      icon: "success",
+      title: "Kelas Berhasil disimpan",
+      showConfirmButton: false,
+      timer: 1500,
+    });
     this.props.dispatch(tambahKelas(data));
-    console.log("Data", data);
   };
 
   // eslint-disable-next-line no-dupe-class-members
@@ -38,7 +43,6 @@ class tambahDataKelas extends Component {
       tambahKelasResult &&
       prevProps.tambahKelasResult !== tambahKelasResult
     ) {
-      Swal.fire("Good job!", "Tambah kelas telah berhasil", "success");
       window.location = "/admin/kelas";
     }
   }
@@ -50,7 +54,8 @@ class tambahDataKelas extends Component {
       <div className="content">
         <Row>
           <Col md={12} className="mb-5">
-            <Link to="/admin/kelas" className="btn btn-primary">
+            <Link to="/admin/kelas" className="btn btn-secondary">
+              <i className="bi bi-caret-left-fill"> </i>
               Kembali
             </Link>
           </Col>
