@@ -78,6 +78,7 @@ export const tagihanDetail = (data) => {
       bulan: data.bulan,
       tahun: data.tahun,
       status: data.status,
+      penagih: data.penagih,
       tagihanDetailId: "",
     };
 

@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { getListTypeTagihan } from "store/actions/jenisTagihanAction";
 import { getListBulan } from "store/actions/WaktuAction";
 import { tambahTagihan } from "store/actions/TagihanAction";
+import { getData } from "utils";
 
 class tambahDataTagihan extends Component {
   constructor(props) {
@@ -21,6 +22,7 @@ class tambahDataTagihan extends Component {
       nominal: "",
       keterangan: "",
       status: "BELUM DIBAYAR",
+      penagih: "",
     };
   }
 
@@ -29,11 +31,11 @@ class tambahDataTagihan extends Component {
     this.props.dispatch(getListKelas());
     this.props.dispatch(getListSiswa());
     this.props.dispatch(getListBulan());
+    this.getUserData();
   }
 
   componentDidUpdate(prevProps) {
     const { tambahTagihanResult } = this.props;
-
     if (
       tambahTagihanResult &&
       prevProps.tambahTagihanResult !== tambahTagihanResult
@@ -41,6 +43,17 @@ class tambahDataTagihan extends Component {
       this.props.history.push("/admin/tagihan");
     }
   }
+
+  getUserData = () => {
+    getData("user").then((res) => {
+      const data = res;
+      if (data) {
+        this.setState({
+          penagih: data.nama,
+        });
+      }
+    });
+  };
 
   handleKelas = (event) => {
     this.setState({
@@ -106,6 +119,7 @@ class tambahDataTagihan extends Component {
       keterangan,
       nominal,
       status,
+      penagih,
     } = this.state;
     event.preventDefault();
     if (
@@ -126,6 +140,7 @@ class tambahDataTagihan extends Component {
         nominal: nominal,
         keterangan: keterangan,
         status: status,
+        penagih: penagih,
       };
       //ke Auth Action
       this.props.dispatch(tambahTagihan(data));
@@ -140,8 +155,18 @@ class tambahDataTagihan extends Component {
   };
 
   render() {
-    const { nama, kelas, jenisTagihan, nominal, bulan, tahun, keterangan } =
-      this.state;
+    const {
+      nama,
+      kelas,
+      jenisTagihan,
+      nominal,
+      bulan,
+      tahun,
+      keterangan,
+      penagih,
+    } = this.state;
+    console.log("Nama kelas : ", kelas);
+    console.log("Penagih : ", penagih);
     const {
       getListKelasResult,
       registerSiswaLoading,
