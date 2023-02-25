@@ -104,7 +104,7 @@ class dataTagihan extends Component {
                       {getListTagihanResult[key].detailTagihans ? (
                         Object.keys(
                           getListTagihanResult[key].detailTagihans
-                        ).map((id) => {
+                        ).map((id, index) => {
                           const namaSiswa = getListTagihanResult[key];
                           const tagihanDetailSiswa =
                             getListTagihanResult[key].detailTagihans[id];

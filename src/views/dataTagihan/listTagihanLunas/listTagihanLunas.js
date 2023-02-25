@@ -5,8 +5,10 @@ import { Spinner, Table } from "reactstrap";
 import { getListSiswa } from "store/actions/AuthAction";
 import { getListTypeTagihan } from "store/actions/jenisTagihanAction";
 import { getListKelas } from "store/actions/KelasAction";
-import { deleteTagihanLunas } from "store/actions/TagihanAction";
-import { listPembayaranSiswa } from "store/actions/TagihanAction";
+import {
+  deleteTagihanLunas,
+  listPembayaranSiswa,
+} from "store/actions/PaymentAction";
 import Swal from "sweetalert2";
 import { numberWithCommas } from "utils";
 
@@ -217,18 +219,18 @@ class listTagihanLunas extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  listPembayaranSiswaLoading: state.TagihanReducer.listPembayaranSiswaLoading,
-  listPembayaranSiswaResult: state.TagihanReducer.listPembayaranSiswaResult,
-  listPembayaranSiswaError: state.TagihanReducer.listPembayaranSiswaError,
+  listPembayaranSiswaLoading: state.PaymentReducer.listPembayaranSiswaLoading,
+  listPembayaranSiswaResult: state.PaymentReducer.listPembayaranSiswaResult,
+  listPembayaranSiswaError: state.PaymentReducer.listPembayaranSiswaError,
 
   getListJenisTagihanResult:
     state.jenisTagihanReducer.getListJenisTagihanResult,
   getListSiswaResult: state.AuthReducer.getListSiswaResult,
   getListKelasResult: state.KelasReducer.getListKelasResult,
 
-  deleteTagihanLunasLoading: state.TagihanReducer.deleteTagihanLunasLoading,
-  deleteTagihanLunasResult: state.TagihanReducer.deleteTagihanLunasResult,
-  deleteTagihanLunasError: state.TagihanReducer.deleteTagihanLunasError,
+  deleteTagihanLunasLoading: state.PaymentReducer.deleteTagihanLunasLoading,
+  deleteTagihanLunasResult: state.PaymentReducer.deleteTagihanLunasResult,
+  deleteTagihanLunasError: state.PaymentReducer.deleteTagihanLunasError,
 });
 
 export default connect(mapStateToProps, null)(listTagihanLunas);

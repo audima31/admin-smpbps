@@ -7,9 +7,6 @@ import {
   DELETE_TAGIHAN,
   LUNAS_TAGIHAN,
   GET_LIST_TAGIHAN_SISWA_BY_ID,
-  LIST_PEMBAYARAN_SISWA,
-  DELETE_TAGIHAN_LUNAS,
-  GET_DETAIL_TAGIHAN_LUNAS,
 } from "store/actions/TagihanAction";
 
 const initialState = {
@@ -44,18 +41,6 @@ const initialState = {
   getListTagihanSiswaByIdLoading: false,
   getListTagihanSiswaByIdResult: false,
   getListTagihanSiswaByIdError: false,
-
-  listPembayaranSiswaLoading: false,
-  listPembayaranSiswaResult: false,
-  listPembayaranSiswaError: false,
-
-  getDetailTagihanLunasLoading: false,
-  getDetailTagihanLunasResult: false,
-  getDetailTagihanLunasError: false,
-
-  deleteTagihanLunasLoading: false,
-  deleteTagihanLunasResult: false,
-  deleteTagihanLunasError: false,
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -123,30 +108,6 @@ export default function (state = initialState, action) {
         getListTagihanSiswaByIdLoading: action.payload.loading,
         getListTagihanSiswaByIdResult: action.payload.data,
         getListTagihanSiswaByIdError: action.payload.errorMessage,
-      };
-
-    case LIST_PEMBAYARAN_SISWA:
-      return {
-        ...state,
-        listPembayaranSiswaLoading: action.payload.loading,
-        listPembayaranSiswaResult: action.payload.data,
-        listPembayaranSiswaError: action.payload.errorMessage,
-      };
-
-    case GET_DETAIL_TAGIHAN_LUNAS:
-      return {
-        ...state,
-        getDetailTagihanLunasLoading: action.payload.loading,
-        getDetailTagihanLunasResult: action.payload.data,
-        getDetailTagihanLunasError: action.payload.errorMessage,
-      };
-
-    case DELETE_TAGIHAN_LUNAS:
-      return {
-        ...state,
-        deleteTagihanLunasLoading: action.payload.loading,
-        deleteTagihanLunasResult: action.payload.data,
-        deleteTagihanLunasError: action.payload.errorMessage,
       };
 
     default:

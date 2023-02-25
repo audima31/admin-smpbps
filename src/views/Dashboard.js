@@ -9,26 +9,42 @@ import {
   Row,
   Col,
   Table,
+  Spinner,
 } from "reactstrap";
+import { getListSiswa } from "store/actions/AuthAction";
+import { getListTypeTagihan } from "store/actions/jenisTagihanAction";
+import { getListKelas } from "store/actions/KelasAction";
 import { totalKelas } from "store/actions/KelasAction";
+import { limitPembayaranLunas } from "store/actions/PaymentAction";
+import { totalPembayaranLunas } from "store/actions/PaymentAction";
 import { totalSiswa } from "store/actions/SiswaAction";
-import { listPembayaranSiswa } from "store/actions/TagihanAction";
+import { numberWithCommas } from "utils";
 
 class Dashboard extends Component {
   componentDidMount() {
     this.props.dispatch(totalSiswa());
     this.props.dispatch(totalKelas());
-    this.props.dispatch(listPembayaranSiswa());
+    this.props.dispatch(totalPembayaranLunas());
+    this.props.dispatch(limitPembayaranLunas());
+    this.props.dispatch(getListKelas());
+    this.props.dispatch(getListSiswa());
+    this.props.dispatch(getListTypeTagihan());
   }
 
   render() {
     const {
       totalSiswaResult,
       totalKelasResult,
-      listPembayaranSiswaResult,
-      pembayaranBerhasilResult,
+      totalPembayaranResult,
+      listPembayaranSiswaLimitResult,
+      listPembayaranSiswaLimitLoading,
+      listPembayaranSiswaLimitError,
+      getListKelasResult,
+      getListSiswaResult,
+      getListJenisTagihanResult,
     } = this.props;
 
+    console.log("Limit : ", listPembayaranSiswaLimitResult);
     return (
       <div className="content">
         <Row>
@@ -91,17 +107,180 @@ class Dashboard extends Component {
                   <Col md="8" xs="7">
                     <div className="numbers">
                       <p className="card-category">Pembayaran Berhasil</p>
+                      <CardTitle tag="p">{totalPembayaranResult}</CardTitle>
+
                       <p />
                     </div>
                   </Col>
                 </Row>
               </CardBody>
+
               <CardFooter>
                 <hr />
               </CardFooter>
             </Card>
           </Col>
         </Row>
+
+        <div style={{ marginTop: "5%" }}>
+          <div className="row ">
+            <div className="col">
+              <h3>List pembayaran terakhir</h3>
+            </div>
+            <div className="col d-flex justify-content-end"></div>
+          </div>
+          <Card className="card-stats ">
+            <CardBody>
+              <Table striped className="text-center table-hover">
+                <thead className="text-primary">
+                  <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Tanggal</th>
+                    <th scope="col">Nama Siswa</th>
+                    <th scope="col">Kelas</th>
+                    <th scope="col">Tagihan</th>
+                    <th scope="col">Nominal</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {listPembayaranSiswaLimitResult ? (
+                    Object.keys(listPembayaranSiswaLimitResult).map(
+                      (key, index) => {
+                        return (
+                          <tr>
+                            <td>{index + 1}</td>
+                            <td>
+                              {listPembayaranSiswaLimitResult[key].waktuTagihan}
+                            </td>
+                            <td>
+                              {getListSiswaResult ? (
+                                Object.keys(getListSiswaResult).map((id) => {
+                                  return (
+                                    <>
+                                      {getListSiswaResult[id].uid ===
+                                      listPembayaranSiswaLimitResult[key].nama
+                                        ? getListSiswaResult[id].nama
+                                        : []}
+                                    </>
+                                  );
+                                })
+                              ) : (
+                                <>Nama Siswa Tidak Ditemukan</>
+                              )}
+                            </td>
+                            <td>
+                              {getListKelas ? (
+                                Object.keys(getListKelasResult).map((id) => {
+                                  return (
+                                    <>
+                                      {getListKelasResult[id].kelasId ===
+                                      listPembayaranSiswaLimitResult[key].kelas
+                                        ? getListKelasResult[id].namaKelas
+                                        : []}
+                                    </>
+                                  );
+                                })
+                              ) : (
+                                <p>Kelas Tidak Ditemukan</p>
+                              )}
+                            </td>
+                            <td>
+                              {getListJenisTagihanResult ? (
+                                Object.keys(getListJenisTagihanResult).map(
+                                  (x) => {
+                                    return (
+                                      <>
+                                        {getListJenisTagihanResult[x]
+                                          .jenisTagihanId ===
+                                        listPembayaranSiswaLimitResult[key]
+                                          .jenisTagihan
+                                          ? getListJenisTagihanResult[x]
+                                              .namaJenisTagihan
+                                          : []}
+                                      </>
+                                    );
+                                  }
+                                )
+                              ) : (
+                                <p>Tidak Ditermukan</p>
+                              )}
+                            </td>
+                            <td>
+                              Rp.{" "}
+                              {numberWithCommas(
+                                listPembayaranSiswaLimitResult[key].nominal
+                              )}
+                            </td>
+                            <td>
+                              {listPembayaranSiswaLimitResult[key].status ===
+                              "PENDING" ? (
+                                <p className="badge bg-warning text-wrap p-2 my-1">
+                                  {listPembayaranSiswaLimitResult[key].status}
+                                </p>
+                              ) : listPembayaranSiswaLimitResult[key].status ===
+                                "BELUM DIBAYAR" ? (
+                                <p className="badge bg-danger text-wrap px-3 py-2 my-1">
+                                  {listPembayaranSiswaLimitResult[key].status}
+                                </p>
+                              ) : (
+                                <p className="badge bg-success text-wrap px-3 py-2 my-1">
+                                  {listPembayaranSiswaLimitResult[key].status}
+                                </p>
+                              )}
+                            </td>
+                            {/* BUTTON */}
+
+                            <td>
+                              <>
+                                <a
+                                  {...this.props}
+                                  href={
+                                    "/admin/listPembayaranLunas/detail/" + key
+                                  }
+                                  class="btn btn-primary mr-2 "
+                                >
+                                  Detail
+                                </a>
+
+                                {listPembayaranSiswaLimitResult[key].status ===
+                                "LUNAS" ? (
+                                  <></>
+                                ) : (
+                                  <></>
+                                )}
+                              </>
+                            </td>
+                            {/* END BUTTON */}
+                          </tr>
+                        );
+                      }
+                    )
+                  ) : listPembayaranSiswaLimitLoading ? (
+                    <tr>
+                      <td colSpan="7" align="center">
+                        <Spinner color="primary">Loading...</Spinner>
+                      </td>
+                    </tr>
+                  ) : listPembayaranSiswaLimitError ? (
+                    <tr>
+                      <td colSpan="7" align="center">
+                        {listPembayaranSiswaLimitError}
+                      </td>
+                    </tr>
+                  ) : (
+                    <tr>
+                      <td colSpan="7" align="center">
+                        Data Kosong
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </Table>
+            </CardBody>
+          </Card>
+        </div>
       </div>
     );
   }
@@ -116,9 +295,21 @@ const mapStateToProps = (state) => ({
   totalKelasResult: state.KelasReducer.totalKelasResult,
   totalKelasError: state.KelasReducer.totalKelasError,
 
-  listPembayaranSiswaLoading: state.TagihanReducer.listPembayaranSiswaLoading,
-  listPembayaranSiswaResult: state.TagihanReducer.listPembayaranSiswaResult,
-  listPembayaranSiswaError: state.TagihanReducer.listPembayaranSiswaError,
+  totalPembayaranLoading: state.PaymentReducer.totalPembayaranLoading,
+  totalPembayaranResult: state.PaymentReducer.totalPembayaranResult,
+  totalPembayaranError: state.PaymentReducer.totalPembayaranError,
+
+  listPembayaranSiswaLimitLoading:
+    state.PaymentReducer.listPembayaranSiswaLimitLoading,
+  listPembayaranSiswaLimitResult:
+    state.PaymentReducer.listPembayaranSiswaLimitResult,
+  listPembayaranSiswaLimitError:
+    state.PaymentReducer.listPembayaranSiswaLimitError,
+
+  getListJenisTagihanResult:
+    state.jenisTagihanReducer.getListJenisTagihanResult,
+  getListSiswaResult: state.AuthReducer.getListSiswaResult,
+  getListKelasResult: state.KelasReducer.getListKelasResult,
 });
 
 export default connect(mapStateToProps, null)(Dashboard);

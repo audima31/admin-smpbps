@@ -4,7 +4,7 @@ import { Spinner } from "reactstrap";
 import { getListSiswa } from "store/actions/AuthAction";
 import { getListTypeTagihan } from "store/actions/jenisTagihanAction";
 import { getListKelas } from "store/actions/KelasAction";
-import { getDetailTagihanLunas } from "store/actions/TagihanAction";
+import { getDetailTagihanLunas } from "store/actions/PaymentAction";
 import { numberWithCommas } from "utils";
 
 class detailTagihanLunas extends Component {
@@ -101,9 +101,10 @@ class detailTagihanLunas extends Component {
                     <p>Jenis Tagihan</p>
                     <p>Order ID</p>
                     <p>Nominal</p>
-
+                    <p className="mb-5">Keterangan</p>
                     <p>Waktu Tagihan</p>
                     <p>Waktu Pembayaran</p>
+                    <p>Penagih</p>
                   </div>
                   <div className="col">
                     <p>: {getDetailTagihanLunasResult.status} </p>
@@ -130,8 +131,12 @@ class detailTagihanLunas extends Component {
                       : Rp.{" "}
                       {numberWithCommas(getDetailTagihanLunasResult.nominal)}
                     </p>
+                    <p className="mb-5">
+                      : {getDetailTagihanLunasResult.keterangan}
+                    </p>
                     <p>: {getDetailTagihanLunasResult.waktuTagihan}</p>
                     <p>: {getDetailTagihanLunasResult.waktuPembayaran}</p>
+                    <p>: {getDetailTagihanLunasResult.penagih}</p>
                   </div>
                 </div>
               </div>
@@ -153,9 +158,9 @@ class detailTagihanLunas extends Component {
 
 const mapStateToProps = (state) => ({
   getDetailTagihanLunasLoading:
-    state.TagihanReducer.getDetailTagihanLunasLoading,
-  getDetailTagihanLunasResult: state.TagihanReducer.getDetailTagihanLunasResult,
-  getDetailTagihanLunasError: state.TagihanReducer.getDetailTagihanLunasError,
+    state.PaymentReducer.getDetailTagihanLunasLoading,
+  getDetailTagihanLunasResult: state.PaymentReducer.getDetailTagihanLunasResult,
+  getDetailTagihanLunasError: state.PaymentReducer.getDetailTagihanLunasError,
 
   getListJenisTagihanResult:
     state.jenisTagihanReducer.getListJenisTagihanResult,

@@ -10,10 +10,6 @@ export const GET_DETAIL_SISWA_TAGIHAN = "GET_DETAIL_SISWA_TAGIHAN";
 export const DELETE_TAGIHAN = "DELETE_TAGIHAN";
 export const LUNAS_TAGIHAN = "LUNAS_TAGIHAN";
 export const GET_LIST_TAGIHAN_SISWA_BY_ID = "GET_LIST_TAGIHAN_SISWA_BY_ID";
-export const LIST_PEMBAYARAN_SISWA = "LIST_PEMBAYARAN_SISWA";
-
-export const GET_DETAIL_TAGIHAN_LUNAS = "GET_DETAIL_TAGIHAN_LUNAS";
-export const DELETE_TAGIHAN_LUNAS = "DELETE_TAGIHAN_LUNAS";
 
 export const tambahTagihan = (data) => {
   return (dispatch) => {
@@ -167,6 +163,24 @@ export const getListTagihan = () => {
   };
 };
 
+export const getListTagihan2 = (key, id) => {
+  return (dispatch) => {
+    dispatchLoading(dispatch, GET_LIST_TAGIHAN);
+
+    FIREBASE.database()
+      .ref("tagihans/")
+      .once("value", (querySnapshot) => {
+        //hasil
+        let data = querySnapshot.val();
+        dispatchSuccess(dispatch, GET_LIST_TAGIHAN, data);
+      })
+      .catch((error) => {
+        dispatchError(dispatch, GET_LIST_TAGIHAN, error);
+        alert(error);
+      });
+  };
+};
+
 //BUAT NGAMBIL NAMA DAN KELAS
 export const getDetailSiswaTagihan = (key) => {
   return (dispatch) => {
@@ -295,6 +309,26 @@ export const lunasTagihan = (key, id, data) => {
                   LUNAS_TAGIHAN,
                   response ? response : []
                 );
+
+                //Mengecek data 'riwayats/'
+                FIREBASE.database()
+                  .ref("riwayats/")
+                  .child(dataRiwayats.order_id)
+                  .once("value", (querySnapshot) => {
+                    let data = querySnapshot.val();
+                    console.log("Cek data riwayats : ", data.status);
+                    //MEMBUAT TABLE BARU, DENGAN NAMA tagihanLunas
+                    if (data.status === "LUNAS") {
+                      FIREBASE.database()
+                        .ref("tagihanLunas")
+                        .child(dataRiwayats.order_id)
+                        .set(data)
+                        .then((response) => {});
+                    }
+                  })
+                  .catch((error) => {
+                    alert(error);
+                  });
               });
 
             //Menghapus data lunas yang ada di tagihans
@@ -368,61 +402,6 @@ export const getListTagihanSiswaById = (id) => {
         dispatchError(dispatch, GET_LIST_TAGIHAN_SISWA_BY_ID, error);
 
         alert(error.message);
-      });
-  };
-};
-
-export const listPembayaranSiswa = () => {
-  return (dispatch) => {
-    dispatchLoading(dispatch, LIST_PEMBAYARAN_SISWA);
-
-    FIREBASE.database()
-      .ref("riwayats/")
-      .once("value", (querySnapshot) => {
-        let data = querySnapshot.val();
-        dispatchSuccess(dispatch, LIST_PEMBAYARAN_SISWA, data);
-      })
-      .catch((error) => {
-        dispatchError(dispatch, LIST_PEMBAYARAN_SISWA, error);
-      });
-  };
-};
-
-export const getDetailTagihanLunas = (id) => {
-  return (dispatch) => {
-    dispatchLoading(dispatch, GET_DETAIL_TAGIHAN_LUNAS);
-
-    FIREBASE.database()
-      .ref("riwayats/" + id)
-      .once("value", (querySnapshot) => {
-        //Hasil
-        let data = querySnapshot.val();
-        dispatchSuccess(dispatch, GET_DETAIL_TAGIHAN_LUNAS, data);
-      })
-      .catch((error) => {
-        dispatchError(dispatch, GET_DETAIL_TAGIHAN_LUNAS, error);
-        alert(error);
-      });
-  };
-};
-
-export const deleteTagihanLunas = (id) => {
-  return (dispatch) => {
-    dispatchLoading(dispatch, DELETE_TAGIHAN_LUNAS);
-
-    FIREBASE.database()
-      .ref("riwayats/" + id)
-      .remove()
-      .then(() => {
-        dispatchSuccess(
-          dispatch,
-          DELETE_TAGIHAN_LUNAS,
-          "TAGIHAN LUNAS BERHASIL DIHAPUS"
-        );
-      })
-      .catch((error) => {
-        dispatchError(dispatch, DELETE_TAGIHAN_LUNAS, error);
-        alert(error);
       });
   };
 };

@@ -2,11 +2,15 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getListTypeTagihan } from "store/actions/jenisTagihanAction";
 import { getListKelas } from "store/actions/KelasAction";
+import {
+  deleteTagihanLunas,
+  listPembayaranSiswa,
+} from "store/actions/PaymentAction";
 import { getDetailSiswa } from "store/actions/SiswaAction";
-import { listPembayaranSiswa } from "store/actions/TagihanAction";
-import { deleteTagihanLunas } from "store/actions/TagihanAction";
-import { deleteTagihan } from "store/actions/TagihanAction";
-import { getListTagihanSiswaById } from "store/actions/TagihanAction";
+import {
+  deleteTagihan,
+  getListTagihanSiswaById,
+} from "store/actions/TagihanAction";
 import Swal from "sweetalert2";
 import { numberWithCommas } from "utils";
 class detailDataSiswa extends Component {
@@ -236,13 +240,13 @@ class detailDataSiswa extends Component {
                                     </p>
                                   ) : getListTagihanSiswaByIdResult
                                       .detailTagihans[key].status ===
-                                    "BELUM BAYAR" ? (
-                                    <label className="badge bg-danger p-2 my-1  ">
+                                    "BELUM DIBAYAR" ? (
+                                    <p className="badge bg-danger p-2 my-1  ">
                                       {
                                         getListTagihanSiswaByIdResult
                                           .detailTagihans[key].status
                                       }
-                                    </label>
+                                    </p>
                                   ) : (
                                     <>Data tidak ditemukan</>
                                   )}
@@ -515,13 +519,13 @@ const mapStateToProps = (state) => ({
   deleteTagihanResult: state.TagihanReducer.deleteTagihanResult,
   deleteTagihanError: state.TagihanReducer.deleteTagihanError,
 
-  listPembayaranSiswaLoading: state.TagihanReducer.listPembayaranSiswaLoading,
-  listPembayaranSiswaResult: state.TagihanReducer.listPembayaranSiswaResult,
-  listPembayaranSiswaError: state.TagihanReducer.listPembayaranSiswaError,
+  listPembayaranSiswaLoading: state.PaymentReducer.listPembayaranSiswaLoading,
+  listPembayaranSiswaResult: state.PaymentReducer.listPembayaranSiswaResult,
+  listPembayaranSiswaError: state.PaymentReducer.listPembayaranSiswaError,
 
-  deleteTagihanLunasLoading: state.TagihanReducer.deleteTagihanLunasLoading,
-  deleteTagihanLunasResult: state.TagihanReducer.deleteTagihanLunasResult,
-  deleteTagihanLunasError: state.TagihanReducer.deleteTagihanLunasError,
+  deleteTagihanLunasLoading: state.PaymentReducer.deleteTagihanLunasLoading,
+  deleteTagihanLunasResult: state.PaymentReducer.deleteTagihanLunasResult,
+  deleteTagihanLunasError: state.PaymentReducer.deleteTagihanLunasError,
 });
 
 export default connect(mapStateToProps, null)(detailDataSiswa);

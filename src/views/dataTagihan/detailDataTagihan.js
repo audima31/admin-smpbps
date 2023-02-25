@@ -148,6 +148,7 @@ class detailDataTagihan extends Component {
                   <>Kelas Tidak Ditemukan</>
                 )}
               </p>
+              <p>Keterangan : {getDetailTagihanResult.keterangan}</p>
             </div>
             <table className="table table-bordered text-center">
               <thead className="text-primary">

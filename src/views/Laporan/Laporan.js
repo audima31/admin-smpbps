@@ -1,15 +1,11 @@
 import React, { Component, useRef } from "react";
 import { connect } from "react-redux";
-import { Spinner } from "reactstrap";
-import { pembayaranBerhasilSiswa } from "store/actions/TagihanAction";
-import { listPembayaranSiswa } from "store/actions/TagihanAction";
 import Swal from "sweetalert2";
 import { DownloadTableExcel } from "react-export-table-to-excel";
-import { getListTagihan } from "store/actions/TagihanAction";
 import { getListKelas } from "store/actions/KelasAction";
 import { getListSiswa } from "store/actions/AuthAction";
 import { getListTypeTagihan } from "store/actions/jenisTagihanAction";
-import { numberWithCommas } from "utils";
+import { listPembayaranSiswa } from "store/actions/PaymentAction";
 
 class Laporan extends Component {
   constructor(props) {
@@ -133,11 +129,13 @@ class Laporan extends Component {
                       filename={
                         "Laporan keuangan " +
                         this.state.bulan +
+                        " " +
                         this.state.tahun
                       }
                       sheet={
                         "Laporan keuangan " +
                         this.state.bulan +
+                        " " +
                         this.state.tahun
                       }
                       currentTableRef={this.tableRef.current}
@@ -272,9 +270,9 @@ class Laporan extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  listPembayaranSiswaLoading: state.TagihanReducer.listPembayaranSiswaLoading,
-  listPembayaranSiswaResult: state.TagihanReducer.listPembayaranSiswaResult,
-  listPembayaranSiswaError: state.TagihanReducer.listPembayaranSiswaError,
+  listPembayaranSiswaLoading: state.PaymentReducer.listPembayaranSiswaLoading,
+  listPembayaranSiswaResult: state.PaymentReducer.listPembayaranSiswaResult,
+  listPembayaranSiswaError: state.PaymentReducer.listPembayaranSiswaError,
 
   getListJenisTagihanResult:
     state.jenisTagihanReducer.getListJenisTagihanResult,
