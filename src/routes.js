@@ -117,14 +117,14 @@ var routes = [
     sidebar: false,
   },
   {
-    path: "/tagihan/edit/:key/:id",
+    path: "/tagihan/edit/:id",
     name: "Edit Tagihan Siswa",
     component: editDataTagihan,
     layout: "/admin",
     sidebar: false,
   },
   {
-    path: "/tagihan/detail/:key/:id",
+    path: "/tagihan/detail/:id",
     name: "Detail Tagihan Siswa",
     component: detailDataTagihan,
     layout: "/admin",

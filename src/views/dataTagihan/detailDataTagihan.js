@@ -4,10 +4,7 @@ import { getListSiswa } from "store/actions/AuthAction";
 import { getListTypeTagihan } from "store/actions/jenisTagihanAction";
 import { getListKelas } from "store/actions/KelasAction";
 import { lunasTagihan } from "store/actions/TagihanAction";
-import {
-  getDetailSiswaTagihan,
-  getDetailTagihan,
-} from "store/actions/TagihanAction";
+import { getDetailTagihan } from "store/actions/TagihanAction";
 import Swal from "sweetalert2";
 import { numberWithCommas } from "utils";
 
@@ -16,26 +13,23 @@ class detailDataTagihan extends Component {
     super(props);
 
     this.state = {
-      key: this.props.match.params.key,
       id: this.props.match.params.id,
       status: false,
     };
   }
 
   componentDidMount() {
-    const { key, id } = this.state;
-    console.log("key ", key);
+    const { id } = this.state;
     console.log("id ", id);
 
-    this.props.dispatch(getDetailTagihan(key, id));
-    this.props.dispatch(getDetailSiswaTagihan(key));
+    this.props.dispatch(getDetailTagihan(id));
     this.props.dispatch(getListTypeTagihan());
     this.props.dispatch(getListSiswa());
     this.props.dispatch(getListKelas());
   }
 
   handleSubmit = (event) => {
-    const { status, key, id } = this.state;
+    const { status, id } = this.state;
     console.log("Status : ", status);
     event.preventDefault();
 
@@ -52,17 +46,13 @@ class detailDataTagihan extends Component {
       confirmButtonText: "Iya, lunaskan pembayaran!",
     }).then((result) => {
       if (result.isConfirmed) {
-        this.props.dispatch(lunasTagihan(key, id, data));
+        this.props.dispatch(lunasTagihan(id, data));
       }
     });
   };
 
   componentDidUpdate(prevProps) {
-    const {
-      getDetailTagihanResult,
-      lunasTagihanResult,
-      getDetailSiswaTagihanResult,
-    } = this.props;
+    const { getDetailTagihanResult, lunasTagihanResult } = this.props;
 
     if (
       getDetailTagihanResult &&
@@ -89,7 +79,6 @@ class detailDataTagihan extends Component {
   render() {
     const {
       getDetailTagihanResult,
-      getDetailSiswaTagihanResult,
       getListJenisTagihanResult,
       lunasTagihanLoading,
       getListSiswaResult,
@@ -121,7 +110,7 @@ class detailDataTagihan extends Component {
                     return (
                       <>
                         {getListSiswaResult[id].uid ===
-                        getDetailSiswaTagihanResult.nama
+                        getDetailTagihanResult.nama
                           ? getListSiswaResult[id].nama
                           : []}
                       </>
@@ -138,7 +127,7 @@ class detailDataTagihan extends Component {
                     return (
                       <>
                         {getListKelasResult[id].kelasId ===
-                        getDetailSiswaTagihanResult.kelas
+                        getDetailTagihanResult.kelas
                           ? getListKelasResult[id].namaKelas
                           : []}
                       </>
@@ -167,7 +156,7 @@ class detailDataTagihan extends Component {
                       <td>
                         {Object.keys(getListJenisTagihanResult).map((key) => {
                           return (
-                            <p>
+                            <p key={key}>
                               {getListJenisTagihanResult[key].jenisTagihanId ===
                               getDetailTagihanResult.jenisTagihan
                                 ? getListJenisTagihanResult[key]
@@ -252,11 +241,6 @@ class detailDataTagihan extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  getDetailSiswaTagihanLoading:
-    state.TagihanReducer.getDetailSiswaTagihanLoading,
-  getDetailSiswaTagihanResult: state.TagihanReducer.getDetailSiswaTagihanResult,
-  getDetailSiswaTagihanError: state.TagihanReducer.getDetailSiswaTagihanError,
-
   getDetailTagihanLoading: state.TagihanReducer.getDetailTagihanLoading,
   getDetailTagihanResult: state.TagihanReducer.getDetailTagihanResult,
   getDetailTagihanError: state.TagihanReducer.getDetailTagihanError,

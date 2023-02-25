@@ -174,143 +174,122 @@ class detailDataSiswa extends Component {
                     </thead>
                     <tbody>
                       {getListTagihanSiswaByIdResult ? (
-                        Object.keys(
-                          getListTagihanSiswaByIdResult.detailTagihans
-                        ).map((key) => {
-                          const namaSiswa = getListTagihanSiswaByIdResult;
-                          const tagihanDetailSiswa =
-                            getListTagihanSiswaByIdResult.detailTagihans[key];
+                        Object.keys(getListTagihanSiswaByIdResult).map(
+                          (key) => {
+                            return (
+                              <>
+                                <tr id={key}>
+                                  <td>
+                                    {
+                                      getListTagihanSiswaByIdResult[key]
+                                        .waktuTagihan
+                                    }
+                                  </td>
 
-                          return (
-                            <>
-                              <tr id={key}>
-                                <td>
-                                  {
-                                    getListTagihanSiswaByIdResult
-                                      .detailTagihans[key].waktuTagihan
-                                  }
-                                </td>
-
-                                <td>
-                                  {getListJenisTagihanResult ? (
-                                    Object.keys(getListJenisTagihanResult).map(
-                                      (id) => {
+                                  <td>
+                                    {getListJenisTagihanResult ? (
+                                      Object.keys(
+                                        getListJenisTagihanResult
+                                      ).map((id) => {
                                         return (
                                           <>
                                             {getListJenisTagihanResult[id]
                                               .jenisTagihanId ===
-                                            getListTagihanSiswaByIdResult
-                                              .detailTagihans[key].jenisTagihan
+                                            getListTagihanSiswaByIdResult[key]
+                                              .jenisTagihan
                                               ? getListJenisTagihanResult[id]
                                                   .namaJenisTagihan
                                               : []}
                                           </>
                                         );
-                                      }
-                                    )
-                                  ) : (
-                                    <>404</>
-                                  )}
-                                </td>
+                                      })
+                                    ) : (
+                                      <>404</>
+                                    )}
+                                  </td>
 
-                                <td>
-                                  Rp.{" "}
-                                  {numberWithCommas(
-                                    getListTagihanSiswaByIdResult
-                                      .detailTagihans[key].nominal
-                                  )}
-                                </td>
+                                  <td>
+                                    Rp.{" "}
+                                    {numberWithCommas(
+                                      getListTagihanSiswaByIdResult[key].nominal
+                                    )}
+                                  </td>
 
-                                <td>
-                                  {
-                                    getListTagihanSiswaByIdResult
-                                      .detailTagihans[key].keterangan
-                                  }
-                                </td>
-
-                                <td>
-                                  {getListTagihanSiswaByIdResult.detailTagihans[
-                                    key
-                                  ].status === "PENDING" ? (
-                                    <p className="badge bg-warning p-2 my-1 ">
-                                      {
-                                        getListTagihanSiswaByIdResult
-                                          .detailTagihans[key].status
-                                      }
-                                    </p>
-                                  ) : getListTagihanSiswaByIdResult
-                                      .detailTagihans[key].status ===
-                                    "BELUM DIBAYAR" ? (
-                                    <p className="badge bg-danger p-2 my-1  ">
-                                      {
-                                        getListTagihanSiswaByIdResult
-                                          .detailTagihans[key].status
-                                      }
-                                    </p>
-                                  ) : (
-                                    <>Data tidak ditemukan</>
-                                  )}
-                                </td>
-
-                                {/* Button */}
-                                <td>
-                                  <a
-                                    {...this.props}
-                                    href={
-                                      "/admin/tagihan/detail/" +
-                                      idSiswa +
-                                      "/" +
-                                      key
+                                  <td>
+                                    {
+                                      getListTagihanSiswaByIdResult[key]
+                                        .keterangan
                                     }
-                                    class="btn btn-primary mr-2 "
-                                  >
-                                    Detail
-                                  </a>
-                                  <a
-                                    {...this.props}
-                                    href={
-                                      "/admin/tagihan/edit/" +
-                                      idSiswa +
-                                      "/" +
-                                      key
-                                    }
-                                    class="btn btn-warning "
-                                  >
-                                    Edit
-                                  </a>
-                                  {deleteTagihanLoading ? (
-                                    <button
-                                      type="submit"
-                                      className="btn btn-danger ml-2"
+                                  </td>
+
+                                  <td>
+                                    {getListTagihanSiswaByIdResult[key]
+                                      .status === "PENDING" ? (
+                                      <p className="badge bg-warning p-2 my-1 ">
+                                        {
+                                          getListTagihanSiswaByIdResult[key]
+                                            .status
+                                        }
+                                      </p>
+                                    ) : getListTagihanSiswaByIdResult[key]
+                                        .status === "BELUM DIBAYAR" ? (
+                                      <p className="badge bg-danger p-2 my-1  ">
+                                        {
+                                          getListTagihanSiswaByIdResult[key]
+                                            .status
+                                        }
+                                      </p>
+                                    ) : (
+                                      <>Data tidak ditemukan</>
+                                    )}
+                                  </td>
+
+                                  {/* Button */}
+                                  <td>
+                                    <a
+                                      {...this.props}
+                                      href={"/admin/tagihan/detail/" + key}
+                                      class="btn btn-primary mr-2 "
                                     >
-                                      <div
-                                        class="spinner-border text-light"
-                                        role="status"
+                                      Detail
+                                    </a>
+                                    <a
+                                      {...this.props}
+                                      href={"/admin/tagihan/edit/" + key}
+                                      class="btn btn-warning "
+                                    >
+                                      Edit
+                                    </a>
+                                    {deleteTagihanLoading ? (
+                                      <button
+                                        type="submit"
+                                        className="btn btn-danger ml-2"
                                       >
-                                        <span class="visually-hidden"></span>
-                                      </div>
-                                    </button>
-                                  ) : (
-                                    <button
-                                      type="submit"
-                                      className="btn btn-danger ml-2"
-                                      onClick={() =>
-                                        this.removeDataTagihan(
-                                          namaSiswa,
-                                          tagihanDetailSiswa,
-                                          key
-                                        )
-                                      }
-                                    >
-                                      <i className="nc-icon nc-basket"></i>{" "}
-                                      Hapus
-                                    </button>
-                                  )}
-                                </td>
-                              </tr>
-                            </>
-                          );
-                        })
+                                        <div
+                                          class="spinner-border text-light"
+                                          role="status"
+                                        >
+                                          <span class="visually-hidden"></span>
+                                        </div>
+                                      </button>
+                                    ) : (
+                                      <button
+                                        type="submit"
+                                        className="btn btn-danger ml-2"
+                                        onClick={() =>
+                                          this.removeDataTagihan(key)
+                                        }
+                                      >
+                                        <i className="nc-icon nc-basket"></i>{" "}
+                                        Hapus
+                                      </button>
+                                    )}
+                                  </td>
+                                </tr>
+                              </>
+                            );
+                          }
+                        )
                       ) : (
                         <tr>
                           <td colSpan="6" align="center">

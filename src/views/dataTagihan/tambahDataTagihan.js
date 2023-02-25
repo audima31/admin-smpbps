@@ -132,6 +132,7 @@ class tambahDataTagihan extends Component {
       keterangan
     ) {
       const data = {
+        id: new Date().getTime() + "-" + nama,
         kelas: kelas,
         nama: nama,
         jenisTagihan: jenisTagihan,

@@ -3,11 +3,7 @@ import { connect } from "react-redux";
 import { getListSiswa } from "store/actions/AuthAction";
 import { getListTypeTagihan } from "store/actions/jenisTagihanAction";
 import { getListKelas } from "store/actions/KelasAction";
-import {
-  getDetailSiswaTagihan,
-  updateTagihan,
-  getDetailTagihan,
-} from "store/actions/TagihanAction";
+import { updateTagihan, getDetailTagihan } from "store/actions/TagihanAction";
 import Swal from "sweetalert2";
 import { numberWithCommas } from "utils";
 import "../../assets/css/dataSiswa.css";
@@ -17,7 +13,6 @@ class editDataTagihan extends Component {
     super(props);
 
     this.state = {
-      key: this.props.match.params.key,
       id: this.props.match.params.id,
       jenisTagihan: "",
       keterangan: "",
@@ -30,10 +25,9 @@ class editDataTagihan extends Component {
   }
 
   componentDidMount() {
-    const { key, id } = this.state;
+    const { id } = this.state;
 
-    this.props.dispatch(getDetailTagihan(key, id));
-    this.props.dispatch(getDetailSiswaTagihan(key));
+    this.props.dispatch(getDetailTagihan(id));
     this.props.dispatch(getListTypeTagihan());
     this.props.dispatch(getListSiswa());
     this.props.dispatch(getListKelas());
@@ -76,7 +70,7 @@ class editDataTagihan extends Component {
   };
 
   handleSubmit = (event) => {
-    const { jenisTagihan, keterangan, bulan, tahun, nominal, status, key, id } =
+    const { jenisTagihan, keterangan, bulan, tahun, nominal, status, id } =
       this.state;
 
     event.preventDefault();
@@ -89,11 +83,10 @@ class editDataTagihan extends Component {
         nominal: nominal,
         keterangan: keterangan,
         status: status,
-        key: key,
         id: id,
       };
       //ke Auth Action
-      this.props.dispatch(updateTagihan(key, id, data));
+      this.props.dispatch(updateTagihan(id, data));
       Swal.fire("Berhasil", `Update tagihan telah berhasil`, "success");
     } else {
       Swal.fire({
@@ -139,7 +132,6 @@ class editDataTagihan extends Component {
 
     const {
       getDetailTagihanResult,
-      getDetailSiswaTagihanResult,
       getListJenisTagihanResult,
       updateTagihanLoading,
       getListSiswaResult,
@@ -175,7 +167,7 @@ class editDataTagihan extends Component {
                     return (
                       <>
                         {getListSiswaResult[id].uid ===
-                        getDetailSiswaTagihanResult.nama
+                        getDetailTagihanResult.nama
                           ? getListSiswaResult[id].nama
                           : []}
                       </>
@@ -192,7 +184,7 @@ class editDataTagihan extends Component {
                     return (
                       <>
                         {getListKelasResult[id].kelasId ===
-                        getDetailSiswaTagihanResult.kelas
+                        getDetailTagihanResult.kelas
                           ? getListKelasResult[id].namaKelas
                           : []}
                       </>
@@ -421,11 +413,6 @@ class editDataTagihan extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  getDetailSiswaTagihanLoading:
-    state.TagihanReducer.getDetailSiswaTagihanLoading,
-  getDetailSiswaTagihanResult: state.TagihanReducer.getDetailSiswaTagihanResult,
-  getDetailSiswaTagihanError: state.TagihanReducer.getDetailSiswaTagihanError,
-
   getDetailTagihanLoading: state.TagihanReducer.getDetailTagihanLoading,
   getDetailTagihanResult: state.TagihanReducer.getDetailTagihanResult,
   getDetailTagihanError: state.TagihanReducer.getDetailTagihanError,
