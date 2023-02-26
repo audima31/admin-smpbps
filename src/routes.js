@@ -153,7 +153,7 @@ var routes = [
   },
   {
     path: "/listPembayaranLunas",
-    name: "List Pembayaran Lunas",
+    name: "List Proses Pembayaran",
     component: listTagihanLunas,
     layout: "/admin",
     sidebar: false,
@@ -165,6 +165,7 @@ var routes = [
     layout: "/admin",
     sidebar: false,
   },
+
   {
     path: "/laporan",
     name: "Laporan Pembayaran",

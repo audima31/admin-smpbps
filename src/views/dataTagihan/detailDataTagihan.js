@@ -1,8 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getListSiswa } from "store/actions/AuthAction";
-import { getListTypeTagihan } from "store/actions/jenisTagihanAction";
-import { getListKelas } from "store/actions/KelasAction";
 import { lunasTagihan } from "store/actions/TagihanAction";
 import { getDetailTagihan } from "store/actions/TagihanAction";
 import Swal from "sweetalert2";
@@ -23,9 +20,6 @@ class detailDataTagihan extends Component {
     console.log("id ", id);
 
     this.props.dispatch(getDetailTagihan(id));
-    this.props.dispatch(getListTypeTagihan());
-    this.props.dispatch(getListSiswa());
-    this.props.dispatch(getListKelas());
   }
 
   handleSubmit = (event) => {
@@ -81,8 +75,6 @@ class detailDataTagihan extends Component {
       getDetailTagihanResult,
       getListJenisTagihanResult,
       lunasTagihanLoading,
-      getListSiswaResult,
-      getListKelasResult,
     } = this.props;
 
     return (
@@ -103,40 +95,8 @@ class detailDataTagihan extends Component {
             <h2 className=" mt-4 ml-3">Rincian Pembayaran</h2>
             <hr></hr>
             <div className="ml-3">
-              <p>
-                Nama :{" "}
-                {getListSiswaResult ? (
-                  Object.keys(getListSiswaResult).map((id) => {
-                    return (
-                      <>
-                        {getListSiswaResult[id].uid ===
-                        getDetailTagihanResult.nama
-                          ? getListSiswaResult[id].nama
-                          : []}
-                      </>
-                    );
-                  })
-                ) : (
-                  <>Nama Siswa Tidak Ditemukan</>
-                )}
-              </p>
-              <p>
-                Kelas :{" "}
-                {getListKelasResult ? (
-                  Object.keys(getListKelasResult).map((id) => {
-                    return (
-                      <>
-                        {getListKelasResult[id].kelasId ===
-                        getDetailTagihanResult.kelas
-                          ? getListKelasResult[id].namaKelas
-                          : []}
-                      </>
-                    );
-                  })
-                ) : (
-                  <>Kelas Tidak Ditemukan</>
-                )}
-              </p>
+              <p>Nama : {getDetailTagihanResult.nama}</p>
+              <p>Kelas : {getDetailTagihanResult.kelas}</p>
               <p>Keterangan : {getDetailTagihanResult.keterangan}</p>
             </div>
             <table className="table table-bordered text-center">
@@ -153,19 +113,7 @@ class detailDataTagihan extends Component {
                   <>
                     <tr>
                       <td>{getDetailTagihanResult.waktuTagihan}</td>
-                      <td>
-                        {Object.keys(getListJenisTagihanResult).map((key) => {
-                          return (
-                            <p key={key}>
-                              {getListJenisTagihanResult[key].jenisTagihanId ===
-                              getDetailTagihanResult.jenisTagihan
-                                ? getListJenisTagihanResult[key]
-                                    .namaJenisTagihan
-                                : []}
-                            </p>
-                          );
-                        })}
-                      </td>
+                      <td>{getDetailTagihanResult.jenisTagihan}</td>
                       <td>
                         Rp. {numberWithCommas(getDetailTagihanResult.nominal)}
                       </td>
@@ -245,18 +193,9 @@ const mapStateToProps = (state) => ({
   getDetailTagihanResult: state.TagihanReducer.getDetailTagihanResult,
   getDetailTagihanError: state.TagihanReducer.getDetailTagihanError,
 
-  getListJenisTagihanLoading:
-    state.jenisTagihanReducer.getListJenisTagihanLoading,
-  getListJenisTagihanResult:
-    state.jenisTagihanReducer.getListJenisTagihanResult,
-  getListJenisTagihanError: state.jenisTagihanReducer.getListJenisTagihanError,
-
   lunasTagihanLoading: state.TagihanReducer.lunasTagihanLoading,
   lunasTagihanResult: state.TagihanReducer.lunasTagihanResult,
   lunasTagihanError: state.TagihanReducer.getDetailTagihanError,
-
-  getListSiswaResult: state.AuthReducer.getListSiswaResult,
-  getListKelasResult: state.KelasReducer.getListKelasResult,
 });
 
 export default connect(mapStateToProps, null)(detailDataTagihan);

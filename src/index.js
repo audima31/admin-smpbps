@@ -28,7 +28,6 @@ root.render(
         <Route path="/payment/finish" component={Finish} exact />
         <Route path="/payment/unfinish" component={Unfinish} exact />
         <Route path="/payment/error" component={Gagal} exact />
-
         <Redirect to="/login" />
       </Switch>
     </BrowserRouter>

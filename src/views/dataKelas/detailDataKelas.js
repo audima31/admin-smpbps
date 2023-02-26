@@ -26,7 +26,7 @@ class detailDataKelas extends Component {
   };
 
   componentDidUpdate(prevProps) {
-    const { deleteSiswaResult, getListKelasResult } = this.props;
+    const { deleteSiswaResult } = this.props;
     if (
       deleteSiswaResult &&
       prevProps.deleteSiswaResult !== deleteSiswaResult

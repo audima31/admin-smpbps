@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getListTypeTagihan } from "store/actions/jenisTagihanAction";
 import { getListKelas } from "store/actions/KelasAction";
 import {
   deleteTagihanLunas,
@@ -26,18 +25,9 @@ class detailDataSiswa extends Component {
     const { idSiswa } = this.state;
     this.props.dispatch(getDetailSiswa(idSiswa));
     this.props.dispatch(getListTagihanSiswaById(idSiswa));
-    this.props.dispatch(getListTypeTagihan());
     this.props.dispatch(getListKelas());
     this.props.dispatch(listPembayaranSiswa());
   }
-
-  removeDataTagihan = (namaSiswa, tagihanDetailSiswa, id) => {
-    this.props.dispatch(deleteTagihan(namaSiswa, tagihanDetailSiswa, id));
-  };
-
-  removeDataPembayaran = (id) => {
-    this.props.dispatch(deleteTagihanLunas(id));
-  };
 
   componentDidUpdate(prevProps) {
     const { idSiswa } = this.state;
@@ -47,7 +37,6 @@ class detailDataSiswa extends Component {
       deleteTagihanResult &&
       prevProps.deleteTagihanResult !== deleteTagihanResult
     ) {
-      Swal.fire("Success", "Berhasil Dihapus", "success");
       this.props.dispatch(getDetailSiswa(idSiswa));
       this.props.dispatch(getListTagihanSiswaById(idSiswa));
     }
@@ -56,7 +45,6 @@ class detailDataSiswa extends Component {
       deleteTagihanLunasResult &&
       prevProps.deleteTagihanLunasResult !== deleteTagihanLunasResult
     ) {
-      Swal.fire("Success", "Info pembayaran berhasil di hapus", "success");
       this.props.dispatch(getDetailSiswa(idSiswa));
       this.props.dispatch(listPembayaranSiswa());
     }
@@ -71,13 +59,11 @@ class detailDataSiswa extends Component {
       detailSiswaResult,
       detailSiswaLoading,
       getListTagihanSiswaByIdResult,
-      getListJenisTagihanResult,
       getListKelasResult,
       deleteTagihanLoading,
       listPembayaranSiswaResult,
       deleteTagihanLunasLoading,
     } = this.props;
-    const { idSiswa } = this.state;
     return (
       <div className="content">
         <div className="mt-3">
@@ -176,6 +162,26 @@ class detailDataSiswa extends Component {
                       {getListTagihanSiswaByIdResult ? (
                         Object.keys(getListTagihanSiswaByIdResult).map(
                           (key) => {
+                            const removeDataTagihan = (id) => {
+                              Swal.fire({
+                                title: "Apakah anda yakin?",
+                                text: `menghapus tagihan "${getListTagihanSiswaByIdResult[key].nama} - ${getListTagihanSiswaByIdResult[key].jenisTagihan}"`,
+                                icon: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#3085d6",
+                                cancelButtonColor: "#d33",
+                                confirmButtonText: "Iya, hapus data tagihan!",
+                              }).then((result) => {
+                                if (result.isConfirmed) {
+                                  Swal.fire(
+                                    "Deleted!",
+                                    `Data tagihan "${getListTagihanSiswaByIdResult[key].nama} - ${getListTagihanSiswaByIdResult[key].jenisTagihan}" berhasil dihapus.`,
+                                    "success"
+                                  );
+                                  this.props.dispatch(deleteTagihan(id));
+                                }
+                              });
+                            };
                             return (
                               <>
                                 <tr id={key}>
@@ -187,25 +193,10 @@ class detailDataSiswa extends Component {
                                   </td>
 
                                   <td>
-                                    {getListJenisTagihanResult ? (
-                                      Object.keys(
-                                        getListJenisTagihanResult
-                                      ).map((id) => {
-                                        return (
-                                          <>
-                                            {getListJenisTagihanResult[id]
-                                              .jenisTagihanId ===
-                                            getListTagihanSiswaByIdResult[key]
-                                              .jenisTagihan
-                                              ? getListJenisTagihanResult[id]
-                                                  .namaJenisTagihan
-                                              : []}
-                                          </>
-                                        );
-                                      })
-                                    ) : (
-                                      <>404</>
-                                    )}
+                                    {
+                                      getListTagihanSiswaByIdResult[key]
+                                        .jenisTagihan
+                                    }
                                   </td>
 
                                   <td>
@@ -276,9 +267,7 @@ class detailDataSiswa extends Component {
                                       <button
                                         type="submit"
                                         className="btn btn-danger ml-2"
-                                        onClick={() =>
-                                          this.removeDataTagihan(key)
-                                        }
+                                        onClick={() => removeDataTagihan(key)}
                                       >
                                         <i className="nc-icon nc-basket"></i>{" "}
                                         Hapus
@@ -323,9 +312,31 @@ class detailDataSiswa extends Component {
                     <tbody>
                       {listPembayaranSiswaResult ? (
                         Object.keys(listPembayaranSiswaResult).map((key) => {
+                          const removeDataPembayaran = (id) => {
+                            Swal.fire({
+                              title: "Apakah anda yakin?",
+                              text: `menghapus proses pembayaran "${listPembayaranSiswaResult[key].nama} - ${listPembayaranSiswaResult[key].jenisTagihan}"`,
+                              icon: "warning",
+                              showCancelButton: true,
+                              confirmButtonColor: "#3085d6",
+                              cancelButtonColor: "#d33",
+                              confirmButtonText:
+                                "Iya, hapus proses pembayaran!",
+                            }).then((result) => {
+                              if (result.isConfirmed) {
+                                Swal.fire(
+                                  "Deleted!",
+                                  `Data proses pembayaran "${listPembayaranSiswaResult[key].nama} - ${listPembayaranSiswaResult[key].jenisTagihan}" berhasil dihapus.`,
+                                  "success"
+                                );
+                                this.props.dispatch(deleteTagihanLunas(id));
+                              }
+                            });
+                          };
+
                           return (
                             <>
-                              {listPembayaranSiswaResult[key].nama ===
+                              {listPembayaranSiswaResult[key].idSiswa ===
                               detailSiswaResult.uid ? (
                                 <>
                                   <tr id={key}>
@@ -337,25 +348,10 @@ class detailDataSiswa extends Component {
                                     </td>
 
                                     <td>
-                                      {getListJenisTagihanResult ? (
-                                        Object.keys(
-                                          getListJenisTagihanResult
-                                        ).map((id) => {
-                                          return (
-                                            <>
-                                              {getListJenisTagihanResult[id]
-                                                .jenisTagihanId ===
-                                              listPembayaranSiswaResult[key]
-                                                .jenisTagihan
-                                                ? getListJenisTagihanResult[id]
-                                                    .namaJenisTagihan
-                                                : []}
-                                            </>
-                                          );
-                                        })
-                                      ) : (
-                                        <>404</>
-                                      )}
+                                      {
+                                        listPembayaranSiswaResult[key]
+                                          .jenisTagihan
+                                      }
                                     </td>
 
                                     <td>
@@ -429,7 +425,7 @@ class detailDataSiswa extends Component {
                                               type="submit"
                                               className="btn btn-danger ml-2"
                                               onClick={() =>
-                                                this.removeDataPembayaran(key)
+                                                removeDataPembayaran(key)
                                               }
                                             >
                                               <i className="nc-icon nc-basket"></i>{" "}
@@ -490,8 +486,6 @@ const mapStateToProps = (state) => ({
   getListTagihanSiswaByIdError:
     state.TagihanReducer.getListTagihanSiswaByIdError,
 
-  getListJenisTagihanResult:
-    state.jenisTagihanReducer.getListJenisTagihanResult,
   getListKelasResult: state.KelasReducer.getListKelasResult,
 
   deleteTagihanLoading: state.TagihanReducer.deleteTagihanLoading,

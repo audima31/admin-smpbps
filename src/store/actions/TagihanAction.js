@@ -1,5 +1,4 @@
 import FIREBASE from "config/FIREBASE";
-import Swal from "sweetalert2";
 import { dispatchError, dispatchLoading, dispatchSuccess } from "../../utils";
 
 export const TAMBAH_TAGIHAN = "TAMBAH_TAGIHAN";
@@ -26,7 +25,9 @@ export const tambahTagihan = (data) => {
       tahun: data.tahun,
       status: data.status,
       penagih: data.penagih,
-      tagihanDetailId: data.id,
+      idTagihanDetail: data.id,
+      idSiswa: data.idSiswa,
+      idJenisTagihan: data.idJenisTagihan,
     };
     //Tambah Tagihan
     FIREBASE.database()
@@ -49,13 +50,19 @@ export const updateTagihan = (id, data) => {
     dispatchLoading(dispatch, UPDATE_TAGIHAN);
 
     const dataBaru = {
+      nama: data.nama,
+      kelas: data.kelas,
       jenisTagihan: data.jenisTagihan,
       nominal: data.nominal,
-      waktuTagihan: new Date().toDateString(),
+      waktuTagihan: data.waktuTagihan,
       keterangan: data.keterangan,
       bulan: data.bulan,
       tahun: data.tahun,
       status: data.status,
+      penagih: data.penagih,
+      idTagihanDetail: id,
+      idSiswa: data.idSiswa,
+      idJenisTagihan: data.idJenisTagihan,
     };
 
     FIREBASE.database()
@@ -218,7 +225,7 @@ export const getListTagihanSiswaById = (id) => {
 
     FIREBASE.database()
       .ref("tagihans/")
-      .orderByChild("nama")
+      .orderByChild("idSiswa")
       .equalTo(id)
       .once("value", (querySnapshot) => {
         console.log("querySnapshot : ", querySnapshot.val());

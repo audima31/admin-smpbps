@@ -9,6 +9,14 @@ import { deleteSiswa } from "store/actions/SiswaAction";
 import Swal from "sweetalert2";
 
 class dataSiswa extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      search: "",
+    };
+  }
+
   componentDidMount() {
     this.props.dispatch(getListSiswa());
     this.props.dispatch(getListKelas());
@@ -21,33 +29,21 @@ class dataSiswa extends Component {
     });
   };
 
-  removeData = (id) => {
-    Swal.fire({
-      title: "Apakah anda yakin?",
-      text: "Anda tidak dapat mengembalikan data ini!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Iya, hapus data siswa!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire("Deleted!", "Data siswa berhasil dihapus.", "success");
-        this.props.dispatch(deleteSiswa(id));
-      }
-    });
-  };
-
   componentDidUpdate(prevProps) {
     const { deleteSiswaResult } = this.props;
     if (
       deleteSiswaResult &&
       prevProps.deleteSiswaResult !== deleteSiswaResult
     ) {
-      Swal.fire("Success", deleteSiswaResult, "success");
       this.props.dispatch(getListSiswa());
     }
   }
+
+  handleSearch = (event) => {
+    this.setState({
+      search: event.target.value,
+    });
+  };
 
   render() {
     const {
@@ -65,12 +61,30 @@ class dataSiswa extends Component {
         <div>
           <Row>
             <Col>
-              <Link
-                to="/admin/siswa/tambah"
-                className="btn btn-primary float-left"
-              >
-                + Tambah Akun Siswa
-              </Link>
+              <div className="d-flex justify-content-between">
+                <Link
+                  to="/admin/siswa/tambah"
+                  className="btn btn-primary float-left"
+                >
+                  + Tambah Akun Siswa
+                </Link>
+
+                {/* button search */}
+                <div class="input-group rounded" style={{ width: "15%" }}>
+                  <input
+                    type="search"
+                    class="form-control rounded"
+                    placeholder="Search"
+                    aria-label="Search"
+                    aria-describedby="search-addon"
+                    onChange={(event) => this.handleSearch(event)}
+                    value={this.state.search}
+                  />
+                  <span class="input-group-text border-0" id="search-addon">
+                    <i class="fas fa-search"></i>
+                  </span>
+                </div>
+              </div>
             </Col>
 
             <Col md="12">
@@ -89,73 +103,105 @@ class dataSiswa extends Component {
                     </thead>
                     <tbody>
                       {getListSiswaResult ? (
-                        Object.keys(getListSiswaResult).map((key, index) => {
-                          return (
-                            <tr key={key}>
-                              <td>{index + 1 + "."}</td>
-                              <td>{getListSiswaResult[key].NIS}</td>
-                              <td>{getListSiswaResult[key].nama}</td>
-                              <td>{getListSiswaResult[key].jenisKelamin}</td>
+                        Object.keys(getListSiswaResult)
+                          .filter((item) => {
+                            return this.state.search.toLowerCase() === ""
+                              ? item
+                              : getListSiswaResult[item].nama
+                                  .toLowerCase()
+                                  .includes(this.state.search);
+                          })
+                          .map((key, index) => {
+                            const removeData = (id) => {
+                              Swal.fire({
+                                title: `Apakah anda yakin?`,
+                                text: `menghapus data "${getListSiswaResult[key].nama}"`,
+                                icon: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#3085d6",
+                                cancelButtonColor: "#d33",
+                                confirmButtonText: "Iya, hapus data siswa!",
+                              }).then((result) => {
+                                if (result.isConfirmed) {
+                                  Swal.fire(
+                                    "Deleted!",
+                                    `Data "${getListSiswaResult[key].nama}" berhasil dihapus.`,
+                                    "success"
+                                  );
+                                  this.props.dispatch(deleteSiswa(id));
+                                }
+                              });
+                            };
 
-                              <td>
-                                {getListKelasResult ? (
-                                  Object.keys(getListKelasResult).map((id) => {
-                                    // eslint-disable-next-line no-lone-blocks
-                                    return (
-                                      <p className="mt-4">
-                                        {getListKelasResult[id].kelasId ===
-                                        getListSiswaResult[key].kelas
-                                          ? getListKelasResult[id].namaKelas
-                                          : []}
-                                      </p>
-                                    );
-                                  })
-                                ) : (
-                                  <p>Kelas Tidak Ditemukan</p>
-                                )}
-                              </td>
-                              <td>
-                                <a
-                                  {...this.props}
-                                  class="btn btn-primary mr-2 "
-                                  href={"/admin/siswa/detail/" + key}
-                                >
-                                  Detail
-                                </a>
+                            return (
+                              <tr key={key}>
+                                <td>{index + 1 + "."}</td>
+                                <td>{getListSiswaResult[key].NIS}</td>
+                                <td>{getListSiswaResult[key].nama}</td>
+                                <td>{getListSiswaResult[key].jenisKelamin}</td>
 
-                                <Link
-                                  className="btn btn-warning ml-2"
-                                  to={"/admin/siswa/edit/" + key}
-                                >
-                                  <i className="nc-icon nc-ruler-pencil"></i>{" "}
-                                  Edit
-                                </Link>
-
-                                {deleteSiswaLoading ? (
-                                  <button
-                                    type="submit"
-                                    className="btn btn-primary"
+                                <td>
+                                  {getListKelasResult ? (
+                                    Object.keys(getListKelasResult).map(
+                                      (id) => {
+                                        // eslint-disable-next-line no-lone-blocks
+                                        return (
+                                          <p className="mt-4">
+                                            {getListKelasResult[id].kelasId ===
+                                            getListSiswaResult[key].kelas
+                                              ? getListKelasResult[id].namaKelas
+                                              : []}
+                                          </p>
+                                        );
+                                      }
+                                    )
+                                  ) : (
+                                    <p>Kelas Tidak Ditemukan</p>
+                                  )}
+                                </td>
+                                <td>
+                                  <a
+                                    {...this.props}
+                                    class="btn btn-primary mr-2 "
+                                    href={"/admin/siswa/detail/" + key}
                                   >
-                                    <div
-                                      class="spinner-border text-light"
-                                      role="status"
+                                    Detail
+                                  </a>
+
+                                  <Link
+                                    className="btn btn-warning ml-2"
+                                    to={"/admin/siswa/edit/" + key}
+                                  >
+                                    <i className="nc-icon nc-ruler-pencil"></i>{" "}
+                                    Edit
+                                  </Link>
+
+                                  {deleteSiswaLoading ? (
+                                    <button
+                                      type="submit"
+                                      className="btn btn-primary"
                                     >
-                                      <span class="visually-hidden"></span>
-                                    </div>
-                                  </button>
-                                ) : (
-                                  <button
-                                    type="submit"
-                                    className="btn btn-danger ml-2"
-                                    onClick={() => this.removeData(key)}
-                                  >
-                                    <i className="nc-icon nc-basket"></i> Hapus
-                                  </button>
-                                )}
-                              </td>
-                            </tr>
-                          );
-                        })
+                                      <div
+                                        class="spinner-border text-light"
+                                        role="status"
+                                      >
+                                        <span class="visually-hidden"></span>
+                                      </div>
+                                    </button>
+                                  ) : (
+                                    <button
+                                      type="submit"
+                                      className="btn btn-danger ml-2"
+                                      onClick={() => removeData(key)}
+                                    >
+                                      <i className="nc-icon nc-basket"></i>{" "}
+                                      Hapus
+                                    </button>
+                                  )}
+                                </td>
+                              </tr>
+                            );
+                          })
                       ) : getListSiswaLoading ? (
                         <tr>
                           <td colSpan="6" align="center">

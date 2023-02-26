@@ -2,9 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { Spinner, Table } from "reactstrap";
-import { getListSiswa } from "store/actions/AuthAction";
-import { getListTypeTagihan } from "store/actions/jenisTagihanAction";
-import { getListKelas } from "store/actions/KelasAction";
 import {
   deleteTagihanLunas,
   listPembayaranSiswa,
@@ -15,14 +12,7 @@ import { numberWithCommas } from "utils";
 class listTagihanLunas extends Component {
   componentDidMount() {
     this.props.dispatch(listPembayaranSiswa());
-    this.props.dispatch(getListKelas());
-    this.props.dispatch(getListSiswa());
-    this.props.dispatch(getListTypeTagihan());
   }
-
-  removeData = (id) => {
-    this.props.dispatch(deleteTagihanLunas(id));
-  };
 
   componentDidUpdate(prevProps) {
     const { deleteTagihanLunasResult } = this.props;
@@ -40,9 +30,6 @@ class listTagihanLunas extends Component {
       listPembayaranSiswaResult,
       listPembayaranSiswaLoading,
       listPembayaranSiswaError,
-      getListKelasResult,
-      getListSiswaResult,
-      getListJenisTagihanResult,
       deleteTagihanLunasLoading,
     } = this.props;
     return (
@@ -60,6 +47,7 @@ class listTagihanLunas extends Component {
           <Table striped className="text-center table-hover">
             <thead className="text-primary">
               <tr>
+                <th scope="col">#</th>
                 <th scope="col">Tanggal</th>
                 <th scope="col">Nama Siswa</th>
                 <th scope="col">Kelas</th>
@@ -71,59 +59,35 @@ class listTagihanLunas extends Component {
             </thead>
             <tbody>
               {listPembayaranSiswaResult ? (
-                Object.keys(listPembayaranSiswaResult).map((key) => {
+                Object.keys(listPembayaranSiswaResult).map((key, index) => {
+                  const removeData = (id) => {
+                    Swal.fire({
+                      title: "Apakah anda yakin?",
+                      text: `menghapus proses pembayaran "${listPembayaranSiswaResult[key].nama} - ${listPembayaranSiswaResult[key].jenisTagihan}"`,
+                      icon: "warning",
+                      showCancelButton: true,
+                      confirmButtonColor: "#3085d6",
+                      cancelButtonColor: "#d33",
+                      confirmButtonText: "Iya, hapus proses pembayaran!",
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        Swal.fire(
+                          "Deleted!",
+                          `Data proses pembayaran "${listPembayaranSiswaResult[key].nama} - ${listPembayaranSiswaResult[key].jenisTagihan}" berhasil dihapus.`,
+                          "success"
+                        );
+                        this.props.dispatch(deleteTagihanLunas(id));
+                      }
+                    });
+                  };
+
                   return (
-                    <tr>
+                    <tr key={key}>
+                      <td>{index + 1} .</td>
                       <td>{listPembayaranSiswaResult[key].waktuTagihan}</td>
-                      <td>
-                        {getListSiswaResult ? (
-                          Object.keys(getListSiswaResult).map((id) => {
-                            return (
-                              <>
-                                {getListSiswaResult[id].uid ===
-                                listPembayaranSiswaResult[key].nama
-                                  ? getListSiswaResult[id].nama
-                                  : []}
-                              </>
-                            );
-                          })
-                        ) : (
-                          <>Nama Siswa Tidak Ditemukan</>
-                        )}
-                      </td>
-                      <td>
-                        {getListKelas ? (
-                          Object.keys(getListKelasResult).map((id) => {
-                            return (
-                              <>
-                                {getListKelasResult[id].kelasId ===
-                                listPembayaranSiswaResult[key].kelas
-                                  ? getListKelasResult[id].namaKelas
-                                  : []}
-                              </>
-                            );
-                          })
-                        ) : (
-                          <p>Kelas Tidak Ditemukan</p>
-                        )}
-                      </td>
-                      <td>
-                        {getListJenisTagihanResult ? (
-                          Object.keys(getListJenisTagihanResult).map((x) => {
-                            return (
-                              <>
-                                {getListJenisTagihanResult[x].jenisTagihanId ===
-                                listPembayaranSiswaResult[key].jenisTagihan
-                                  ? getListJenisTagihanResult[x]
-                                      .namaJenisTagihan
-                                  : []}
-                              </>
-                            );
-                          })
-                        ) : (
-                          <p>Tidak Ditermukan</p>
-                        )}
-                      </td>
+                      <td>{listPembayaranSiswaResult[key].nama}</td>
+                      <td>{listPembayaranSiswaResult[key].kelas}</td>
+                      <td>{listPembayaranSiswaResult[key].jenisTagihan}</td>
                       <td>
                         Rp.{" "}
                         {numberWithCommas(
@@ -178,7 +142,7 @@ class listTagihanLunas extends Component {
                                 <button
                                   type="submit"
                                   className="btn btn-danger ml-2"
-                                  onClick={() => this.removeData(key)}
+                                  onClick={() => removeData(key)}
                                 >
                                   <i className="nc-icon nc-basket"></i> Hapus
                                 </button>
@@ -193,19 +157,19 @@ class listTagihanLunas extends Component {
                 })
               ) : listPembayaranSiswaLoading ? (
                 <tr>
-                  <td colSpan="7" align="center">
+                  <td colSpan="8" align="center">
                     <Spinner color="primary">Loading...</Spinner>
                   </td>
                 </tr>
               ) : listPembayaranSiswaError ? (
                 <tr>
-                  <td colSpan="7" align="center">
+                  <td colSpan="8" align="center">
                     {listPembayaranSiswaError}
                   </td>
                 </tr>
               ) : (
                 <tr>
-                  <td colSpan="7" align="center">
+                  <td colSpan="8" align="center">
                     Data Kosong
                   </td>
                 </tr>
@@ -222,11 +186,6 @@ const mapStateToProps = (state) => ({
   listPembayaranSiswaLoading: state.PaymentReducer.listPembayaranSiswaLoading,
   listPembayaranSiswaResult: state.PaymentReducer.listPembayaranSiswaResult,
   listPembayaranSiswaError: state.PaymentReducer.listPembayaranSiswaError,
-
-  getListJenisTagihanResult:
-    state.jenisTagihanReducer.getListJenisTagihanResult,
-  getListSiswaResult: state.AuthReducer.getListSiswaResult,
-  getListKelasResult: state.KelasReducer.getListKelasResult,
 
   deleteTagihanLunasLoading: state.PaymentReducer.deleteTagihanLunasLoading,
   deleteTagihanLunasResult: state.PaymentReducer.deleteTagihanLunasResult,

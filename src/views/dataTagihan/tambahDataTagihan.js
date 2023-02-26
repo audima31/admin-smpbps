@@ -111,6 +111,11 @@ class tambahDataTagihan extends Component {
 
   handleSubmit = (event) => {
     const {
+      getListSiswaResult,
+      getListJenisTagihanResult,
+      getListKelasResult,
+    } = this.props;
+    const {
       kelas,
       nama,
       jenisTagihan,
@@ -131,21 +136,46 @@ class tambahDataTagihan extends Component {
       tahun &&
       keterangan
     ) {
-      const data = {
-        id: new Date().getTime() + "-" + nama,
-        kelas: kelas,
-        nama: nama,
-        jenisTagihan: jenisTagihan,
-        bulan: bulan,
-        tahun: tahun,
-        nominal: nominal,
-        keterangan: keterangan,
-        status: status,
-        penagih: penagih,
-      };
-      //ke Auth Action
-      this.props.dispatch(tambahTagihan(data));
-      Swal.fire("Tagihan berhasil dibuat", "", "success");
+      // eslint-disable-next-line no-lone-blocks
+      {
+        Object.keys(getListKelasResult).map((x) => {
+          // eslint-disable-next-line no-lone-blocks
+          {
+            Object.keys(getListJenisTagihanResult).map((id) => {
+              // eslint-disable-next-line no-lone-blocks
+              {
+                Object.keys(getListSiswaResult).map((key) => {
+                  if (
+                    getListSiswaResult[key].uid === nama &&
+                    getListJenisTagihanResult[id].jenisTagihanId ===
+                      jenisTagihan &&
+                    getListKelasResult[x].kelasId === kelas
+                  ) {
+                    const data = {
+                      id: new Date().getTime() + "-" + nama,
+                      kelas: getListKelasResult[x].namaKelas,
+                      nama: getListSiswaResult[key].nama,
+                      jenisTagihan:
+                        getListJenisTagihanResult[id].namaJenisTagihan,
+                      bulan: bulan,
+                      tahun: tahun,
+                      nominal: nominal,
+                      keterangan: keterangan,
+                      status: status,
+                      penagih: penagih,
+                      idSiswa: nama,
+                      idJenisTagihan: jenisTagihan,
+                    };
+                    //ke Auth Action
+                    this.props.dispatch(tambahTagihan(data));
+                    Swal.fire("Tagihan berhasil dibuat", "", "success");
+                  }
+                });
+              }
+            });
+          }
+        });
+      }
     } else {
       Swal.fire({
         icon: "error",
@@ -156,23 +186,13 @@ class tambahDataTagihan extends Component {
   };
 
   render() {
-    const {
-      nama,
-      kelas,
-      jenisTagihan,
-      nominal,
-      bulan,
-      tahun,
-      keterangan,
-      penagih,
-    } = this.state;
-    console.log("Nama kelas : ", kelas);
-    console.log("Penagih : ", penagih);
+    const { nama, kelas, jenisTagihan, nominal, bulan, tahun, keterangan } =
+      this.state;
+    console.log("Nama : ", nama);
     const {
       getListKelasResult,
       registerSiswaLoading,
       getListSiswaResult,
-      getListBulanResult,
       getListJenisTagihanResult,
     } = this.props;
 
@@ -377,8 +397,6 @@ const mapStateToProps = (state) => ({
   getListJenisTagihanResult:
     state.jenisTagihanReducer.getListJenisTagihanResult,
   getListJenisTagihanError: state.jenisTagihanReducer.getListJenisTagihanError,
-
-  getListBulanResult: state.WaktuReducer.getListBulanResult,
 
   tambahTagihanLoading: state.TagihanReducer.tambahTagihanLoading,
   tambahTagihanResult: state.TagihanReducer.tambahTagihanLoading,

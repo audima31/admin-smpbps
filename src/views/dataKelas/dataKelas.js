@@ -7,26 +7,17 @@ import Swal from "sweetalert2";
 import "../../assets/css/table.css";
 
 class dataKelas extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      search: "",
+    };
+  }
+
   componentDidMount() {
     this.props.dispatch(getListKelas());
   }
-
-  removeData = (id) => {
-    Swal.fire({
-      title: "Apakah anda yakin?",
-      text: "Anda tidak dapat mengembalikan data ini!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Iya, hapus kelas!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire("Deleted!", "Kelas berhasil dihapus.", "success");
-        this.props.dispatch(deleteKelas(id));
-      }
-    });
-  };
 
   componentDidUpdate(prevProps) {
     const { deleteKelasResult } = this.props;
@@ -37,6 +28,12 @@ class dataKelas extends Component {
       this.props.dispatch(getListKelas());
     }
   }
+
+  handleSearch = (event) => {
+    this.setState({
+      search: event.target.value,
+    });
+  };
 
   render() {
     const {
@@ -49,31 +46,75 @@ class dataKelas extends Component {
     console.log("GET LIST KELAS", getListKelasResult);
     return (
       <div className="content">
-        <div>
-          <Row>
-            <Col>
+        <Row>
+          <Col>
+            <div className="d-flex justify-content-between">
               <Link
                 to="/admin/kelas/tambah"
                 className="btn btn-primary float-left"
               >
                 + Tambah Kelas
               </Link>
-            </Col>
-            <Col md="12">
-              <Card>
-                <CardBody>
-                  <Table striped className="text-center table-hover">
-                    <thead className="text-primary">
-                      <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Nama Kelas</th>
-                        <th scope="col">Aksi</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {getListKelasResult ? (
-                        Object.keys(getListKelasResult).map((key, index) => {
-                          console.log("Cek index : ", index);
+
+              {/* button search */}
+              <div class="input-group rounded" style={{ width: "15%" }}>
+                <input
+                  type="search"
+                  class="form-control rounded"
+                  placeholder="Search"
+                  aria-label="Search"
+                  aria-describedby="search-addon"
+                  onChange={(event) => this.handleSearch(event)}
+                  value={this.state.search}
+                />
+                <span class="input-group-text border-0" id="search-addon">
+                  <i class="fas fa-search"></i>
+                </span>
+              </div>
+            </div>
+          </Col>
+          <Col md="12">
+            <Card>
+              <CardBody>
+                <Table striped className="text-center table-hover">
+                  <thead className="text-primary">
+                    <tr>
+                      <th scope="col">No</th>
+                      <th scope="col">Nama Kelas</th>
+                      <th scope="col">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {getListKelasResult ? (
+                      Object.keys(getListKelasResult)
+                        .filter((item) => {
+                          return this.state.search.toLowerCase() === ""
+                            ? item
+                            : getListKelasResult[item].namaKelas
+                                .toLowerCase()
+                                .includes(this.state.search);
+                        })
+                        .map((key, index) => {
+                          const removeData = (id) => {
+                            Swal.fire({
+                              title: "Apakah anda yakin?",
+                              text: `menghapus kelas "${getListKelasResult[key].namaKelas}"`,
+                              icon: "warning",
+                              showCancelButton: true,
+                              confirmButtonColor: "#3085d6",
+                              cancelButtonColor: "#d33",
+                              confirmButtonText: "Iya, hapus kelas!",
+                            }).then((result) => {
+                              if (result.isConfirmed) {
+                                Swal.fire(
+                                  "Deleted!",
+                                  `Kelas "${getListKelasResult[key].namaKelas}" berhasil dihapus.`,
+                                  "success"
+                                );
+                                this.props.dispatch(deleteKelas(id));
+                              }
+                            });
+                          };
                           return (
                             <tr key={key}>
                               <td>{index + 1 + "."}</td>
@@ -110,7 +151,7 @@ class dataKelas extends Component {
                                   <button
                                     type="submit"
                                     className="btn btn-danger ml-2"
-                                    onClick={() => this.removeData(key)}
+                                    onClick={() => removeData(key)}
                                   >
                                     <i className="nc-icon nc-basket"></i> Hapus
                                   </button>
@@ -119,32 +160,31 @@ class dataKelas extends Component {
                             </tr>
                           );
                         })
-                      ) : getListKelasLoading ? (
-                        <tr>
-                          <td colSpan="3" align="center">
-                            <Spinner color="primary">Loading...</Spinner>
-                          </td>
-                        </tr>
-                      ) : getListKelasError ? (
-                        <tr>
-                          <td colSpan="3" align="center">
-                            {getListKelasError}
-                          </td>
-                        </tr>
-                      ) : (
-                        <tr>
-                          <td colSpan="3" align="center">
-                            Data Kosong
-                          </td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </Table>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </div>
+                    ) : getListKelasLoading ? (
+                      <tr>
+                        <td colSpan="3" align="center">
+                          <Spinner color="primary">Loading...</Spinner>
+                        </td>
+                      </tr>
+                    ) : getListKelasError ? (
+                      <tr>
+                        <td colSpan="3" align="center">
+                          {getListKelasError}
+                        </td>
+                      </tr>
+                    ) : (
+                      <tr>
+                        <td colSpan="3" align="center">
+                          Data Kosong
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </Table>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
       </div>
     );
   }

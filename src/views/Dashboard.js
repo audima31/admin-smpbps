@@ -44,7 +44,6 @@ class Dashboard extends Component {
       getListJenisTagihanResult,
     } = this.props;
 
-    console.log("Limit : ", listPembayaranSiswaLimitResult);
     return (
       <div className="content">
         <Row>
@@ -154,58 +153,10 @@ class Dashboard extends Component {
                             <td>
                               {listPembayaranSiswaLimitResult[key].waktuTagihan}
                             </td>
+                            <td>{listPembayaranSiswaLimitResult[key].nama}</td>
+                            <td>{listPembayaranSiswaLimitResult[key].kelas}</td>
                             <td>
-                              {getListSiswaResult ? (
-                                Object.keys(getListSiswaResult).map((id) => {
-                                  return (
-                                    <>
-                                      {getListSiswaResult[id].uid ===
-                                      listPembayaranSiswaLimitResult[key].nama
-                                        ? getListSiswaResult[id].nama
-                                        : []}
-                                    </>
-                                  );
-                                })
-                              ) : (
-                                <>Nama Siswa Tidak Ditemukan</>
-                              )}
-                            </td>
-                            <td>
-                              {getListKelas ? (
-                                Object.keys(getListKelasResult).map((id) => {
-                                  return (
-                                    <>
-                                      {getListKelasResult[id].kelasId ===
-                                      listPembayaranSiswaLimitResult[key].kelas
-                                        ? getListKelasResult[id].namaKelas
-                                        : []}
-                                    </>
-                                  );
-                                })
-                              ) : (
-                                <p>Kelas Tidak Ditemukan</p>
-                              )}
-                            </td>
-                            <td>
-                              {getListJenisTagihanResult ? (
-                                Object.keys(getListJenisTagihanResult).map(
-                                  (x) => {
-                                    return (
-                                      <>
-                                        {getListJenisTagihanResult[x]
-                                          .jenisTagihanId ===
-                                        listPembayaranSiswaLimitResult[key]
-                                          .jenisTagihan
-                                          ? getListJenisTagihanResult[x]
-                                              .namaJenisTagihan
-                                          : []}
-                                      </>
-                                    );
-                                  }
-                                )
-                              ) : (
-                                <p>Tidak Ditermukan</p>
-                              )}
+                              {listPembayaranSiswaLimitResult[key].jenisTagihan}
                             </td>
                             <td>
                               Rp.{" "}
@@ -259,19 +210,19 @@ class Dashboard extends Component {
                     )
                   ) : listPembayaranSiswaLimitLoading ? (
                     <tr>
-                      <td colSpan="7" align="center">
+                      <td colSpan="8" align="center">
                         <Spinner color="primary">Loading...</Spinner>
                       </td>
                     </tr>
                   ) : listPembayaranSiswaLimitError ? (
                     <tr>
-                      <td colSpan="7" align="center">
+                      <td colSpan="8" align="center">
                         {listPembayaranSiswaLimitError}
                       </td>
                     </tr>
                   ) : (
                     <tr>
-                      <td colSpan="7" align="center">
+                      <td colSpan="8" align="center">
                         Data Kosong
                       </td>
                     </tr>

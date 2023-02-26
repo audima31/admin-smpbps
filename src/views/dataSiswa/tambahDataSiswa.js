@@ -173,6 +173,7 @@ class tambahDataSiswa extends Component {
                 NIS<label className="btg-wajib">*</label> :
               </label>
               <input
+                type="number"
                 className="form-control"
                 id="inputNIS"
                 placeholder="NIS"

@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Spinner } from "reactstrap";
-import { getListSiswa } from "store/actions/AuthAction";
-import { getListTypeTagihan } from "store/actions/jenisTagihanAction";
-import { getListKelas } from "store/actions/KelasAction";
 import { getDetailTagihanLunas } from "store/actions/PaymentAction";
 import { numberWithCommas } from "utils";
 
@@ -20,9 +17,6 @@ class detailTagihanLunas extends Component {
     const { idTagihanLunas } = this.state;
     console.log("id:", idTagihanLunas);
     this.props.dispatch(getDetailTagihanLunas(idTagihanLunas));
-    this.props.dispatch(getListKelas());
-    this.props.dispatch(getListSiswa());
-    this.props.dispatch(getListTypeTagihan());
   }
 
   handleBack = () => {
@@ -30,14 +24,8 @@ class detailTagihanLunas extends Component {
   };
 
   render() {
-    const { idTagihanLunas } = this.state;
-    const {
-      getDetailTagihanLunasResult,
-      getDetailTagihanLunasLoading,
-      getListSiswaResult,
-      getListKelasResult,
-      getListJenisTagihanResult,
-    } = this.props;
+    const { getDetailTagihanLunasResult, getDetailTagihanLunasLoading } =
+      this.props;
 
     return (
       <div className="content">
@@ -57,40 +45,10 @@ class detailTagihanLunas extends Component {
             <>
               <div className=" ps-4">
                 <label className="mt-4 ml-3 text-dark fw-bold fs-5">
-                  {getListSiswaResult ? (
-                    Object.keys(getListSiswaResult).map((key) => {
-                      return (
-                        <>
-                          {getListSiswaResult[key].uid ===
-                          getDetailTagihanLunasResult.nama
-                            ? getListSiswaResult[key].nama
-                            : []}
-                        </>
-                      );
-                    })
-                  ) : (
-                    <>Nama Siswa Tidak Ditemukan</>
-                  )}
+                  {getDetailTagihanLunasResult.nama}
                 </label>
                 <label className="text-secondary fw-bold fs-6 ml-2">
-                  (
-                  {getListKelasResult ? (
-                    Object.keys(getListKelasResult).map((id) => {
-                      return (
-                        <>
-                          {getDetailTagihanLunasResult.kelas ===
-                          getListKelasResult[id].kelasId ? (
-                            <>{getListKelasResult[id].namaKelas}</>
-                          ) : (
-                            <> </>
-                          )}
-                        </>
-                      );
-                    })
-                  ) : (
-                    <></>
-                  )}
-                  )
+                  {getDetailTagihanLunasResult.kelas}
                 </label>
                 <hr></hr>
 
@@ -109,23 +67,7 @@ class detailTagihanLunas extends Component {
                   <div className="col">
                     <p>: {getDetailTagihanLunasResult.status} </p>
                     <p>: {getDetailTagihanLunasResult.metodePembayaran}</p>
-                    <p>
-                      :{" "}
-                      {getListJenisTagihanResult ? (
-                        Object.keys(getListJenisTagihanResult).map((id) => {
-                          return (
-                            <>
-                              {getListJenisTagihanResult[id].jenisTagihanId ===
-                              getDetailTagihanLunasResult.jenisTagihan
-                                ? getListJenisTagihanResult[id].namaJenisTagihan
-                                : []}
-                            </>
-                          );
-                        })
-                      ) : (
-                        <>404</>
-                      )}
-                    </p>
+                    <p>: {getDetailTagihanLunasResult.jenisTagihan}</p>
                     <p>: {getDetailTagihanLunasResult.order_id}</p>
                     <p>
                       : Rp.{" "}
@@ -161,11 +103,6 @@ const mapStateToProps = (state) => ({
     state.PaymentReducer.getDetailTagihanLunasLoading,
   getDetailTagihanLunasResult: state.PaymentReducer.getDetailTagihanLunasResult,
   getDetailTagihanLunasError: state.PaymentReducer.getDetailTagihanLunasError,
-
-  getListJenisTagihanResult:
-    state.jenisTagihanReducer.getListJenisTagihanResult,
-  getListSiswaResult: state.AuthReducer.getListSiswaResult,
-  getListKelasResult: state.KelasReducer.getListKelasResult,
 });
 
 export default connect(mapStateToProps, null)(detailTagihanLunas);

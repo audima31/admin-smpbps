@@ -1,10 +1,7 @@
-import React, { Component, useRef } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import Swal from "sweetalert2";
 import { DownloadTableExcel } from "react-export-table-to-excel";
-import { getListKelas } from "store/actions/KelasAction";
-import { getListSiswa } from "store/actions/AuthAction";
-import { getListTypeTagihan } from "store/actions/jenisTagihanAction";
 import { listPembayaranSiswa } from "store/actions/PaymentAction";
 
 class Laporan extends Component {
@@ -21,9 +18,6 @@ class Laporan extends Component {
 
   componentDidMount() {
     this.props.dispatch(listPembayaranSiswa());
-    this.props.dispatch(getListKelas());
-    this.props.dispatch(getListSiswa());
-    this.props.dispatch(getListTypeTagihan());
   }
 
   handleBulan = (event) => {
@@ -49,12 +43,7 @@ class Laporan extends Component {
   };
 
   render() {
-    const {
-      listPembayaranSiswaResult,
-      getListKelasResult,
-      getListSiswaResult,
-      getListJenisTagihanResult,
-    } = this.props;
+    const { listPembayaranSiswaResult } = this.props;
     const { bulan, tahun } = this.state;
 
     return (
@@ -185,58 +174,10 @@ class Laporan extends Component {
                                     .waktuPembayaran2
                                 }
                               </td>
+                              <td>{listPembayaranSiswaResult[key].nama}</td>
+                              <td>{listPembayaranSiswaResult[key].kelas}</td>
                               <td>
-                                {getListSiswaResult ? (
-                                  Object.keys(getListSiswaResult).map((id) => {
-                                    return (
-                                      <>
-                                        {getListSiswaResult[id].uid ===
-                                        listPembayaranSiswaResult[key].nama
-                                          ? getListSiswaResult[id].nama
-                                          : []}
-                                      </>
-                                    );
-                                  })
-                                ) : (
-                                  <>Nama Siswa Tidak Ditemukan</>
-                                )}
-                              </td>
-                              <td>
-                                {getListKelas ? (
-                                  Object.keys(getListKelasResult).map((id) => {
-                                    return (
-                                      <>
-                                        {getListKelasResult[id].kelasId ===
-                                        listPembayaranSiswaResult[key].kelas
-                                          ? getListKelasResult[id].namaKelas
-                                          : []}
-                                      </>
-                                    );
-                                  })
-                                ) : (
-                                  <p>Kelas Tidak Ditemukan</p>
-                                )}
-                              </td>
-                              <td>
-                                {getListJenisTagihanResult ? (
-                                  Object.keys(getListJenisTagihanResult).map(
-                                    (x) => {
-                                      return (
-                                        <>
-                                          {getListJenisTagihanResult[x]
-                                            .jenisTagihanId ===
-                                          listPembayaranSiswaResult[key]
-                                            .jenisTagihan
-                                            ? getListJenisTagihanResult[x]
-                                                .namaJenisTagihan
-                                            : []}
-                                        </>
-                                      );
-                                    }
-                                  )
-                                ) : (
-                                  <p>Tidak Ditermukan</p>
-                                )}
+                                {listPembayaranSiswaResult[key].jenisTagihan}
                               </td>
                               <td>
                                 {
@@ -273,11 +214,6 @@ const mapStateToProps = (state) => ({
   listPembayaranSiswaLoading: state.PaymentReducer.listPembayaranSiswaLoading,
   listPembayaranSiswaResult: state.PaymentReducer.listPembayaranSiswaResult,
   listPembayaranSiswaError: state.PaymentReducer.listPembayaranSiswaError,
-
-  getListJenisTagihanResult:
-    state.jenisTagihanReducer.getListJenisTagihanResult,
-  getListSiswaResult: state.AuthReducer.getListSiswaResult,
-  getListKelasResult: state.KelasReducer.getListKelasResult,
 });
 
 export default connect(mapStateToProps, null)(Laporan);

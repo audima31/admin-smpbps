@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getListSiswa } from "store/actions/AuthAction";
 import { getListTypeTagihan } from "store/actions/jenisTagihanAction";
-import { getListKelas } from "store/actions/KelasAction";
 import { updateTagihan, getDetailTagihan } from "store/actions/TagihanAction";
 import Swal from "sweetalert2";
 import { numberWithCommas } from "utils";
@@ -20,7 +18,6 @@ class editDataTagihan extends Component {
       tahun: "",
       status: "",
       nominal: "",
-      waktu: "",
     };
   }
 
@@ -29,8 +26,6 @@ class editDataTagihan extends Component {
 
     this.props.dispatch(getDetailTagihan(id));
     this.props.dispatch(getListTypeTagihan());
-    this.props.dispatch(getListSiswa());
-    this.props.dispatch(getListKelas());
   }
 
   handleJenisTagihan = (event) => {
@@ -70,24 +65,37 @@ class editDataTagihan extends Component {
   };
 
   handleSubmit = (event) => {
+    const { getListJenisTagihanResult, getDetailTagihanResult } = this.props;
     const { jenisTagihan, keterangan, bulan, tahun, nominal, status, id } =
       this.state;
 
     event.preventDefault();
 
     if (jenisTagihan && keterangan && nominal && bulan && tahun && status) {
-      const data = {
-        jenisTagihan: jenisTagihan,
-        bulan: bulan,
-        tahun: tahun,
-        nominal: nominal,
-        keterangan: keterangan,
-        status: status,
-        id: id,
-      };
-      //ke Auth Action
-      this.props.dispatch(updateTagihan(id, data));
-      Swal.fire("Berhasil", `Update tagihan telah berhasil`, "success");
+      // eslint-disable-next-line no-lone-blocks
+      {
+        Object.keys(getListJenisTagihanResult).map((key) => {
+          if (getListJenisTagihanResult[key].jenisTagihanId === jenisTagihan) {
+            const data = {
+              kelas: getDetailTagihanResult.kelas,
+              nama: getDetailTagihanResult.nama,
+              jenisTagihan: getListJenisTagihanResult[key].namaJenisTagihan,
+              bulan: bulan,
+              tahun: tahun,
+              nominal: nominal,
+              keterangan: keterangan,
+              status: status,
+              waktuTagihan: getDetailTagihanResult.waktuTagihan,
+              penagih: getDetailTagihanResult.penagih,
+              idSiswa: getDetailTagihanResult.idSiswa,
+              idJenisTagihan: jenisTagihan,
+            };
+            //ke Auth Action
+            this.props.dispatch(updateTagihan(id, data));
+            Swal.fire("Berhasil", `Update tagihan telah berhasil`, "success");
+          }
+        });
+      }
     } else {
       Swal.fire({
         icon: "error",
@@ -109,7 +117,7 @@ class editDataTagihan extends Component {
       prevProps.getDetailTagihanResult !== getDetailTagihanResult
     ) {
       this.setState({
-        jenisTagihan: getDetailTagihanResult.jenisTagihan,
+        jenisTagihan: getDetailTagihanResult.idJenisTagihan,
         keterangan: getDetailTagihanResult.keterangan,
         bulan: getDetailTagihanResult.bulan,
         tahun: getDetailTagihanResult.tahun,
@@ -132,10 +140,8 @@ class editDataTagihan extends Component {
 
     const {
       getDetailTagihanResult,
-      getListJenisTagihanResult,
       updateTagihanLoading,
-      getListSiswaResult,
-      getListKelasResult,
+      getListJenisTagihanResult,
     } = this.props;
 
     console.log("detail Tagihan: ", getDetailTagihanResult);
@@ -160,40 +166,8 @@ class editDataTagihan extends Component {
             </div>
 
             <div>
-              <p>
-                Nama :{" "}
-                {getListSiswaResult ? (
-                  Object.keys(getListSiswaResult).map((id) => {
-                    return (
-                      <>
-                        {getListSiswaResult[id].uid ===
-                        getDetailTagihanResult.nama
-                          ? getListSiswaResult[id].nama
-                          : []}
-                      </>
-                    );
-                  })
-                ) : (
-                  <>Nama Siswa Tidak Ditemukan</>
-                )}
-              </p>
-              <p>
-                Kelas :{" "}
-                {getListKelasResult ? (
-                  Object.keys(getListKelasResult).map((id) => {
-                    return (
-                      <>
-                        {getListKelasResult[id].kelasId ===
-                        getDetailTagihanResult.kelas
-                          ? getListKelasResult[id].namaKelas
-                          : []}
-                      </>
-                    );
-                  })
-                ) : (
-                  <>Kelas Tidak Ditemukan</>
-                )}
-              </p>
+              <p>Nama : {getDetailTagihanResult.nama}</p>
+              <p>Kelas : {getDetailTagihanResult.kelas}</p>
             </div>
 
             <table className="table table-bordered text-center">
@@ -209,20 +183,8 @@ class editDataTagihan extends Component {
                 {getDetailTagihanResult ? (
                   <>
                     <tr>
-                      <td>{getDetailTagihanResult.Tagihan}</td>
-                      <td>
-                        {Object.keys(getListJenisTagihanResult).map((key) => {
-                          return (
-                            <>
-                              {getListJenisTagihanResult[key].jenisTagihanId ===
-                              getDetailTagihanResult.jenisTagihan
-                                ? getListJenisTagihanResult[key]
-                                    .namaJenisTagihan
-                                : []}
-                            </>
-                          );
-                        })}
-                      </td>
+                      <td>{getDetailTagihanResult.waktuTagihan}</td>
+                      <td>{getDetailTagihanResult.jenisTagihan}</td>
                       <td>
                         Rp. {numberWithCommas(getDetailTagihanResult.nominal)}
                       </td>
@@ -426,9 +388,6 @@ const mapStateToProps = (state) => ({
   updateTagihanLoading: state.TagihanReducer.updateTagihanLoading,
   updateTagihanResult: state.TagihanReducer.updateTagihanLoading,
   updateTagihanError: state.TagihanReducer.updateTagihanLoading,
-
-  getListSiswaResult: state.AuthReducer.getListSiswaResult,
-  getListKelasResult: state.KelasReducer.getListKelasResult,
 });
 
 export default connect(mapStateToProps, null)(editDataTagihan);
