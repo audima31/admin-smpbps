@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { Spinner } from "reactstrap";
-import { getListSiswa } from "store/actions/AuthAction";
 import { getListKelas } from "store/actions/KelasAction";
+import { getListSiswa } from "store/actions/SiswaAction";
 import { deleteSiswa } from "store/actions/SiswaAction";
 import Swal from "sweetalert2";
 
@@ -186,9 +186,9 @@ class detailDataKelas extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  getListSiswaLoading: state.AuthReducer.getListSiswaLoading,
-  getListSiswaResult: state.AuthReducer.getListSiswaResult,
-  getListSiswaError: state.AuthReducer.getListSiswaError,
+  getListSiswaLoading: state.SiswaAction.getListSiswaLoading,
+  getListSiswaResult: state.SiswaAction.getListSiswaResult,
+  getListSiswaError: state.SiswaAction.getListSiswaError,
 
   getListKelasLoading: state.KelasReducer.getListKelasLoading,
   getListKelasResult: state.KelasReducer.getListKelasResult,

@@ -1,13 +1,12 @@
 import React, { Component } from "react";
-import { getListSiswa } from "../../store/actions/AuthAction";
 import { connect } from "react-redux";
 import { getListKelas } from "store/actions/KelasAction";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import { getListTypeTagihan } from "store/actions/jenisTagihanAction";
-import { getListBulan } from "store/actions/WaktuAction";
 import { tambahTagihan } from "store/actions/TagihanAction";
 import { getData } from "utils";
+import { getListSiswa } from "store/actions/SiswaAction";
 
 class tambahDataTagihan extends Component {
   constructor(props) {
@@ -30,7 +29,6 @@ class tambahDataTagihan extends Component {
     this.props.dispatch(getListTypeTagihan());
     this.props.dispatch(getListKelas());
     this.props.dispatch(getListSiswa());
-    this.props.dispatch(getListBulan());
     this.getUserData();
   }
 
@@ -388,9 +386,9 @@ const mapStateToProps = (state) => ({
   getListKelasResult: state.KelasReducer.getListKelasResult,
   getListKelasError: state.KelasReducer.getListKelasError,
 
-  getListSiswaLoading: state.AuthReducer.getListSiswaLoading,
-  getListSiswaResult: state.AuthReducer.getListSiswaResult,
-  getListSiswaError: state.AuthReducer.getListSiswaError,
+  getListSiswaLoading: state.SiswaReducer.getListSiswaLoading,
+  getListSiswaResult: state.SiswaReducer.getListSiswaResult,
+  getListSiswaError: state.SiswaReducer.getListSiswaError,
 
   getListJenisTagihanLoading:
     state.jenisTagihanReducer.getListJenisTagihanLoading,

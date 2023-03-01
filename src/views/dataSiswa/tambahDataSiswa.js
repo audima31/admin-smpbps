@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { registerSiswa } from "../../store/actions/AuthAction";
 import { connect } from "react-redux";
 import { getListKelas } from "store/actions/KelasAction";
+import { tambahSiswa } from "store/actions/SiswaAction";
 import Swal from "sweetalert2";
 
 class tambahDataSiswa extends Component {
@@ -28,11 +28,11 @@ class tambahDataSiswa extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { registerSiswaResult } = this.props;
+    const { tambahSiswaResult } = this.props;
 
     if (
-      registerSiswaResult &&
-      prevProps.registerSiswaResult !== registerSiswaResult
+      tambahSiswaResult &&
+      prevProps.tambahSiswaResult !== tambahSiswaResult
     ) {
       window.location = "/admin/siswa";
     }
@@ -127,7 +127,7 @@ class tambahDataSiswa extends Component {
         status: "siswa",
       };
       //ke Auth Action
-      this.props.dispatch(registerSiswa(data));
+      this.props.dispatch(tambahSiswa(data));
       Swal.fire("Akun siswa berhasil dibuat", "", "success");
     } else {
       Swal.fire({
@@ -151,7 +151,7 @@ class tambahDataSiswa extends Component {
       namaOrangTua,
       noHandphoneOrangTua,
     } = this.state;
-    const { getListKelasResult, registerSiswaLoading } = this.props;
+    const { getListKelasResult, tambahSiswaLoading } = this.props;
 
     return (
       <div className="content">
@@ -324,7 +324,7 @@ class tambahDataSiswa extends Component {
             </div>
 
             <div>
-              {registerSiswaLoading ? (
+              {tambahSiswaLoading ? (
                 <div className="vstack gap-2 col-md-5 mx-auto">
                   <button type="submit" color="primary" disabled>
                     <div class="spinner-border" role="status">
@@ -348,9 +348,9 @@ class tambahDataSiswa extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  registerSiswaLoading: state.AuthReducer.registerSiswaLoading,
-  registerSiswaResult: state.AuthReducer.registerSiswaResult,
-  registerSiswaError: state.AuthReducer.registerSiswaError,
+  tambahSiswaLoading: state.SiswaReducer.tambahSiswaLoading,
+  tambahSiswaResult: state.SiswaReducer.tambahSiswaResult,
+  tambahSiswaError: state.SiswaReducer.tambahSiswaError,
 
   getListKelasLoading: state.KelasReducer.getListKelasLoading,
   getListKelasResult: state.KelasReducer.getListKelasResult,

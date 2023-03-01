@@ -1,5 +1,6 @@
 import {
-  GET_KELAS,
+  TAMBAH_SISWA,
+  GET_LIST_SISWA,
   GET_DETAIL_SISWA,
   UPDATE_SISWA,
   DELETE_SISWA,
@@ -7,9 +8,13 @@ import {
 } from "store/actions/SiswaAction";
 
 const initialState = {
-  getKelasSiswaLoading: false,
-  getKelasSiswaResult: false,
-  getKelasSiswaError: false,
+  tambahSiswaLoading: false,
+  tambahSiswaResult: false,
+  tambahSiswaError: false,
+
+  getListSiswaLoading: false,
+  getListSiswaResult: false,
+  getListSiswaError: false,
 
   detailSiswaLoading: false,
   detailSiswaResult: false,
@@ -31,12 +36,20 @@ const initialState = {
 // eslint-disable-next-line import/no-anonymous-default-export
 export default function (state = initialState, action) {
   switch (action.type) {
-    case GET_KELAS:
+    case TAMBAH_SISWA:
       return {
         ...state,
-        getKelasSiswaLoading: action.payload.loading,
-        getKelasSiswaResult: action.payload.data,
-        getKelasSiswaError: action.payload.errorMessage,
+        tambahSiswaLoading: action.payload.loading,
+        tambahSiswaResult: action.payload.data,
+        tambahSiswaError: action.payload.errorMessage,
+      };
+
+    case GET_LIST_SISWA:
+      return {
+        ...state,
+        getListSiswaLoading: action.payload.loading,
+        getListSiswaResult: action.payload.data,
+        getListSiswaError: action.payload.errorMessage,
       };
 
     case GET_DETAIL_SISWA:

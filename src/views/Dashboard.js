@@ -11,12 +11,12 @@ import {
   Table,
   Spinner,
 } from "reactstrap";
-import { getListSiswa } from "store/actions/AuthAction";
 import { getListTypeTagihan } from "store/actions/jenisTagihanAction";
 import { getListKelas } from "store/actions/KelasAction";
 import { totalKelas } from "store/actions/KelasAction";
 import { limitPembayaranLunas } from "store/actions/PaymentAction";
 import { totalPembayaranLunas } from "store/actions/PaymentAction";
+import { getListSiswa } from "store/actions/SiswaAction";
 import { totalSiswa } from "store/actions/SiswaAction";
 import { numberWithCommas } from "utils";
 
@@ -39,9 +39,6 @@ class Dashboard extends Component {
       listPembayaranSiswaLimitResult,
       listPembayaranSiswaLimitLoading,
       listPembayaranSiswaLimitError,
-      getListKelasResult,
-      getListSiswaResult,
-      getListJenisTagihanResult,
     } = this.props;
 
     return (
@@ -256,11 +253,6 @@ const mapStateToProps = (state) => ({
     state.PaymentReducer.listPembayaranSiswaLimitResult,
   listPembayaranSiswaLimitError:
     state.PaymentReducer.listPembayaranSiswaLimitError,
-
-  getListJenisTagihanResult:
-    state.jenisTagihanReducer.getListJenisTagihanResult,
-  getListSiswaResult: state.AuthReducer.getListSiswaResult,
-  getListKelasResult: state.KelasReducer.getListKelasResult,
 });
 
 export default connect(mapStateToProps, null)(Dashboard);

@@ -7,66 +7,10 @@ import {
   storeData,
 } from "../../utils";
 
-export const REGISTER_SISWA = "REGISTER_SISWA";
-export const GET_LIST_SISWA = "GET_LIST_SISWA";
 export const LOGIN_ADMIN = "LOGIN_ADMIN";
 export const REGISTER_ADMIN = "REGISTER_ADMIN";
 export const CHECK_LOGIN = "CHECK_LOGIN";
 export const LOGOUT = "LOGOUT";
-
-export const registerSiswa = (data) => {
-  return (dispatch) => {
-    console.log("data: ", data);
-    dispatchLoading(dispatch, REGISTER_SISWA);
-
-    FIREBASE.auth()
-      .createUserWithEmailAndPassword(data.email, data.password)
-      .then((success) => {
-        console.log("SUKSES : ", success.user);
-        // Ambil UID, dan buat DataBaru (data+uid)
-        const dataBaru = {
-          ...data,
-          uid: success.user.uid,
-        };
-
-        //SIMPAN ke realTime Database Firebase
-        FIREBASE.database()
-          .ref("siswa/" + success.user.uid)
-          .set(dataBaru);
-
-        //SUKSES
-        dispatchSuccess(dispatch, REGISTER_SISWA, dataBaru);
-      })
-      .catch((error) => {
-        // ERROR
-        dispatchError(dispatch, REGISTER_SISWA, error.message);
-
-        alert(error.message);
-        console.log("ERROR : ", error.message);
-      });
-  };
-};
-
-export const getListSiswa = () => {
-  return (dispatch) => {
-    dispatchLoading(dispatch, GET_LIST_SISWA);
-
-    FIREBASE.database()
-      .ref("siswa/")
-      .once("value", (querySnapshot) => {
-        console.log("querySnapshot : ", querySnapshot.val());
-
-        //hasil
-        let data = querySnapshot.val() ? querySnapshot.val() : [];
-
-        dispatchSuccess(dispatch, GET_LIST_SISWA, data);
-      })
-      .catch((error) => {
-        dispatchError(dispatch, GET_LIST_SISWA, error);
-        alert(error.message);
-      });
-  };
-};
 
 export const loginUser = (email, password) => {
   return (dispatch) => {

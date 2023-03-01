@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { Button, Card, CardBody, Col, Row, Spinner, Table } from "reactstrap";
-import { getListSiswa } from "store/actions/AuthAction";
+import { Card, CardBody, Col, Row, Spinner, Table } from "reactstrap";
 import { getListKelas } from "store/actions/KelasAction";
+import { getListSiswa } from "store/actions/SiswaAction";
 import { getDetailSiswa } from "store/actions/SiswaAction";
 import { deleteSiswa } from "store/actions/SiswaAction";
 import Swal from "sweetalert2";
@@ -234,9 +234,9 @@ class dataSiswa extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  getListSiswaLoading: state.AuthReducer.getListSiswaLoading,
-  getListSiswaResult: state.AuthReducer.getListSiswaResult,
-  getListSiswaError: state.AuthReducer.getListSiswaError,
+  getListSiswaLoading: state.SiswaReducer.getListSiswaLoading,
+  getListSiswaResult: state.SiswaReducer.getListSiswaResult,
+  getListSiswaError: state.SiswaReducer.getListSiswaError,
 
   getListKelasLoading: state.KelasReducer.getListKelasLoading,
   getListKelasResult: state.KelasReducer.getListKelasResult,

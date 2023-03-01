@@ -1,28 +1,63 @@
 import FIREBASE from "config/FIREBASE";
 import { dispatchError, dispatchLoading, dispatchSuccess } from "../../utils";
 
-export const GET_KELAS = "GET_KELAS";
+export const TAMBAH_SISWA = "TAMBAH_SISWA";
+export const GET_LIST_SISWA = "GET_LIST_SISWA";
 export const GET_DETAIL_SISWA = "GET_DETAIL_SISWA";
 export const UPDATE_SISWA = "UPDATE_SISWA";
 export const DELETE_SISWA = "DELETE_SISWA";
 export const TOTAL_SISWA = "TOTAL_SISWA";
 
-//INI BIAR NAMPILIN NAMA KELAS DI GET LIST SISWA
-export const getKelasSiswa = (id) => {
+export const tambahSiswa = (data) => {
   return (dispatch) => {
-    dispatchLoading(dispatch, GET_KELAS);
+    console.log("data: ", data);
+    dispatchLoading(dispatch, TAMBAH_SISWA);
 
-    FIREBASE.database()
-      .ref("kelas/" + id)
-      .once("value", (querySnapshot) => {
-        //Hasil
-        let data = querySnapshot.val() ? querySnapshot.val() : [];
+    FIREBASE.auth()
+      .createUserWithEmailAndPassword(data.email, data.password)
+      .then((success) => {
+        console.log("SUKSES : ", success.user);
+        // Ambil UID, dan buat DataBaru (data+uid)
+        const dataBaru = {
+          ...data,
+          uid: success.user.uid,
+        };
 
-        dispatchSuccess(dispatch, GET_KELAS, data);
+        //SIMPAN ke realTime Database Firebase
+        FIREBASE.database()
+          .ref("siswa/" + success.user.uid)
+          .set(dataBaru);
+
+        //SUKSES
+        dispatchSuccess(dispatch, TAMBAH_SISWA, dataBaru);
       })
       .catch((error) => {
-        dispatchError(dispatch, GET_KELAS, error);
-        alert(error);
+        // ERROR
+        dispatchError(dispatch, TAMBAH_SISWA, error.message);
+
+        alert(error.message);
+        console.log("ERROR : ", error.message);
+      });
+  };
+};
+
+export const getListSiswa = () => {
+  return (dispatch) => {
+    dispatchLoading(dispatch, GET_LIST_SISWA);
+
+    FIREBASE.database()
+      .ref("siswa/")
+      .once("value", (querySnapshot) => {
+        console.log("querySnapshot : ", querySnapshot.val());
+
+        //hasil
+        let data = querySnapshot.val() ? querySnapshot.val() : [];
+
+        dispatchSuccess(dispatch, GET_LIST_SISWA, data);
+      })
+      .catch((error) => {
+        dispatchError(dispatch, GET_LIST_SISWA, error);
+        alert(error.message);
       });
   };
 };
