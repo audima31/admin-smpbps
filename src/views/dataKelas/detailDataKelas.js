@@ -21,10 +21,6 @@ class detailDataKelas extends Component {
     this.props.dispatch(getListKelas());
   }
 
-  removeData = (id) => {
-    this.props.dispatch(deleteSiswa(id));
-  };
-
   componentDidUpdate(prevProps) {
     const { deleteSiswaResult } = this.props;
     if (
@@ -94,10 +90,26 @@ class detailDataKelas extends Component {
             <tbody>
               {getListSiswaResult ? (
                 Object.keys(getListSiswaResult).map((key) => {
-                  console.log("List Siswa:", getListSiswaResult.length);
-
-                  console.log("getSiswa :", getListSiswaResult[key].kelas);
-                  console.log("idKelas : ", idKelas);
+                  const removeData = (id) => {
+                    Swal.fire({
+                      title: `Apakah anda yakin?`,
+                      text: `menghapus data "${getListSiswaResult[key].nama}"`,
+                      icon: "warning",
+                      showCancelButton: true,
+                      confirmButtonColor: "#3085d6",
+                      cancelButtonColor: "#d33",
+                      confirmButtonText: "Iya, hapus data siswa!",
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        Swal.fire(
+                          "Deleted!",
+                          `Data "${getListSiswaResult[key].nama}" berhasil dihapus.`,
+                          "success"
+                        );
+                        this.props.dispatch(deleteSiswa(id));
+                      }
+                    });
+                  };
                   return (
                     <tr key={key}>
                       {getListSiswaResult[key].kelas === idKelas ? (
@@ -154,7 +166,7 @@ class detailDataKelas extends Component {
                               <button
                                 type="submit"
                                 className="btn btn-danger ml-2"
-                                onClick={() => this.removeData(key)}
+                                onClick={() => removeData(key)}
                               >
                                 <i className="nc-icon nc-basket"></i> Hapus
                               </button>
