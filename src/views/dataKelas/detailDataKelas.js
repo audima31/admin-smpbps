@@ -45,6 +45,9 @@ class detailDataKelas extends Component {
     } = this.props;
     const { idKelas } = this.state;
 
+    console.log("Get list siswa result : ", getListSiswaResult);
+    console.log("Get list siswa loading : ", getListSiswaLoading);
+
     return (
       <div className="content">
         <div className="mt-3">
@@ -186,9 +189,9 @@ class detailDataKelas extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  getListSiswaLoading: state.SiswaAction.getListSiswaLoading,
-  getListSiswaResult: state.SiswaAction.getListSiswaResult,
-  getListSiswaError: state.SiswaAction.getListSiswaError,
+  getListSiswaLoading: state.SiswaReducer.getListSiswaLoading,
+  getListSiswaResult: state.SiswaReducer.getListSiswaResult,
+  getListSiswaError: state.SiswaReducer.getListSiswaError,
 
   getListKelasLoading: state.KelasReducer.getListKelasLoading,
   getListKelasResult: state.KelasReducer.getListKelasResult,

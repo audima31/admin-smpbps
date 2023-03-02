@@ -53,8 +53,6 @@ class dataSiswa extends Component {
       getListKelasResult,
       deleteSiswaLoading,
     } = this.props;
-    console.log("getKelasSiswaResult : ", getListKelasResult);
-    console.log("getSiswa : ", getListSiswaResult);
 
     return (
       <div className="content">

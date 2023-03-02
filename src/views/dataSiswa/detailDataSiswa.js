@@ -94,6 +94,7 @@ class detailDataSiswa extends Component {
                     <p>Kelas</p>
                     <p>Jenis Kelamin</p>
                     <p>Email</p>
+                    <p>No Handphone</p>
                     <p>Alamat</p>
                     <p>Nama Orang Tua</p>
                     <p>No Handphone Orang Tua</p>
@@ -120,6 +121,7 @@ class detailDataSiswa extends Component {
                     </p>
                     <p>: {detailSiswaResult.jenisKelamin}</p>
                     <p>: {detailSiswaResult.email}</p>
+                    <p>: {detailSiswaResult.noHandphoneSiswa}</p>
                     <p>
                       :{" "}
                       {detailSiswaResult.alamatRumah
