@@ -36,7 +36,6 @@ class dataTagihan extends Component {
   };
 
   render() {
-    console.log("Search : ", this.state.search);
     const {
       getListTagihanResult,
       getListTagihanLoading,
