@@ -31,7 +31,7 @@ class detailDataSiswa extends Component {
 
   componentDidUpdate(prevProps) {
     const { idSiswa } = this.state;
-
+    console.log("ID SISWA : ", idSiswa);
     const { deleteTagihanResult, deleteTagihanLunasResult } = this.props;
     if (
       deleteTagihanResult &&

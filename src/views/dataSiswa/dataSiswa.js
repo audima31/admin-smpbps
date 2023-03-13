@@ -7,14 +7,19 @@ import { getListSiswa } from "store/actions/SiswaAction";
 import { getDetailSiswa } from "store/actions/SiswaAction";
 import { deleteSiswa } from "store/actions/SiswaAction";
 import Swal from "sweetalert2";
+import "../../assets/css/Pagination.css";
 
 class dataSiswa extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      search: "",
+      currentPage: 1, // halaman saat ini
+      dataPerPage: 10, // jumlah data per halaman
+      searchInput: "", // input search
     };
+    this.handleClick = this.handleClick.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   componentDidMount() {
@@ -39,11 +44,18 @@ class dataSiswa extends Component {
     }
   }
 
-  handleSearch = (event) => {
+  handleSearch(event) {
     this.setState({
-      search: event.target.value,
+      searchInput: event.target.value,
+      currentPage: 1,
     });
-  };
+  }
+
+  handleClick(event) {
+    this.setState({
+      currentPage: Number(event.target.id),
+    });
+  }
 
   render() {
     const {
@@ -53,6 +65,37 @@ class dataSiswa extends Component {
       getListKelasResult,
       deleteSiswaLoading,
     } = this.props;
+
+    const { currentPage, dataPerPage, searchInput } = this.state;
+
+    // filter data berdasarkan input search
+    const filteredData = Object.values(getListSiswaResult).filter((item) =>
+      item.nama.toLowerCase().includes(searchInput.toLowerCase())
+    );
+
+    // logika untuk menentukan index awal dan akhir data yang akan ditampilkan
+    const indexOfLastData = currentPage * dataPerPage;
+    const indexOfFirstData = indexOfLastData - dataPerPage;
+    const currentData = filteredData.slice(indexOfFirstData, indexOfLastData);
+
+    // logika untuk membuat tombol pagination
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(filteredData.length / dataPerPage); i++) {
+      pageNumbers.push(i);
+    }
+
+    const renderPageNumbers = pageNumbers.map((number) => {
+      return (
+        <li
+          key={number}
+          id={number}
+          onClick={this.handleClick}
+          className={currentPage === number ? "active" : null}
+        >
+          {number}
+        </li>
+      );
+    });
 
     return (
       <div className="content">
@@ -71,12 +114,12 @@ class dataSiswa extends Component {
                 <div class="input-group rounded" style={{ width: "15%" }}>
                   <input
                     type="search"
+                    placeholder="Search..."
+                    value={searchInput}
+                    onChange={this.handleSearch}
                     class="form-control rounded"
-                    placeholder="Search"
                     aria-label="Search"
                     aria-describedby="search-addon"
-                    onChange={(event) => this.handleSearch(event)}
-                    value={this.state.search}
                   />
                   <span class="input-group-text border-0" id="search-addon">
                     <i class="fas fa-search"></i>
@@ -101,105 +144,102 @@ class dataSiswa extends Component {
                     </thead>
                     <tbody>
                       {getListSiswaResult ? (
-                        Object.keys(getListSiswaResult)
-                          .filter((item) => {
-                            return this.state.search.toLowerCase() === ""
-                              ? item
-                              : getListSiswaResult[item].nama
-                                  .toLowerCase()
-                                  .includes(this.state.search);
-                          })
-                          .map((key, index) => {
-                            const removeData = (id) => {
-                              Swal.fire({
-                                title: `Apakah anda yakin?`,
-                                text: `menghapus data "${getListSiswaResult[key].nama}"`,
-                                icon: "warning",
-                                showCancelButton: true,
-                                confirmButtonColor: "#3085d6",
-                                cancelButtonColor: "#d33",
-                                confirmButtonText: "Iya, hapus data siswa!",
-                              }).then((result) => {
-                                if (result.isConfirmed) {
-                                  Swal.fire(
-                                    "Deleted!",
-                                    `Data "${getListSiswaResult[key].nama}" berhasil dihapus.`,
-                                    "success"
-                                  );
-                                  this.props.dispatch(deleteSiswa(id));
-                                }
-                              });
-                            };
+                        Object.keys(currentData).map((key, index) => {
+                          const removeData = (id) => {
+                            Swal.fire({
+                              title: `Apakah anda yakin?`,
+                              text: `menghapus data "${currentData[key].nama}"`,
+                              icon: "warning",
+                              showCancelButton: true,
+                              confirmButtonColor: "#3085d6",
+                              cancelButtonColor: "#d33",
+                              confirmButtonText: "Iya, hapus data siswa!",
+                            }).then((result) => {
+                              if (result.isConfirmed) {
+                                Swal.fire(
+                                  "Deleted!",
+                                  `Data "${currentData[key].nama}" berhasil dihapus.`,
+                                  "success"
+                                );
+                                this.props.dispatch(deleteSiswa(id));
+                              }
+                            });
+                          };
 
-                            return (
-                              <tr key={key}>
-                                <td>{index + 1 + "."}</td>
-                                <td>{getListSiswaResult[key].NIS}</td>
-                                <td>{getListSiswaResult[key].nama}</td>
-                                <td>{getListSiswaResult[key].jenisKelamin}</td>
+                          console.log("DATA NIH : ", currentData);
 
-                                <td>
-                                  {getListKelasResult ? (
-                                    Object.keys(getListKelasResult).map(
-                                      (id) => {
-                                        // eslint-disable-next-line no-lone-blocks
-                                        return (
-                                          <p className="mt-4">
-                                            {getListKelasResult[id].kelasId ===
-                                            getListSiswaResult[key].kelas
-                                              ? getListKelasResult[id].namaKelas
-                                              : []}
-                                          </p>
-                                        );
-                                      }
-                                    )
-                                  ) : (
-                                    <p>Kelas Tidak Ditemukan</p>
-                                  )}
-                                </td>
-                                <td>
-                                  <a
-                                    {...this.props}
-                                    class="btn btn-primary mr-2 "
-                                    href={"/admin/siswa/detail/" + key}
+                          return (
+                            <tr key={key}>
+                              <td>{index + 1 + "."}</td>
+                              <td>{currentData[key].NIS}</td>
+                              <td>{currentData[key].nama}</td>
+                              <td>{currentData[key].jenisKelamin}</td>
+
+                              <td>
+                                {getListKelasResult ? (
+                                  Object.keys(getListKelasResult).map((id) => {
+                                    // eslint-disable-next-line no-lone-blocks
+                                    return (
+                                      <p>
+                                        {getListKelasResult[id].kelasId ===
+                                        currentData[key].kelas
+                                          ? getListKelasResult[id].namaKelas
+                                          : []}
+                                      </p>
+                                    );
+                                  })
+                                ) : (
+                                  <p>Kelas Tidak Ditemukan</p>
+                                )}
+                              </td>
+                              <td>
+                                <Link
+                                  className="btn btn-primary mr-2"
+                                  to={
+                                    "/admin/siswa/detail/" +
+                                    currentData[key].uid
+                                  }
+                                >
+                                  <i className=""></i> Detail
+                                </Link>
+
+                                <Link
+                                  className="btn btn-warning ml-2"
+                                  to={
+                                    "/admin/siswa/edit/" + currentData[key].uid
+                                  }
+                                >
+                                  <i className="nc-icon nc-ruler-pencil"></i>{" "}
+                                  Edit
+                                </Link>
+
+                                {deleteSiswaLoading ? (
+                                  <button
+                                    type="submit"
+                                    className="btn btn-primary"
                                   >
-                                    Detail
-                                  </a>
-
-                                  <Link
-                                    className="btn btn-warning ml-2"
-                                    to={"/admin/siswa/edit/" + key}
+                                    <div
+                                      class="spinner-border text-light"
+                                      role="status"
+                                    >
+                                      <span class="visually-hidden"></span>
+                                    </div>
+                                  </button>
+                                ) : (
+                                  <button
+                                    type="submit"
+                                    className="btn btn-danger ml-2"
+                                    onClick={() =>
+                                      removeData(currentData[key].uid)
+                                    }
                                   >
-                                    <i className="nc-icon nc-ruler-pencil"></i>{" "}
-                                    Edit
-                                  </Link>
-
-                                  {deleteSiswaLoading ? (
-                                    <button
-                                      type="submit"
-                                      className="btn btn-primary"
-                                    >
-                                      <div
-                                        class="spinner-border text-light"
-                                        role="status"
-                                      >
-                                        <span class="visually-hidden"></span>
-                                      </div>
-                                    </button>
-                                  ) : (
-                                    <button
-                                      type="submit"
-                                      className="btn btn-danger ml-2"
-                                      onClick={() => removeData(key)}
-                                    >
-                                      <i className="nc-icon nc-basket"></i>{" "}
-                                      Hapus
-                                    </button>
-                                  )}
-                                </td>
-                              </tr>
-                            );
-                          })
+                                    <i className="nc-icon nc-basket"></i> Hapus
+                                  </button>
+                                )}
+                              </td>
+                            </tr>
+                          );
+                        })
                       ) : getListSiswaLoading ? (
                         <tr>
                           <td colSpan="6" align="center">
@@ -221,6 +261,7 @@ class dataSiswa extends Component {
                       )}
                     </tbody>
                   </Table>
+                  <ul id="page-numbers">{renderPageNumbers}</ul>
                 </CardBody>
               </Card>
             </Col>

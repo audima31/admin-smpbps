@@ -124,7 +124,6 @@ class editDataSiswa extends Component {
       };
       //ke Auth Action
       this.props.dispatch(updateSiswa(data));
-      Swal.fire("Akun siswa berhasil diupdate", "", "success");
     } else {
       Swal.fire({
         icon: "error",
@@ -161,7 +160,7 @@ class editDataSiswa extends Component {
       updateSiswaResult &&
       prevProps.updateSiswaResult !== updateSiswaResult
     ) {
-      Swal.fire("Good job!", "Update kelas telah berhasil", "success");
+      Swal.fire("Good job!", "Update siswa telah berhasil", "success");
       this.props.history.push("/admin/siswa");
     }
   }

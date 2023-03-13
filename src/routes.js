@@ -30,6 +30,7 @@ var routes = [
     layout: "/admin",
     sidebar: true,
   },
+
   {
     path: "/register",
     name: "Register Admin",

@@ -20,13 +20,11 @@ export const tambahSiswa = (data) => {
         // Ambil UID, dan buat DataBaru (data+uid)
         const dataBaru = {
           ...data,
-          uid: success.user.uid,
+          uid: new Date().getTime() + success.user.uid,
         };
 
         //SIMPAN ke realTime Database Firebase
-        FIREBASE.database()
-          .ref("siswa/" + success.user.uid)
-          .set(dataBaru);
+        FIREBASE.database().ref("siswa/").child(dataBaru.uid).set(dataBaru);
 
         //SUKSES
         dispatchSuccess(dispatch, TAMBAH_SISWA, dataBaru);

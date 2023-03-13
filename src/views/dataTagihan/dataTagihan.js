@@ -11,8 +11,12 @@ class dataTagihan extends Component {
     super(props);
 
     this.state = {
-      search: "",
+      currentPage: 1, // halaman saat ini
+      dataPerPage: 10, // jumlah data per halaman
+      searchInput: "", // input search
     };
+    this.handleClick = this.handleClick.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   componentDidMount() {
@@ -29,11 +33,18 @@ class dataTagihan extends Component {
     }
   }
 
-  handleSearch = (event) => {
+  handleSearch(event) {
     this.setState({
-      search: event.target.value,
+      searchInput: event.target.value,
+      currentPage: 1,
     });
-  };
+  }
+
+  handleClick(event) {
+    this.setState({
+      currentPage: Number(event.target.id),
+    });
+  }
 
   render() {
     const {
@@ -42,6 +53,37 @@ class dataTagihan extends Component {
       getListTagihanError,
       deleteTagihanLoading,
     } = this.props;
+
+    const { currentPage, dataPerPage, searchInput } = this.state;
+
+    // filter data berdasarkan input search
+    const filteredData = Object.values(getListTagihanResult).filter((item) =>
+      item.nama.toLowerCase().includes(searchInput.toLowerCase())
+    );
+
+    // logika untuk menentukan index awal dan akhir data yang akan ditampilkan
+    const indexOfLastData = currentPage * dataPerPage;
+    const indexOfFirstData = indexOfLastData - dataPerPage;
+    const currentData = filteredData.slice(indexOfFirstData, indexOfLastData);
+
+    // logika untuk membuat tombol pagination
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(filteredData.length / dataPerPage); i++) {
+      pageNumbers.push(i);
+    }
+
+    const renderPageNumbers = pageNumbers.map((number) => {
+      return (
+        <li
+          key={number}
+          id={number}
+          onClick={this.handleClick}
+          className={currentPage === number ? "active" : null}
+        >
+          {number}
+        </li>
+      );
+    });
 
     return (
       <div className="content">
@@ -100,119 +142,109 @@ class dataTagihan extends Component {
             </thead>
             <tbody>
               {getListTagihanResult ? (
-                Object.keys(getListTagihanResult)
-                  .filter((item) => {
-                    return this.state.search.toLowerCase() === ""
-                      ? item
-                      : getListTagihanResult[item].nama
-                          .toLowerCase()
-                          .includes(this.state.search) ||
-                          getListTagihanResult[item].jenisTagihan
-                            .toLowerCase()
-                            .includes(this.state.search);
-                  })
-                  .map((key, index) => {
-                    const removeData = (id) => {
-                      Swal.fire({
-                        title: "Apakah anda yakin?",
-                        text: `menghapus tagihan "${getListTagihanResult[key].nama} - ${getListTagihanResult[key].jenisTagihan}"`,
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#3085d6",
-                        cancelButtonColor: "#d33",
-                        confirmButtonText: "Iya, hapus data tagihan!",
-                      }).then((result) => {
-                        if (result.isConfirmed) {
-                          Swal.fire(
-                            "Deleted!",
-                            `Data tagihan "${getListTagihanResult[key].nama} - ${getListTagihanResult[key].jenisTagihan}" berhasil dihapus.`,
-                            "success"
-                          );
-                          this.props.dispatch(deleteTagihan(id));
-                        }
-                      });
-                    };
+                Object.keys(currentData).map((key, index) => {
+                  const removeData = (id) => {
+                    Swal.fire({
+                      title: "Apakah anda yakin?",
+                      text: `menghapus tagihan "${currentData[key].nama} - ${currentData[key].jenisTagihan}"`,
+                      icon: "warning",
+                      showCancelButton: true,
+                      confirmButtonColor: "#3085d6",
+                      cancelButtonColor: "#d33",
+                      confirmButtonText: "Iya, hapus data tagihan!",
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        Swal.fire(
+                          "Deleted!",
+                          `Data tagihan "${currentData[key].nama} - ${currentData[key].jenisTagihan}" berhasil dihapus.`,
+                          "success"
+                        );
+                        this.props.dispatch(deleteTagihan(id));
+                      }
+                    });
+                  };
 
-                    return (
-                      <tr key={key}>
-                        <td>{index + 1}</td>
-                        <td>{getListTagihanResult[key].waktuTagihan}</td>
-                        <td>{getListTagihanResult[key].nama}</td>
-                        <td>{getListTagihanResult[key].kelas}</td>
-                        <td>{getListTagihanResult[key].jenisTagihan}</td>
-                        <td>
-                          Rp.{" "}
-                          {numberWithCommas(getListTagihanResult[key].nominal)}
-                        </td>
-                        <td>
-                          {getListTagihanResult[key].status === "PENDING" ? (
-                            <p className="badge bg-warning text-wrap p-2 my-1">
-                              {getListTagihanResult[key].status}
-                            </p>
-                          ) : getListTagihanResult[key].status ===
-                            "BELUM DIBAYAR" ? (
-                            <p className="badge bg-danger text-wrap px-3 py-2 my-1">
-                              {getListTagihanResult[key].status}
-                            </p>
-                          ) : (
-                            <p className="badge bg-success text-wrap px-3 py-2 my-1">
-                              {getListTagihanResult[key].status}
-                            </p>
-                          )}
-                        </td>
-                        {/* BUTTON */}
+                  return (
+                    <tr key={key}>
+                      <td>{index + 1 + "."}</td>
+                      <td>{currentData[key].waktuTagihan}</td>
+                      <td>{currentData[key].nama}</td>
+                      <td>{currentData[key].kelas}</td>
+                      <td>{currentData[key].jenisTagihan}</td>
+                      <td>Rp. {numberWithCommas(currentData[key].nominal)}</td>
+                      <td>
+                        {currentData[key].status === "PENDING" ? (
+                          <p className="badge bg-warning text-wrap p-2 my-1">
+                            {currentData[key].status}
+                          </p>
+                        ) : currentData[key].status === "BELUM DIBAYAR" ? (
+                          <p className="badge bg-danger text-wrap px-3 py-2 my-1">
+                            {currentData[key].status}
+                          </p>
+                        ) : (
+                          <p className="badge bg-success text-wrap px-3 py-2 my-1">
+                            {currentData[key].status}
+                          </p>
+                        )}
+                      </td>
+                      {/* BUTTON */}
 
-                        <td>
-                          {getListTagihanResult[key].status === "LUNAS" ? (
-                            <>
-                              <p></p>
-                            </>
-                          ) : (
-                            <>
-                              <a
-                                {...this.props}
-                                href={"/admin/tagihan/detail/" + key}
-                                class="btn btn-primary mr-2 "
-                              >
-                                Detail
-                              </a>
+                      <td>
+                        {currentData[key].status === "LUNAS" ? (
+                          <>
+                            <p></p>
+                          </>
+                        ) : (
+                          <>
+                            <a
+                              {...this.props}
+                              href={
+                                "/admin/tagihan/detail/" +
+                                currentData[key].idTagihanDetail
+                              }
+                              class="btn btn-primary mr-2 "
+                            >
+                              Detail
+                            </a>
 
-                              <a
-                                {...this.props}
-                                href={"/admin/tagihan/edit/" + key}
-                                class="btn btn-warning "
-                              >
-                                Edit
-                              </a>
+                            <a
+                              {...this.props}
+                              href={
+                                "/admin/tagihan/edit/" +
+                                currentData[key].idTagihanDetail
+                              }
+                              class="btn btn-warning "
+                            >
+                              Edit
+                            </a>
 
-                              {deleteTagihanLoading ? (
-                                <button
-                                  type="submit"
-                                  className="btn btn-primary"
+                            {deleteTagihanLoading ? (
+                              <button type="submit" className="btn btn-primary">
+                                <div
+                                  class="spinner-border text-light"
+                                  role="status"
                                 >
-                                  <div
-                                    class="spinner-border text-light"
-                                    role="status"
-                                  >
-                                    <span class="visually-hidden"></span>
-                                  </div>
-                                </button>
-                              ) : (
-                                <button
-                                  type="submit"
-                                  className="btn btn-danger ml-2"
-                                  onClick={() => removeData(key)}
-                                >
-                                  <i className="nc-icon nc-basket"></i> Hapus
-                                </button>
-                              )}
-                            </>
-                          )}
-                        </td>
-                        {/* END BUTTON */}
-                      </tr>
-                    );
-                  })
+                                  <span class="visually-hidden"></span>
+                                </div>
+                              </button>
+                            ) : (
+                              <button
+                                type="submit"
+                                className="btn btn-danger ml-2"
+                                onClick={() =>
+                                  removeData(currentData[key].idTagihanDetail)
+                                }
+                              >
+                                <i className="nc-icon nc-basket"></i> Hapus
+                              </button>
+                            )}
+                          </>
+                        )}
+                      </td>
+                      {/* END BUTTON */}
+                    </tr>
+                  );
+                })
               ) : getListTagihanLoading ? (
                 <tr>
                   <td colSpan="8" align="center">
@@ -234,6 +266,9 @@ class dataTagihan extends Component {
               )}
             </tbody>
           </Table>
+          <ul className="mb-3" id="page-numbers">
+            {renderPageNumbers}
+          </ul>
         </div>
       </div>
     );

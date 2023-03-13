@@ -98,6 +98,10 @@ class tambahDataSiswa extends Component {
     });
   };
 
+  handleBack = () => {
+    this.props.history.goBack();
+  };
+
   handleSubmit = (event) => {
     const {
       NIS,
@@ -160,14 +164,14 @@ class tambahDataSiswa extends Component {
     return (
       <div className="content">
         <div className="mt-3">
-          <a
-            href={"/admin/siswa/"}
-            style={{ color: "#FFFFFF" }}
+          <button
+            type="submit"
             className="btn btn-secondary"
+            onClick={this.handleBack}
           >
             <i className="bi bi-caret-left-fill"> </i>
-            KEMBALI
-          </a>
+            Kembali
+          </button>
         </div>
         <div className="page">
           <form onSubmit={(event) => this.handleSubmit(event)}>

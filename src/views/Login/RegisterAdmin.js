@@ -67,6 +67,10 @@ class RegisterAdmin extends Component {
     }
   };
 
+  handleBack = () => {
+    this.props.history.goBack();
+  };
+
   componentDidUpdate(prevProps) {
     const { registerAdminResult } = this.props;
 
@@ -83,14 +87,11 @@ class RegisterAdmin extends Component {
     const { registerAdminLoading } = this.props;
 
     return (
-      <div className="d-flex justify-content-center">
+      <div className="content">
         <div
           className="card"
           style={{ width: "40%", padding: "2em", marginTop: "3%" }}
         >
-          <div>
-            <a href={"/login"}> {"<- Kembali"}</a>
-          </div>
           <h5 className="text-center text-primary">Daftar Akun Admin</h5>
           <form onSubmit={(event) => this.handleSubmit(event)}>
             {/* Form NBM */}
@@ -173,6 +174,13 @@ class RegisterAdmin extends Component {
               <div className="vstack gap-2 mx-auto">
                 <button type="submit" className="btn btn-primary">
                   SIMPAN
+                </button>
+                <button
+                  type="submit"
+                  className="btn btn-danger"
+                  onClick={this.handleBack}
+                >
+                  BATAL
                 </button>
               </div>
             )}
