@@ -29,27 +29,14 @@ export const loginUser = (email, password) => {
             console.log("Masuk sign 2", userCredential);
             // Signed in
             if (userCredential.val()) {
-              if (userCredential.val().status === "admin") {
-                console.log("Masuk Action 2", userCredential);
+              console.log("Masuk Action 2", userCredential);
 
-                //NGIRIM DATA KE LOCALSTORAGE
-                window.localStorage.setItem(
-                  "user",
-                  JSON.stringify(userCredential.val())
-                );
-                dispatchSuccess(dispatch, LOGIN_ADMIN, userCredential.val());
-              } else {
-                dispatchError(
-                  dispatch,
-                  LOGIN_ADMIN,
-                  "Anda tidak memiliki akses"
-                );
-                Swal.fire(
-                  "Tidak Memiliki Akses",
-                  "Anda tidak memiliki akses",
-                  "error"
-                );
-              }
+              //NGIRIM DATA KE LOCALSTORAGE
+              window.localStorage.setItem(
+                "user",
+                JSON.stringify(userCredential.val())
+              );
+              dispatchSuccess(dispatch, LOGIN_ADMIN, userCredential.val());
             }
           })
           .catch((error) => {
