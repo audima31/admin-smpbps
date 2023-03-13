@@ -179,8 +179,7 @@ class editDataSiswa extends Component {
       namaOrangTua,
       noHandphoneOrangTua,
     } = this.state;
-    const { detailSiswaResult, updateSiswaLoading, getListKelasResult } =
-      this.props;
+    const { updateSiswaLoading, getListKelasResult } = this.props;
 
     return (
       <div className="content">

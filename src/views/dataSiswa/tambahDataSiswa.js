@@ -128,7 +128,11 @@ class tambahDataSiswa extends Component {
       };
       //ke Auth Action
       this.props.dispatch(tambahSiswa(data));
-      Swal.fire("Akun siswa berhasil dibuat", "", "success");
+      Swal.fire({
+        icon: "success",
+        title: "Akun siswa berhasil dibuat",
+        showConfirmButton: false,
+      });
     } else {
       Swal.fire({
         icon: "error",
@@ -290,6 +294,7 @@ class tambahDataSiswa extends Component {
                 No. Handphone
               </label>
               <input
+                type={"number"}
                 className="form-control"
                 id="inputNoHandphoneSiswa"
                 value={noHandphoneSiswa}
@@ -316,6 +321,7 @@ class tambahDataSiswa extends Component {
                 No. Handphone Orang Tua
               </label>
               <input
+                type={"number"}
                 className="form-control"
                 id="inputNoHandphoneOrangTua"
                 value={noHandphoneOrangTua}

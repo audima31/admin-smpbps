@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { registerAdmin } from "store/actions/AuthAction";
 import { updateProfile } from "store/actions/ProfileAction";
 import Swal from "sweetalert2";
 import { getData } from "utils";

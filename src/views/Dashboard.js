@@ -43,6 +43,13 @@ class Dashboard extends Component {
 
     return (
       <div className="content">
+        <a
+          {...this.props}
+          href={"/admin/register"}
+          class="btn btn-primary mr-2 mb-4 "
+        >
+          + Tambah Akun Admin
+        </a>
         <Row>
           <Col lg="4" md="6" sm="6">
             <Card className="card-stats">

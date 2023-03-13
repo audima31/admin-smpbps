@@ -86,11 +86,6 @@ export const registerAdmin = (data) => {
 
         //SUKSES
         dispatchSuccess(dispatch, REGISTER_ADMIN, dataBaru);
-
-        //Local Storage (Async Storage)
-        //nampung data, jadi kalo berhasil bakal bawa dataBaru
-        //user ini cuman opsi nama storeData
-        storeData("user", dataBaru);
       })
       .catch((error) => {
         // ERROR

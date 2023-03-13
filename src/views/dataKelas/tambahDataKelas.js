@@ -26,14 +26,22 @@ class tambahDataKelas extends Component {
     const data = {
       namaKelas: namaKelas,
     };
-    //ke Auth Action
-    Swal.fire({
-      icon: "success",
-      title: "Kelas Berhasil disimpan",
-      showConfirmButton: false,
-      timer: 1500,
-    });
-    this.props.dispatch(tambahKelas(data));
+    if (namaKelas) {
+      //ke Auth Action
+      this.props.dispatch(tambahKelas(data));
+      Swal.fire({
+        icon: "success",
+        title: "Kelas Berhasil disimpan",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Error...",
+        text: "Data tidak boleh kosong!",
+      });
+    }
   };
 
   // eslint-disable-next-line no-dupe-class-members

@@ -19,6 +19,7 @@ import detailTagihanLunas from "views/dataTagihan/listTagihanLunas/detailTagihan
 import listTagihanLunas from "views/dataTagihan/listTagihanLunas/listTagihanLunas";
 import tambahDataTagihan from "views/dataTagihan/tambahDataTagihan";
 import Laporan from "views/Laporan/Laporan";
+import RegisterAdmin from "views/Login/RegisterAdmin";
 
 var routes = [
   {
@@ -28,6 +29,14 @@ var routes = [
     component: Dashboard,
     layout: "/admin",
     sidebar: true,
+  },
+  {
+    path: "/register",
+    name: "Register Admin",
+    icon: "nc-icon nc-bank",
+    component: RegisterAdmin,
+    layout: "/admin",
+    sidebar: false,
   },
   {
     path: "/edit-profile",

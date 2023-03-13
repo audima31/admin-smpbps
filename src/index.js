@@ -24,7 +24,6 @@ root.render(
       <Switch>
         <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
         <Route path="/login" component={Login} exact />
-        <Route path="/register" component={RegisterAdmin} exact />
         <Route path="/payment/finish" component={Finish} exact />
         <Route path="/payment/unfinish" component={Unfinish} exact />
         <Route path="/payment/error" component={Gagal} exact />

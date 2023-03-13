@@ -115,13 +115,6 @@ class Login extends Component {
                       </Button>
                     </div>
                   )}
-
-                  <div className="text-center mt-3">
-                    <p>
-                      Belum memiliki akun?
-                      <a href="/register"> Klik daftar.</a>
-                    </p>
-                  </div>
                 </form>
               </CardBody>
             </Card>

@@ -57,7 +57,6 @@ class RegisterAdmin extends Component {
         icon: "success",
         title: "Akun admin berhasil dibuat",
         showConfirmButton: false,
-        timer: 3500,
       });
     } else {
       Swal.fire({
@@ -75,7 +74,7 @@ class RegisterAdmin extends Component {
       registerAdminResult &&
       prevProps.registerAdminResult !== registerAdminResult
     ) {
-      // window.location = "/login";
+      window.location = "/admin/dashboard";
     }
   }
 
@@ -104,6 +103,7 @@ class RegisterAdmin extends Component {
               </label>
               <input
                 className="form-control"
+                type="number"
                 id="inputNBM"
                 placeholder="Masukan NBM"
                 data-testid="input-NBM"
