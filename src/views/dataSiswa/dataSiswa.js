@@ -69,9 +69,11 @@ class dataSiswa extends Component {
     const { currentPage, dataPerPage, searchInput } = this.state;
 
     // filter data berdasarkan input search
-    const filteredData = Object.values(getListSiswaResult).filter((item) =>
-      item.nama.toLowerCase().includes(searchInput.toLowerCase())
-    );
+    const filteredData = getListSiswaResult
+      ? Object.values(getListSiswaResult).filter((item) =>
+          item.nama.toLowerCase().includes(searchInput.toLowerCase())
+        )
+      : [];
 
     // logika untuk menentukan index awal dan akhir data yang akan ditampilkan
     const indexOfLastData = currentPage * dataPerPage;
@@ -200,7 +202,7 @@ class dataSiswa extends Component {
                                     currentData[key].uid
                                   }
                                 >
-                                  <i className=""></i> Detail
+                                  Detail
                                 </Link>
 
                                 <Link
@@ -209,7 +211,6 @@ class dataSiswa extends Component {
                                     "/admin/siswa/edit/" + currentData[key].uid
                                   }
                                 >
-                                  <i className="nc-icon nc-ruler-pencil"></i>{" "}
                                   Edit
                                 </Link>
 
@@ -233,7 +234,7 @@ class dataSiswa extends Component {
                                       removeData(currentData[key].uid)
                                     }
                                   >
-                                    <i className="nc-icon nc-basket"></i> Hapus
+                                    Hapus
                                   </button>
                                 )}
                               </td>

@@ -125,14 +125,12 @@ class dataKelas extends Component {
                                   className="btn btn-primary ml-2"
                                   to={"/admin/kelas/detail/" + key}
                                 >
-                                  <i className="nc-icon nc-ruler-pencil"></i>{" "}
                                   Detail
                                 </Link>
                                 <Link
                                   className="btn btn-warning ml-2"
                                   to={"/admin/kelas/edit/" + key}
                                 >
-                                  <i className="nc-icon nc-ruler-pencil"></i>{" "}
                                   Edit
                                 </Link>
                                 {deleteKelasLoading ? (
@@ -153,7 +151,7 @@ class dataKelas extends Component {
                                     className="btn btn-danger ml-2"
                                     onClick={() => removeData(key)}
                                   >
-                                    <i className="nc-icon nc-basket"></i> Hapus
+                                    Hapus
                                   </button>
                                 )}
                               </td>

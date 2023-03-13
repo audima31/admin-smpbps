@@ -20,7 +20,7 @@ export const tambahSiswa = (data) => {
         // Ambil UID, dan buat DataBaru (data+uid)
         const dataBaru = {
           ...data,
-          uid: new Date().getTime() + success.user.uid,
+          uid: success.user.uid,
         };
 
         //SIMPAN ke realTime Database Firebase

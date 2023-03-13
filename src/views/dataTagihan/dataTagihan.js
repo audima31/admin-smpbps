@@ -57,9 +57,11 @@ class dataTagihan extends Component {
     const { currentPage, dataPerPage, searchInput } = this.state;
 
     // filter data berdasarkan input search
-    const filteredData = Object.values(getListTagihanResult).filter((item) =>
-      item.nama.toLowerCase().includes(searchInput.toLowerCase())
-    );
+    const filteredData = getListTagihanResult
+      ? Object.values(getListTagihanResult).filter((item) =>
+          item.nama.toLowerCase().includes(searchInput.toLowerCase())
+        )
+      : [];
 
     // logika untuk menentukan index awal dan akhir data yang akan ditampilkan
     const indexOfLastData = currentPage * dataPerPage;
@@ -116,8 +118,8 @@ class dataTagihan extends Component {
                 placeholder="Search"
                 aria-label="Search"
                 aria-describedby="search-addon"
-                onChange={(event) => this.handleSearch(event)}
-                value={this.state.search}
+                value={searchInput}
+                onChange={this.handleSearch}
               />
               <span class="input-group-text border-0" id="search-addon">
                 <i class="fas fa-search"></i>
@@ -235,7 +237,7 @@ class dataTagihan extends Component {
                                   removeData(currentData[key].idTagihanDetail)
                                 }
                               >
-                                <i className="nc-icon nc-basket"></i> Hapus
+                                Hapus
                               </button>
                             )}
                           </>
