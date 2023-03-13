@@ -26,7 +26,7 @@ export const loginUser = (email, password) => {
           .ref(`admin/${userCredential.user.uid}`)
           .once("value")
           .then((userCredential) => {
-            console.log("Masuk sign 2", userCredential);
+            console.log("Masuk sign 2", userCredential.val());
             // Signed in
             if (userCredential.val()) {
               console.log("Masuk Action 2", userCredential);
