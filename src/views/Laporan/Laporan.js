@@ -139,7 +139,7 @@ class Laporan extends Component {
             </div>
           </div>
 
-          <div className="col-8 card">
+          <div className="col-12 card">
             <table
               ref={this.tableRef}
               className="table table-hover text-center"
