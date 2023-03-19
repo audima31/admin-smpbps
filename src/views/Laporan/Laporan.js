@@ -143,17 +143,18 @@ class Laporan extends Component {
             <table
               ref={this.tableRef}
               className="table table-hover text-center"
+              style={{ fontSize: "12px" }}
             >
               <thead className="text-primary">
                 <tr>
-                  <th>Tanggal Pembayaran</th>
-                  <th>Nama</th>
-                  <th>Kelas</th>
-                  <th>Jenis Tagihan</th>
-                  <th>Metode Pembayaran</th>
-                  <th>Keterangan</th>
-                  <th>Status</th>
-                  <th>Nominal</th>
+                  <th style={{ fontSize: "12px" }}>Tanggal Pembayaran</th>
+                  <th style={{ fontSize: "12px" }}>Nama</th>
+                  <th style={{ fontSize: "12px" }}>Kelas</th>
+                  <th style={{ fontSize: "12px" }}>Jenis Tagihan</th>
+                  <th style={{ fontSize: "12px" }}>Metode Pembayaran</th>
+                  <th style={{ fontSize: "12px" }}>Keterangan</th>
+                  <th style={{ fontSize: "12px" }}>Status</th>
+                  <th style={{ fontSize: "12px" }}>Nominal</th>
                 </tr>
               </thead>
               <tbody>

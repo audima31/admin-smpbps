@@ -58,8 +58,12 @@ class dataTagihan extends Component {
 
     // filter data berdasarkan input search
     const filteredData = getListTagihanResult
-      ? Object.values(getListTagihanResult).filter((item) =>
-          item.nama.toLowerCase().includes(searchInput.toLowerCase())
+      ? Object.values(getListTagihanResult).filter(
+          (item) =>
+            item.nama.toLowerCase().includes(searchInput.toLowerCase()) ||
+            item.status.toLowerCase().includes(searchInput.toLowerCase()) ||
+            item.kelas.toLowerCase().includes(searchInput.toLowerCase()) ||
+            item.jenisTagihan.toLowerCase().includes(searchInput.toLowerCase())
         )
       : [];
 
@@ -128,7 +132,7 @@ class dataTagihan extends Component {
           </div>
         </div>
 
-        <div className="col card">
+        <div className="col card" style={{ fontSize: "12px" }}>
           <Table striped className="text-center table-hover">
             <thead className="text-primary">
               <tr>
