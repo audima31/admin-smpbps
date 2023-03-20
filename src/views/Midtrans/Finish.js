@@ -50,13 +50,31 @@ class Finish extends Component {
           <Col md="5" className="mt-5">
             <Card style={{ backgroundColor: "#e8fbf7" }}>
               <div align="center" className="my-4">
-                <i
-                  class="bi bi-check-circle-fill fa-3x "
-                  style={{ color: "#008188" }}
-                ></i>
+                {transaction_status === "settlement" ||
+                transaction_status === "capture" ? (
+                  <i
+                    class="bi bi-check-circle-fill fa-3x "
+                    style={{ color: "#008188" }}
+                  ></i>
+                ) : transaction_status === "pending" ? (
+                  <i
+                    class="bi bi-stopwatch fa-3x"
+                    style={{ color: "#dc3545" }}
+                  ></i>
+                ) : (
+                  "PEMBAYARAN BERHASI"
+                )}
+
                 <br />
                 <h5>
-                  <strong>PEMBAYARAN BERHASIL</strong>
+                  <strong>
+                    {transaction_status === "settlement" ||
+                    transaction_status === "capture"
+                      ? "PEMBAYARAN BERHASIL"
+                      : transaction_status === "pending"
+                      ? "PEMBAYARAN PENDING"
+                      : "PEMBAYARAN BERHASI"}
+                  </strong>
                 </h5>
               </div>
 
