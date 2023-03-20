@@ -41,7 +41,7 @@ class Finish extends Component {
   render() {
     const { order_id, transaction_status } = this.state;
     const { updatePaymentLoading } = this.props;
-
+    console.log("test");
     return (
       <Row className="justify-content-center mt-5">
         {updatePaymentLoading ? (
