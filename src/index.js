@@ -14,7 +14,6 @@ import Finish from "views/Midtrans/Finish";
 import Unfinish from "views/Midtrans/Unfinish";
 import Gagal from "views/Midtrans/Gagal";
 import Login from "views/Login/Login";
-import RegisterAdmin from "views/Login/RegisterAdmin";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 

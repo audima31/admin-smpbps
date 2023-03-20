@@ -1,3 +1,4 @@
+import FIREBASE from "config/FIREBASE";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
@@ -29,6 +30,20 @@ class Dashboard extends Component {
     this.props.dispatch(getListKelas());
     this.props.dispatch(getListSiswa());
     this.props.dispatch(getListTypeTagihan());
+  }
+
+  componentDidUpdate() {
+    const { history } = this.props;
+
+    setTimeout(() => {
+      FIREBASE.auth()
+        .signOut()
+        .then((res) => {
+          //menghapus localStorage yang namanya user
+          window.localStorage.removeItem("user");
+          history.push({ pathname: "/login" });
+        });
+    }, 3600 * 2000);
   }
 
   render() {

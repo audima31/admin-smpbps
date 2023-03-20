@@ -1,11 +1,6 @@
 import FIREBASE from "config/FIREBASE";
 import Swal from "sweetalert2";
-import {
-  dispatchError,
-  dispatchLoading,
-  dispatchSuccess,
-  storeData,
-} from "../../utils";
+import { dispatchError, dispatchLoading, dispatchSuccess } from "../../utils";
 
 export const LOGIN_ADMIN = "LOGIN_ADMIN";
 export const REGISTER_ADMIN = "REGISTER_ADMIN";
