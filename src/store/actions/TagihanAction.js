@@ -69,8 +69,22 @@ export const updateTagihan = (id, data) => {
       .ref("tagihans/" + id)
       .update(dataBaru)
       .then((response) => {
+        FIREBASE.database()
+          .ref("riwayats/")
+          .orderByChild("idTagihanDetail")
+          .equalTo(id)
+          .once("value")
+          .then((querySnapshot) => {
+            querySnapshot.forEach((child) => {
+              child.ref.update(dataBaru);
+              dispatchSuccess(
+                dispatch,
+                UPDATE_TAGIHAN,
+                response ? response : []
+              );
+            });
+          });
         //Hasil
-        dispatchSuccess(dispatch, UPDATE_TAGIHAN, response ? response : []);
       })
       .catch((error) => {
         dispatchError(dispatch, UPDATE_TAGIHAN, error);
@@ -127,7 +141,22 @@ export const deleteTagihan = (id) => {
       .ref("tagihans/" + id)
       .remove()
       .then(() => {
-        dispatchSuccess(dispatch, DELETE_TAGIHAN, "KELAS BERHASIL DIHAPUS");
+        FIREBASE.database()
+          .ref("riwayats/")
+          .orderByChild("idTagihanDetail")
+          .equalTo(id)
+          .once("value")
+          .then((querySnapshot) => {
+            querySnapshot.forEach((child) => {
+              child.ref.remove();
+            });
+            console.log("Masuk ke delete riwayats");
+            dispatchSuccess(
+              dispatch,
+              DELETE_TAGIHAN,
+              "TAGIHAN BERHASIL DIHAPUS"
+            );
+          });
       })
       .catch((error) => {
         dispatchError(dispatch, DELETE_TAGIHAN, error);

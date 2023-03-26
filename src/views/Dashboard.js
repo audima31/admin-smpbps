@@ -43,7 +43,7 @@ class Dashboard extends Component {
           window.localStorage.removeItem("user");
           history.push({ pathname: "/login" });
         });
-    }, 3600 * 6000);
+    }, 21600000);
   }
 
   render() {

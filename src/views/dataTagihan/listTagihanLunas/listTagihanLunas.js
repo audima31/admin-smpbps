@@ -8,14 +8,19 @@ import {
 } from "store/actions/PaymentAction";
 import Swal from "sweetalert2";
 import { numberWithCommas } from "utils";
+import { deleteTagihan } from "store/actions/TagihanAction";
 
 class listTagihanLunas extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      search: "",
+      currentPage: 1, // halaman saat ini
+      dataPerPage: 10, // jumlah data per halaman
+      searchInput: "", // input search
     };
+    this.handleClick = this.handleClick.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   componentDidMount() {
@@ -23,29 +28,74 @@ class listTagihanLunas extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { deleteTagihanLunasResult } = this.props;
+    const { deleteTagihanResult } = this.props;
     if (
-      deleteTagihanLunasResult &&
-      prevProps.deleteTagihanLunasResult !== deleteTagihanLunasResult
+      deleteTagihanResult &&
+      prevProps.deleteTagihanResult !== deleteTagihanResult
     ) {
       Swal.fire("Success", "Berhasil Dihapus", "success");
       this.props.dispatch(listPembayaranSiswa());
     }
   }
 
-  handleSearch = (event) => {
+  handleSearch(event) {
     this.setState({
-      search: event.target.value,
+      searchInput: event.target.value,
+      currentPage: 1,
     });
-  };
+  }
+
+  handleClick(event) {
+    this.setState({
+      currentPage: Number(event.target.id),
+    });
+  }
 
   render() {
     const {
       listPembayaranSiswaResult,
       listPembayaranSiswaLoading,
       listPembayaranSiswaError,
-      deleteTagihanLunasLoading,
+      deleteTagihanLoading,
     } = this.props;
+
+    const { currentPage, dataPerPage, searchInput } = this.state;
+
+    // filter data berdasarkan input search
+    const filteredData = listPembayaranSiswaResult
+      ? Object.values(listPembayaranSiswaResult).filter(
+          (item) =>
+            item.nama.toLowerCase().includes(searchInput.toLowerCase()) ||
+            item.status.toLowerCase().includes(searchInput.toLowerCase()) ||
+            item.kelas.toLowerCase().includes(searchInput.toLowerCase()) ||
+            item.jenisTagihan.toLowerCase().includes(searchInput.toLowerCase())
+        )
+      : [];
+
+    // logika untuk menentukan index awal dan akhir data yang akan ditampilkan
+    const indexOfLastData = currentPage * dataPerPage;
+    const indexOfFirstData = indexOfLastData - dataPerPage;
+    const currentData = filteredData.slice(indexOfFirstData, indexOfLastData);
+
+    // logika untuk membuat tombol pagination
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(filteredData.length / dataPerPage); i++) {
+      pageNumbers.push(i);
+    }
+
+    const renderPageNumbers = pageNumbers.map((number) => {
+      return (
+        <li
+          key={number}
+          id={number}
+          onClick={this.handleClick}
+          className={currentPage === number ? "active" : null}
+        >
+          {number}
+        </li>
+      );
+    });
+
     return (
       <div className="content">
         <div className="row">
@@ -92,118 +142,110 @@ class listTagihanLunas extends Component {
             </thead>
             <tbody>
               {listPembayaranSiswaResult ? (
-                Object.keys(listPembayaranSiswaResult)
-                  .filter((item) => {
-                    return this.state.search.toLowerCase() === ""
-                      ? item
-                      : listPembayaranSiswaResult[item].nama
-                          .toLowerCase()
-                          .includes(this.state.search) ||
-                          listPembayaranSiswaResult[item].jenisTagihan
-                            .toLowerCase()
-                            .includes(this.state.search) ||
-                          listPembayaranSiswaResult[item].order_id
-                            .toLowerCase()
-                            .includes(this.state.search);
-                  })
-                  .map((key, index) => {
-                    const removeData = (id) => {
-                      Swal.fire({
-                        title: "Apakah anda yakin?",
-                        text: `menghapus proses pembayaran "${listPembayaranSiswaResult[key].nama} - ${listPembayaranSiswaResult[key].jenisTagihan}"`,
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#3085d6",
-                        cancelButtonColor: "#d33",
-                        confirmButtonText: "Iya, hapus proses pembayaran!",
-                      }).then((result) => {
-                        if (result.isConfirmed) {
-                          Swal.fire(
-                            "Deleted!",
-                            `Data proses pembayaran "${listPembayaranSiswaResult[key].nama} - ${listPembayaranSiswaResult[key].jenisTagihan}" berhasil dihapus.`,
-                            "success"
-                          );
-                          this.props.dispatch(deleteTagihanLunas(id));
-                        }
-                      });
-                    };
+                Object.keys(currentData).map((key, index) => {
+                  console.log("ID : ", currentData[key]);
+                  const removeData = (id) => {
+                    Swal.fire({
+                      title: "Apakah anda yakin?",
+                      text: `menghapus proses pembayaran "${currentData[key].nama} - ${currentData[key].jenisTagihan}"`,
+                      icon: "warning",
+                      showCancelButton: true,
+                      confirmButtonColor: "#3085d6",
+                      cancelButtonColor: "#d33",
+                      confirmButtonText: "Iya, hapus proses pembayaran!",
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        Swal.fire(
+                          "Deleted!",
+                          `Data proses pembayaran "${currentData[key].nama} - ${currentData[key].jenisTagihan}" berhasil dihapus.`,
+                          "success"
+                        );
+                        this.props.dispatch(deleteTagihan(id));
+                      }
+                    });
+                  };
 
-                    return (
-                      <tr key={key}>
-                        <td>{index + 1} .</td>
-                        <td>{listPembayaranSiswaResult[key].waktuTagihan}</td>
-                        <td>{listPembayaranSiswaResult[key].nama}</td>
-                        <td>{listPembayaranSiswaResult[key].kelas}</td>
-                        <td>{listPembayaranSiswaResult[key].jenisTagihan}</td>
-                        <td>
-                          Rp.{" "}
-                          {numberWithCommas(
-                            listPembayaranSiswaResult[key].nominal
-                          )}
-                        </td>
-                        <td>
-                          {listPembayaranSiswaResult[key].status ===
-                          "PENDING" ? (
-                            <p className="badge bg-warning text-wrap p-2 my-1">
-                              {listPembayaranSiswaResult[key].status}
-                            </p>
-                          ) : listPembayaranSiswaResult[key].status ===
-                            "BELUM DIBAYAR" ? (
-                            <p className="badge bg-danger text-wrap px-3 py-2 my-1">
-                              {listPembayaranSiswaResult[key].status}
-                            </p>
+                  return (
+                    <tr key={key}>
+                      <td>{index + 1} .</td>
+                      <td>{currentData[key].waktuTagihan}</td>
+                      <td>{currentData[key].nama}</td>
+                      <td>{currentData[key].kelas}</td>
+                      <td>{currentData[key].jenisTagihan}</td>
+                      <td>Rp. {numberWithCommas(currentData[key].nominal)}</td>
+                      <td>
+                        {currentData[key].status === "PENDING" ? (
+                          <p className="badge bg-warning text-wrap p-2 my-1">
+                            {currentData[key].status}
+                          </p>
+                        ) : currentData[key].status === "BELUM DIBAYAR" ? (
+                          <p className="badge bg-danger text-wrap px-3 py-2 my-1">
+                            {currentData[key].status}
+                          </p>
+                        ) : (
+                          <p className="badge bg-success text-wrap px-3 py-2 my-1">
+                            {currentData[key].status}
+                          </p>
+                        )}
+                      </td>
+                      {/* BUTTON */}
+
+                      <td>
+                        <>
+                          <a
+                            {...this.props}
+                            href={
+                              "/admin/listPembayaranLunas/detail/" +
+                              currentData[key].order_id
+                            }
+                            class="btn btn-primary mr-2 "
+                          >
+                            Detail
+                          </a>
+
+                          {currentData[key].status === "PENDING" ? (
+                            <>
+                              <a
+                                {...this.props}
+                                href={
+                                  "/admin/tagihan/edit/" +
+                                  currentData[key].idTagihanDetail
+                                }
+                                class="btn btn-warning "
+                              >
+                                Edit
+                              </a>
+
+                              <button
+                                type="submit"
+                                className="btn btn-danger ml-2"
+                                onClick={() =>
+                                  removeData(currentData[key].idTagihanDetail)
+                                }
+                              >
+                                Hapus
+                              </button>
+                            </>
+                          ) : deleteTagihanLoading &&
+                            currentData[key].status === "PENDING" ? (
+                            <button type="submit" className="btn btn-primary">
+                              <div
+                                class="spinner-border text-light"
+                                role="status"
+                              >
+                                <span class="visually-hidden"></span>
+                              </div>
+                            </button>
                           ) : (
-                            <p className="badge bg-success text-wrap px-3 py-2 my-1">
-                              {listPembayaranSiswaResult[key].status}
-                            </p>
+                            <></>
                           )}
-                        </td>
-                        {/* BUTTON */}
+                        </>
+                      </td>
 
-                        <td>
-                          <>
-                            <a
-                              {...this.props}
-                              href={"/admin/listPembayaranLunas/detail/" + key}
-                              class="btn btn-primary mr-2 "
-                            >
-                              Detail
-                            </a>
-
-                            {listPembayaranSiswaResult[key].status ===
-                            "LUNAS" ? (
-                              <></>
-                            ) : (
-                              <>
-                                {deleteTagihanLunasLoading ? (
-                                  <button
-                                    type="submit"
-                                    className="btn btn-primary"
-                                  >
-                                    <div
-                                      class="spinner-border text-light"
-                                      role="status"
-                                    >
-                                      <span class="visually-hidden"></span>
-                                    </div>
-                                  </button>
-                                ) : (
-                                  <button
-                                    type="submit"
-                                    className="btn btn-danger ml-2"
-                                    onClick={() => removeData(key)}
-                                  >
-                                    <i className="nc-icon nc-basket"></i> Hapus
-                                  </button>
-                                )}
-                              </>
-                            )}
-                          </>
-                        </td>
-                        {/* END BUTTON */}
-                      </tr>
-                    );
-                  })
+                      {/* END BUTTON */}
+                    </tr>
+                  );
+                })
               ) : listPembayaranSiswaLoading ? (
                 <tr>
                   <td colSpan="8" align="center">
@@ -225,6 +267,9 @@ class listTagihanLunas extends Component {
               )}
             </tbody>
           </Table>
+          <ul className="mb-3" id="page-numbers">
+            {renderPageNumbers}
+          </ul>
         </div>
       </div>
     );
@@ -236,9 +281,9 @@ const mapStateToProps = (state) => ({
   listPembayaranSiswaResult: state.PaymentReducer.listPembayaranSiswaResult,
   listPembayaranSiswaError: state.PaymentReducer.listPembayaranSiswaError,
 
-  deleteTagihanLunasLoading: state.PaymentReducer.deleteTagihanLunasLoading,
-  deleteTagihanLunasResult: state.PaymentReducer.deleteTagihanLunasResult,
-  deleteTagihanLunasError: state.PaymentReducer.deleteTagihanLunasError,
+  deleteTagihanLoading: state.TagihanReducer.deleteTagihanLoading,
+  deleteTagihanResult: state.TagihanReducer.deleteTagihanResult,
+  deleteTagihanError: state.TagihanReducer.deleteTagihanError,
 });
 
 export default connect(mapStateToProps, null)(listTagihanLunas);
