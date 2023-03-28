@@ -143,7 +143,7 @@ class Dashboard extends Component {
         <div style={{ marginTop: "5%" }}>
           <div className="row ">
             <div className="col">
-              <h3>List pembayaran terakhir</h3>
+              <h3>List 5 pembayaran terakhir</h3>
             </div>
             <div className="col d-flex justify-content-end"></div>
           </div>
