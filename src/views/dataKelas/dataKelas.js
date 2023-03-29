@@ -11,8 +11,12 @@ class dataKelas extends Component {
     super(props);
 
     this.state = {
-      search: "",
+      currentPage: 1, // halaman saat ini
+      dataPerPage: 10, // jumlah data per halaman
+      searchInput: "", // input search
     };
+    this.handleClick = this.handleClick.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   componentDidMount() {
@@ -29,11 +33,18 @@ class dataKelas extends Component {
     }
   }
 
-  handleSearch = (event) => {
+  handleSearch(event) {
     this.setState({
-      search: event.target.value,
+      searchInput: event.target.value,
+      currentPage: 1,
     });
-  };
+  }
+
+  handleClick(event) {
+    this.setState({
+      currentPage: Number(event.target.id),
+    });
+  }
 
   render() {
     const {
@@ -43,7 +54,39 @@ class dataKelas extends Component {
       deleteKelasLoading,
     } = this.props;
 
-    console.log("GET LIST KELAS", getListKelasResult);
+    const { currentPage, dataPerPage, searchInput } = this.state;
+
+    // filter data berdasarkan input search
+    const filteredData = getListKelasResult
+      ? Object.values(getListKelasResult).filter((item) =>
+          item.namaKelas.toLowerCase().includes(searchInput.toLowerCase())
+        )
+      : [];
+
+    // logika untuk menentukan index awal dan akhir data yang akan ditampilkan
+    const indexOfLastData = currentPage * dataPerPage;
+    const indexOfFirstData = indexOfLastData - dataPerPage;
+    const currentData = filteredData.slice(indexOfFirstData, indexOfLastData);
+
+    // logika untuk membuat tombol pagination
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(filteredData.length / dataPerPage); i++) {
+      pageNumbers.push(i);
+    }
+
+    const renderPageNumbers = pageNumbers.map((number) => {
+      return (
+        <li
+          key={number}
+          id={number}
+          onClick={this.handleClick}
+          className={currentPage === number ? "active" : null}
+        >
+          {number}
+        </li>
+      );
+    });
+
     return (
       <div className="content">
         <Row>
@@ -86,78 +129,70 @@ class dataKelas extends Component {
                   </thead>
                   <tbody>
                     {getListKelasResult ? (
-                      Object.keys(getListKelasResult)
-                        .filter((item) => {
-                          return this.state.search.toLowerCase() === ""
-                            ? item
-                            : getListKelasResult[item].namaKelas
-                                .toLowerCase()
-                                .includes(this.state.search);
-                        })
-                        .map((key, index) => {
-                          const removeData = (id) => {
-                            Swal.fire({
-                              title: "Apakah anda yakin?",
-                              text: `menghapus kelas "${getListKelasResult[key].namaKelas}"`,
-                              icon: "warning",
-                              showCancelButton: true,
-                              confirmButtonColor: "#3085d6",
-                              cancelButtonColor: "#d33",
-                              confirmButtonText: "Iya, hapus kelas!",
-                            }).then((result) => {
-                              if (result.isConfirmed) {
-                                Swal.fire(
-                                  "Deleted!",
-                                  `Kelas "${getListKelasResult[key].namaKelas}" berhasil dihapus.`,
-                                  "success"
-                                );
-                                this.props.dispatch(deleteKelas(id));
-                              }
-                            });
-                          };
-                          return (
-                            <tr key={key}>
-                              <td>{index + 1 + "."}</td>
-                              <td>{getListKelasResult[key].namaKelas}</td>
-                              <td>
-                                <Link
-                                  {...this.props}
-                                  className="btn btn-primary ml-2"
-                                  to={"/admin/kelas/detail/" + key}
+                      Object.keys(currentData).map((key, index) => {
+                        const removeData = (id) => {
+                          Swal.fire({
+                            title: "Apakah anda yakin?",
+                            text: `menghapus kelas "${currentData[key].namaKelas}"`,
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Iya, hapus kelas!",
+                          }).then((result) => {
+                            if (result.isConfirmed) {
+                              Swal.fire(
+                                "Deleted!",
+                                `Kelas "${currentData[key].namaKelas}" berhasil dihapus.`,
+                                "success"
+                              );
+                              this.props.dispatch(deleteKelas(id));
+                            }
+                          });
+                        };
+                        return (
+                          <tr key={key}>
+                            <td>{index + 1 + "."}</td>
+                            <td>{currentData[key].namaKelas}</td>
+                            <td>
+                              <Link
+                                {...this.props}
+                                className="btn btn-primary ml-2"
+                                to={"/admin/kelas/detail/" + key}
+                              >
+                                Detail
+                              </Link>
+                              <Link
+                                className="btn btn-warning ml-2"
+                                to={"/admin/kelas/edit/" + key}
+                              >
+                                Edit
+                              </Link>
+                              {deleteKelasLoading ? (
+                                <button
+                                  type="submit"
+                                  className="btn btn-danger ml-2"
                                 >
-                                  Detail
-                                </Link>
-                                <Link
-                                  className="btn btn-warning ml-2"
-                                  to={"/admin/kelas/edit/" + key}
+                                  <div
+                                    class="spinner-border text-light"
+                                    role="status"
+                                  >
+                                    <span class="visually-hidden"></span>
+                                  </div>
+                                </button>
+                              ) : (
+                                <button
+                                  type="submit"
+                                  className="btn btn-danger ml-2"
+                                  onClick={() => removeData(key)}
                                 >
-                                  Edit
-                                </Link>
-                                {deleteKelasLoading ? (
-                                  <button
-                                    type="submit"
-                                    className="btn btn-danger ml-2"
-                                  >
-                                    <div
-                                      class="spinner-border text-light"
-                                      role="status"
-                                    >
-                                      <span class="visually-hidden"></span>
-                                    </div>
-                                  </button>
-                                ) : (
-                                  <button
-                                    type="submit"
-                                    className="btn btn-danger ml-2"
-                                    onClick={() => removeData(key)}
-                                  >
-                                    Hapus
-                                  </button>
-                                )}
-                              </td>
-                            </tr>
-                          );
-                        })
+                                  Hapus
+                                </button>
+                              )}
+                            </td>
+                          </tr>
+                        );
+                      })
                     ) : getListKelasLoading ? (
                       <tr>
                         <td colSpan="3" align="center">
@@ -179,6 +214,9 @@ class dataKelas extends Component {
                     )}
                   </tbody>
                 </Table>
+                <ul className="mb-3" id="page-numbers">
+                  {renderPageNumbers}
+                </ul>
               </CardBody>
             </Card>
           </Col>
