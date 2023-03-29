@@ -158,13 +158,19 @@ class dataKelas extends Component {
                               <Link
                                 {...this.props}
                                 className="btn btn-primary ml-2"
-                                to={"/admin/kelas/detail/" + key}
+                                to={
+                                  "/admin/kelas/detail/" +
+                                  currentData[key].kelasId
+                                }
                               >
                                 Detail
                               </Link>
                               <Link
                                 className="btn btn-warning ml-2"
-                                to={"/admin/kelas/edit/" + key}
+                                to={
+                                  "/admin/kelas/edit/" +
+                                  currentData[key].kelasId
+                                }
                               >
                                 Edit
                               </Link>
