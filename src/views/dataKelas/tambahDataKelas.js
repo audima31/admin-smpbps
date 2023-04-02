@@ -51,7 +51,7 @@ class tambahDataKelas extends Component {
       tambahKelasResult &&
       prevProps.tambahKelasResult !== tambahKelasResult
     ) {
-      window.location = "/admin/kelas";
+      this.props.history.push("/admin/kelas");
     }
   }
 
@@ -90,7 +90,7 @@ class tambahDataKelas extends Component {
                 </button>
               ) : (
                 <button type="submit" className="btn btn-primary">
-                  Submit
+                  Simpan
                 </button>
               )}
             </form>

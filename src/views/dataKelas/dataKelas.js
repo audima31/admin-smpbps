@@ -190,7 +190,9 @@ class dataKelas extends Component {
                                 <button
                                   type="submit"
                                   className="btn btn-danger ml-2"
-                                  onClick={() => removeData(key)}
+                                  onClick={() =>
+                                    removeData(currentData[key].kelasId)
+                                  }
                                 >
                                   Hapus
                                 </button>

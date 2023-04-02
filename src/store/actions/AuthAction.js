@@ -1,11 +1,12 @@
 import FIREBASE from "config/FIREBASE";
 import Swal from "sweetalert2";
 import { dispatchError, dispatchLoading, dispatchSuccess } from "../../utils";
+import { error } from "jquery";
 
 export const LOGIN_ADMIN = "LOGIN_ADMIN";
 export const REGISTER_ADMIN = "REGISTER_ADMIN";
 export const CHECK_LOGIN = "CHECK_LOGIN";
-export const LOGOUT = "LOGOUT";
+export const LOGOUT_ADMIN = "LOGOUT_ADMIN";
 
 export const loginUser = (email, password) => {
   return (dispatch) => {
@@ -18,20 +19,23 @@ export const loginUser = (email, password) => {
         console.log("Masuk ke sign");
         //Nyambungin ke Realtime database, ngecek ada gaa akunnya di realtime database
         FIREBASE.database()
-          .ref(`admin/${userCredential.user.uid}`)
+          .ref(`users/${userCredential.user.uid}`)
           .once("value")
-          .then((userCredential) => {
-            console.log("Masuk sign 2", userCredential.val());
+          .then((querySnapshot) => {
+            console.log("Masuk sign 2", querySnapshot.val());
             // Signed in
-            if (userCredential.val()) {
-              console.log("Masuk Action 2", userCredential);
-
-              //NGIRIM DATA KE LOCALSTORAGE
-              window.localStorage.setItem(
-                "user",
-                JSON.stringify(userCredential.val())
-              );
-              dispatchSuccess(dispatch, LOGIN_ADMIN, userCredential.val());
+            if (querySnapshot.val()) {
+              if (querySnapshot.val().status === "admin") {
+                //NGIRIM DATA KE LOCALSTORAGE
+                window.localStorage.setItem(
+                  "user",
+                  JSON.stringify(querySnapshot.val())
+                );
+                dispatchSuccess(dispatch, LOGIN_ADMIN, querySnapshot.val());
+              } else {
+                dispatchError(dispatch, LOGIN_ADMIN, error.message);
+                Swal.fire("Failed", "Anda tidak memiliki hak akses", "error");
+              }
             }
           })
           .catch((error) => {
@@ -63,7 +67,7 @@ export const registerAdmin = (data) => {
 
         //SIMPAN ke realTime Database Firebase
         FIREBASE.database()
-          .ref("admin/" + success.user.uid)
+          .ref("users/" + success.user.uid)
           .set(dataBaru);
 
         //SUKSES
@@ -87,7 +91,7 @@ export const checkLogin = (history) => {
       const user = JSON.parse(window.localStorage.getItem("user"));
 
       FIREBASE.database()
-        .ref("admin/" + user.uid)
+        .ref("users/" + user.uid)
         .once("value")
         .then((resDB) => {
           if (resDB.val()) {
@@ -115,19 +119,19 @@ export const checkLogin = (history) => {
 
 export const logoutUser = (history) => {
   return (dispatch) => {
-    dispatchLoading(dispatch, LOGOUT);
+    dispatchLoading(dispatch, LOGOUT_ADMIN);
 
     FIREBASE.auth()
       .signOut()
       .then((res) => {
         //menghapus localStorage yang namanya user
         window.localStorage.removeItem("user");
-        dispatchSuccess(dispatch, LOGOUT, res);
+        dispatchSuccess(dispatch, LOGOUT_ADMIN, res);
         Swal.fire("Berhasil Logout", "", "success");
         history.push({ pathname: "/login" });
       })
       .catch((error) => {
-        dispatchError(dispatch, LOGOUT, error.message);
+        dispatchError(dispatch, LOGOUT_ADMIN, error.message);
         Swal.fire("Gagal!", error.message, "error");
       });
   };

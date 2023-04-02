@@ -23,7 +23,7 @@ export const updateProfile = (data) => {
     };
 
     FIREBASE.database()
-      .ref("admin/" + dataBaru.uid)
+      .ref("users/" + dataBaru.uid)
       .update(dataBaru)
       .then((response) => {
         //SUKSES
@@ -56,14 +56,14 @@ export const changePassword = (data) => {
             // Update successful.
 
             FIREBASE.database()
-              .ref("admin/")
+              .ref("users/")
               .child(data.uid)
               .once("value", (querySnapshot) => {
                 let res = querySnapshot.val();
                 console.log("data siswa : ", res.password);
                 if (res) {
                   FIREBASE.database()
-                    .ref("admin/")
+                    .ref("users/")
                     .child(data.uid)
                     .update({
                       password: `${data.newPassword}`,

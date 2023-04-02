@@ -166,7 +166,12 @@ class tambahDataTagihan extends Component {
                     };
                     //ke Auth Action
                     this.props.dispatch(tambahTagihan(data));
-                    Swal.fire("Tagihan berhasil dibuat", "", "success");
+                    Swal.fire({
+                      icon: "success",
+                      title: "Tagihan berhasil dibuat",
+                      showConfirmButton: true,
+                      timer: 1500,
+                    });
                   }
                 });
               }
@@ -369,7 +374,7 @@ class tambahDataTagihan extends Component {
               ) : (
                 <div className="vstack gap-2 col-md-5 mx-auto">
                   <button type="submit" className="btn btn-primary">
-                    Submit
+                    Simpan
                   </button>
                 </div>
               )}

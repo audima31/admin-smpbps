@@ -2,7 +2,7 @@ import {
   LOGIN_ADMIN,
   REGISTER_ADMIN,
   CHECK_LOGIN,
-  LOGOUT,
+  LOGOUT_ADMIN,
 } from "store/actions/AuthAction";
 
 const initialState = {
@@ -51,7 +51,7 @@ export default function (state = initialState, action) {
         checkLoginError: action.payload.errorMessage,
       };
 
-    case LOGOUT:
+    case LOGOUT_ADMIN:
       return {
         ...state,
         logoutLoading: action.payload.loading,

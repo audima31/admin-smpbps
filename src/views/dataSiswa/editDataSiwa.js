@@ -362,7 +362,7 @@ class editDataSiswa extends Component {
               ) : (
                 <div className="vstack gap-2 col-md-5 mx-auto">
                   <button type="submit" className="btn btn-primary">
-                    Submit
+                    Simpan
                   </button>
                 </div>
               )}

@@ -1,5 +1,6 @@
 import FIREBASE from "config/FIREBASE";
 import { dispatchError, dispatchLoading, dispatchSuccess } from "../../utils";
+import Swal from "sweetalert2";
 
 export const TAMBAH_SISWA = "TAMBAH_SISWA";
 export const GET_LIST_SISWA = "GET_LIST_SISWA";
@@ -24,7 +25,7 @@ export const tambahSiswa = (data) => {
         };
 
         //SIMPAN ke realTime Database Firebase
-        FIREBASE.database().ref("siswa/").child(dataBaru.uid).set(dataBaru);
+        FIREBASE.database().ref("users/").child(dataBaru.uid).set(dataBaru);
 
         //SUKSES
         dispatchSuccess(dispatch, TAMBAH_SISWA, dataBaru);
@@ -33,8 +34,11 @@ export const tambahSiswa = (data) => {
         // ERROR
         dispatchError(dispatch, TAMBAH_SISWA, error.message);
 
-        alert(error.message);
-        console.log("ERROR : ", error.message);
+        Swal.fire({
+          icon: "error",
+          title: "Error...",
+          text: "Data tidak boleh kosong!",
+        });
       });
   };
 };
@@ -43,12 +47,13 @@ export const getListSiswa = () => {
   return (dispatch) => {
     dispatchLoading(dispatch, GET_LIST_SISWA);
 
+    const status = "siswa";
     FIREBASE.database()
-      .ref("siswa/")
+      .ref("users/")
+      .orderByChild("status")
+      .equalTo(status)
       .once("value", (querySnapshot) => {
         console.log("querySnapshot : ", querySnapshot.val());
-
-        //hasil
         let data = querySnapshot.val() ? querySnapshot.val() : [];
 
         dispatchSuccess(dispatch, GET_LIST_SISWA, data);
@@ -65,7 +70,7 @@ export const getDetailSiswa = (id) => {
     dispatchLoading(dispatch, GET_DETAIL_SISWA);
 
     FIREBASE.database()
-      .ref("siswa/" + id)
+      .ref("users/" + id)
       .once("value", (querySnapshot) => {
         //Hasil
         let data = querySnapshot.val();
@@ -97,7 +102,7 @@ export const updateSiswa = (data) => {
     };
 
     FIREBASE.database()
-      .ref("siswa/" + data.id)
+      .ref("users/" + data.id)
       .update(dataBaru)
       .then((response) => {
         console.log("action : ", response);
@@ -115,7 +120,7 @@ export const deleteSiswa = (id) => {
     dispatchLoading(dispatch, DELETE_SISWA);
 
     FIREBASE.database()
-      .ref("siswa/" + id)
+      .ref("users/" + id)
       .remove()
       .then(() => {
         dispatchSuccess(dispatch, DELETE_SISWA, "SISWA BERHASIL DIHAPUS");
@@ -132,7 +137,7 @@ export const totalSiswa = () => {
     dispatchLoading(dispatch, TOTAL_SISWA);
 
     FIREBASE.database()
-      .ref("siswa/")
+      .ref("users/")
       .once("value", (querySnapshot) => {
         var count = querySnapshot.numChildren();
         dispatchSuccess(dispatch, TOTAL_SISWA, count);

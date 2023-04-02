@@ -78,7 +78,7 @@ class RegisterAdmin extends Component {
       registerAdminResult &&
       prevProps.registerAdminResult !== registerAdminResult
     ) {
-      window.location = "/admin/dashboard";
+      this.props.history.push("/admin/dashboard");
     }
   }
 

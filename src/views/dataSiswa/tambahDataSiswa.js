@@ -27,17 +27,6 @@ class tambahDataSiswa extends Component {
     this.props.dispatch(getListKelas());
   }
 
-  componentDidUpdate(prevProps) {
-    const { tambahSiswaResult } = this.props;
-
-    if (
-      tambahSiswaResult &&
-      prevProps.tambahSiswaResult !== tambahSiswaResult
-    ) {
-      window.location = "/admin/siswa";
-    }
-  }
-
   handleNIS = (event) => {
     this.setState({
       NIS: event.target.value,
@@ -132,11 +121,6 @@ class tambahDataSiswa extends Component {
       };
       //ke Auth Action
       this.props.dispatch(tambahSiswa(data));
-      Swal.fire({
-        icon: "success",
-        title: "Akun siswa berhasil dibuat",
-        showConfirmButton: false,
-      });
     } else {
       Swal.fire({
         icon: "error",
@@ -145,6 +129,23 @@ class tambahDataSiswa extends Component {
       });
     }
   };
+
+  componentDidUpdate(prevProps) {
+    const { tambahSiswaResult } = this.props;
+
+    if (
+      tambahSiswaResult &&
+      prevProps.tambahSiswaResult !== tambahSiswaResult
+    ) {
+      Swal.fire({
+        icon: "success",
+        title: "Akun siswa berhasil dibuat",
+        showConfirmButton: true,
+        timer: 1500,
+      });
+      this.props.history.push("/admin/siswa");
+    }
+  }
 
   render() {
     const {
@@ -345,7 +346,7 @@ class tambahDataSiswa extends Component {
               ) : (
                 <div className="vstack gap-2 col-md-5 mx-auto">
                   <button type="submit" className="btn btn-primary">
-                    Submit
+                    Simpan
                   </button>
                 </div>
               )}
