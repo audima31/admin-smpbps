@@ -272,6 +272,7 @@ class editDataSiswa extends Component {
                 Email<label className="btg-wajib">*</label> :
               </label>
               <input
+                disabled
                 type="email"
                 className="form-control"
                 id="inputEmailSiswa"
@@ -287,6 +288,7 @@ class editDataSiswa extends Component {
                 Password<label className="btg-wajib">*</label> :
               </label>
               <input
+                disabled
                 type="password"
                 className="form-control"
                 id="inputPasswordSiswa"

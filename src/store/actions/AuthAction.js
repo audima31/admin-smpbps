@@ -32,20 +32,27 @@ export const loginUser = (email, password) => {
                   JSON.stringify(querySnapshot.val())
                 );
                 dispatchSuccess(dispatch, LOGIN_ADMIN, querySnapshot.val());
-              } else {
+              } else if (querySnapshot.val().status === "siswa") {
                 dispatchError(dispatch, LOGIN_ADMIN, error.message);
                 Swal.fire("Failed", "Anda tidak memiliki hak akses", "error");
+              } else {
+                dispatchError(dispatch, LOGIN_ADMIN, error.message);
+                Swal.fire(
+                  "Failed",
+                  "Email dan password tidak terdaftar",
+                  "error"
+                );
               }
             }
           })
           .catch((error) => {
             dispatchError(dispatch, LOGIN_ADMIN, error.message);
-            Swal.fire("Error", error.message, "error");
+            Swal.fire("Error", "Email dan password tidak terdaftar", "error");
           });
       })
       .catch((error) => {
         dispatchError(dispatch, LOGIN_ADMIN, error.message);
-        Swal.fire("Error", error.message, "error");
+        Swal.fire("Error", "Email dan password tidak terdaftar", "error");
       });
   };
 };

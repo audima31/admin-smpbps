@@ -105,7 +105,7 @@ class tambahDataSiswa extends Component {
       noHandphoneOrangTua,
     } = this.state;
     event.preventDefault();
-    if (NIS && nama && jenisKelamin && kelas && email && password) {
+    if (NIS && nama && jenisKelamin && kelas && email && password.length >= 6) {
       const data = {
         NIS: NIS,
         nama: nama,
@@ -121,6 +121,12 @@ class tambahDataSiswa extends Component {
       };
       //ke Auth Action
       this.props.dispatch(tambahSiswa(data));
+    } else if (password.length < 6) {
+      Swal.fire({
+        icon: "error",
+        title: "Error...",
+        text: "Password minimal berjumlah 6 karakter",
+      });
     } else {
       Swal.fire({
         icon: "error",
