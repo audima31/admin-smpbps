@@ -11,6 +11,10 @@ export default class Gagal extends Component {
 
     const order_id = params.get("order_id");
     const transaction_status = params.get("transaction_status");
+
+    console.log("Order ID gagal : ", order_id);
+    console.log("Transaction Status gagal : ", transaction_status);
+
     return (
       <Row className="justify-content-center mt-5">
         <Col md="4" className="mt-5">
