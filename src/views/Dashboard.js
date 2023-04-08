@@ -191,11 +191,11 @@ class Dashboard extends Component {
                                 </p>
                               ) : listPembayaranSiswaLimitResult[key].status ===
                                 "BELUM DIBAYAR" ? (
-                                <p className="badge bg-danger text-wrap px-3 py-2 my-1">
+                                <p className="badge bg-danger text-wrap py-2 my-1">
                                   {listPembayaranSiswaLimitResult[key].status}
                                 </p>
                               ) : (
-                                <p className="badge bg-success text-wrap px-3 py-2 my-1">
+                                <p className="badge bg-success text-wrap py-2 my-1">
                                   {listPembayaranSiswaLimitResult[key].status}
                                 </p>
                               )}

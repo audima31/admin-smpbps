@@ -153,7 +153,7 @@ class detailDataTagihan extends Component {
               </tbody>
             </table>
 
-            <div>
+            {/* <div>
               {lunasTagihanLoading ? (
                 <div className="vstack gap-2 col-md-5 mx-auto">
                   <button type="submit" className="btn btn-primary">
@@ -180,7 +180,7 @@ class detailDataTagihan extends Component {
                   </button>
                 </div>
               )}
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

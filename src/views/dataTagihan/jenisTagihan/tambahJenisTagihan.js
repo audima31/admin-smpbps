@@ -23,12 +23,16 @@ class tambahJenisTagihan extends Component {
   handleSubmit = (event) => {
     const { namaJenisTagihan } = this.state;
     event.preventDefault();
-    const data = {
-      namaJenisTagihan: namaJenisTagihan,
-    };
-    //ke Auth Action
-    this.props.dispatch(tambahTypeTagihan(data));
-    console.log("Data", data);
+    if (namaJenisTagihan) {
+      //ke Auth Action
+      this.props.dispatch(tambahTypeTagihan(namaJenisTagihan));
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Data tidak boleh kosong!",
+        showConfirmButton: true,
+      });
+    }
   };
 
   componentDidUpdate(prevProps) {
@@ -37,7 +41,6 @@ class tambahJenisTagihan extends Component {
       tambahJenisTagihanResult &&
       prevProps.tambahJenisTagihanResult !== tambahJenisTagihanResult
     ) {
-      Swal.fire("Good job!", "Tambah kelas telah berhasil", "success");
       this.props.history.push("/admin/jenistagihan");
     }
   }

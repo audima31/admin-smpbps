@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import { Button, Card, CardBody, Col, Row } from "reactstrap";
 
 export default class Unfinish extends Component {
+  toRiwayat = () => {
+    window.ReactNativeWebView.postMessage("Selesai");
+  };
+
   render() {
     let search = window.location.search;
     let params = new URLSearchParams(search);
@@ -34,7 +38,11 @@ export default class Unfinish extends Component {
                 <strong style={{ color: "RED" }}>{transaction_status}</strong>
               </p>
 
-              <Button color="primary" type="submit">
+              <Button
+                color="primary"
+                type="submit"
+                onClick={() => this.toRiwayat()}
+              >
                 Lanjutkan
               </Button>
             </CardBody>

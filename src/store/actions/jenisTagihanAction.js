@@ -1,5 +1,6 @@
 import FIREBASE from "config/FIREBASE";
 import { dispatchError, dispatchLoading, dispatchSuccess } from "../../utils";
+import Swal from "sweetalert2";
 
 export const TAMBAH_JENIS_TAGIHAN = "TAMBAH_JENIS_TAGIHAN";
 export const GET_LIST_JENIS_TAGIHAN = "GET_LIST_JENIS_TAGIHAN";
@@ -11,21 +12,18 @@ export const tambahTypeTagihan = (data) => {
   return (dispatch) => {
     dispatchLoading(dispatch, TAMBAH_JENIS_TAGIHAN);
 
-    const dataBaru = {
-      namaJenisTagihan: data.namaJenisTagihan,
-    };
-
+    console.log("Action, Nama Data : ", data);
     FIREBASE.database()
       .ref("jenisTagihan/")
-      .push(dataBaru)
+      .push(data)
       .then((response) => {
         //AMBIL ID namaJenisTagihan
-        console.log("ID : ", response._delegate._path.pieces_[1]);
+        console.log("Action, ID : ", response._delegate._path.pieces_[1]);
         const dataId = {
-          ...dataBaru,
+          namaJenisTagihan: data,
           jenisTagihanId: response._delegate._path.pieces_[1],
         };
-        console.log(dataId);
+        console.log("Action, data id: ", dataId);
 
         //SIMPAN BARU
         FIREBASE.database()
@@ -33,6 +31,12 @@ export const tambahTypeTagihan = (data) => {
           .set(dataId);
 
         dispatchSuccess(dispatch, TAMBAH_JENIS_TAGIHAN, dataId);
+        Swal.fire({
+          icon: "success",
+          title: "Tambah jenis tagihan baru berhasil",
+          showConfirmButton: true,
+          timer: 1500,
+        });
       })
       .catch((error) => {
         dispatchError(dispatch, TAMBAH_JENIS_TAGIHAN, error);
