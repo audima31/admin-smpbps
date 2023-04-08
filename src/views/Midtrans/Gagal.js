@@ -28,11 +28,15 @@ export default class Gagal extends Component {
               <h5>
                 <strong>
                   MAAF TRANSAKSI <u style={{ color: "#dc3545" }}>GAGAL</u>,
-                  SILAHKAN DICOBA LAGI
+                  DIKARENAKAN TERJADI MEMBUKA PROSES PEMBAYARAN BERULANG-ULANG
                 </strong>
               </h5>
             </div>
             <CardBody className="text-center">
+              <p>
+                Silahkan hubungi Admin, untuk dapat melakukan pembayaran
+                selanjutnya
+              </p>
               <p>ORDER ID : {order_id}</p>
               <p>
                 STATUS TRANSAKSI :
