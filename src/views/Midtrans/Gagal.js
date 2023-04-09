@@ -18,7 +18,7 @@ export default class Gagal extends Component {
     return (
       <Row className="justify-content-center mt-5">
         <Col md="4" className="mt-5">
-          <Card style={{ backgroundColor: "#FD999F" }}>
+          <Card style={{ backgroundColor: "#d6d8db" }}>
             <div align="center" className="my-4">
               <i
                 class="bi bi-emoji-frown-fill fa-3x"
@@ -26,17 +26,15 @@ export default class Gagal extends Component {
               />
               <br />
               <h5>
-                <strong>
-                  MAAF TRANSAKSI <u style={{ color: "#dc3545" }}>GAGAL</u>,
-                </strong>
+                <strong>MAAF ADA KESALAHAN DALAM PROSES TRANSAKSI</strong>
               </h5>
-              <p>DIKARENAKAN MEMBUKA PROSES PEMBAYARAN BERULANG-ULANG</p>
+              <p>
+                Silahkan <strong>cek email</strong> anda untuk melanjutkan
+                pembayaran.
+              </p>
             </div>
             <CardBody className="text-center">
-              <p>
-                Silahkan hubungi Admin, untuk dapat melakukan pembayaran
-                selanjutnya
-              </p>
+              <p>Apabila masalah tetap berlanjut, silahkan hubungi admin</p>
               <p>ORDER ID : {order_id}</p>
               <p>
                 STATUS TRANSAKSI :
