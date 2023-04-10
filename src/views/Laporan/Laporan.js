@@ -170,10 +170,7 @@ class Laporan extends Component {
                           <>
                             <tr>
                               <td>
-                                {
-                                  listPembayaranSiswaResult[key]
-                                    .waktuPembayaran2
-                                }
+                                {listPembayaranSiswaResult[key].waktuPembayaran}
                               </td>
                               <td>{listPembayaranSiswaResult[key].nama}</td>
                               <td>{listPembayaranSiswaResult[key].kelas}</td>
