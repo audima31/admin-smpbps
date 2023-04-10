@@ -82,7 +82,7 @@ class Finish extends Component {
                 <p style={{ color: "red" }}>
                   {transaction_status === "pending"
                     ? "Untuk Selanjutnya Harap Selesaikan Pembayarannya jika belum bayar, dan apabila telah bayar maka update status pembayaran di halaman riwayat"
-                    : ""}
+                    : "Lakukan update status, dengan cara mengakses ulang menu riwayat"}
                 </p>
                 <p>
                   ORDER ID :<strong>{order_id}</strong>
