@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import Swal from "sweetalert2";
 import { DownloadTableExcel } from "react-export-table-to-excel";
 import { listPembayaranSiswa } from "store/actions/PaymentAction";
+import moment from "moment/moment";
 
 class Laporan extends Component {
   constructor(props) {
@@ -70,18 +71,18 @@ class Laporan extends Component {
                       data-testid="select-kelas"
                     >
                       <option value="">-- Bulan --</option>
-                      <option value={"Januari"}>Januari</option>
-                      <option value={"Februari"}>Februari</option>
-                      <option value={"Maret"}>Maret</option>
-                      <option value={"April"}>April</option>
-                      <option value={"Mei"}>Mei</option>
-                      <option value={"Juni"}>Juni</option>
-                      <option value={"Juli"}>Juli</option>
-                      <option value={"Agustus"}>Agustus</option>
-                      <option value={"September"}>September</option>
-                      <option value={"Oktober"}>Oktober</option>
-                      <option value={"November"}>November</option>
-                      <option value={"Desember"}>Desember</option>
+                      <option value={"01"}>Januari</option>
+                      <option value={"02"}>Februari</option>
+                      <option value={"03"}>Maret</option>
+                      <option value={"04"}>April</option>
+                      <option value={"05"}>Mei</option>
+                      <option value={"06"}>Juni</option>
+                      <option value={"07"}>Juli</option>
+                      <option value={"08"}>Agustus</option>
+                      <option value={"09"}>September</option>
+                      <option value={"10"}>Oktober</option>
+                      <option value={"11"}>November</option>
+                      <option value={"12"}>Desember</option>
                     </select>
                   </div>
 
@@ -160,18 +161,22 @@ class Laporan extends Component {
               <tbody>
                 {listPembayaranSiswaResult ? (
                   Object.keys(listPembayaranSiswaResult).map((key) => {
+                    //Ngambil data bulan dan tahun dari pembayaran siswa
+                    const tanggal =
+                      listPembayaranSiswaResult[key].waktuPembayaran;
+                    const tanggalObj = moment(tanggal);
+                    const hari = tanggalObj.format("DD");
+                    const bulan = tanggalObj.format("MM");
+                    const tahun = tanggalObj.year();
+
                     return (
                       <>
                         {listPembayaranSiswaResult[key].status === "LUNAS" &&
-                        listPembayaranSiswaResult[key].bulan ===
-                          this.state.bulan &&
-                        listPembayaranSiswaResult[key].tahun ===
-                          this.state.tahun ? (
+                        bulan.toString() === this.state.bulan &&
+                        tahun.toString() === this.state.tahun ? (
                           <>
                             <tr>
-                              <td>
-                                {listPembayaranSiswaResult[key].waktuPembayaran}
-                              </td>
+                              <td>{`${hari}-${bulan}-${tahun}`}</td>
                               <td>{listPembayaranSiswaResult[key].nama}</td>
                               <td>{listPembayaranSiswaResult[key].kelas}</td>
                               <td>

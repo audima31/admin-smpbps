@@ -34,9 +34,9 @@ const initialState = {
   deleteTagihanResult: false,
   deleteTagihanError: false,
 
-  lunasTagihanLoading: false,
-  lunasTagihanResult: false,
-  lunasTagihanError: false,
+  // lunasTagihanLoading: false,
+  // lunasTagihanResult: false,
+  // lunasTagihanError: false,
 
   getListTagihanSiswaByIdLoading: false,
   getListTagihanSiswaByIdResult: false,
@@ -94,13 +94,13 @@ export default function (state = initialState, action) {
         deleteTagihanError: action.payload.errorMessage,
       };
 
-    case LUNAS_TAGIHAN:
-      return {
-        ...state,
-        lunasTagihanLoading: action.payload.loading,
-        lunasTagihanResult: action.payload.data,
-        lunasTagihanError: action.payload.errorMessage,
-      };
+    // case LUNAS_TAGIHAN:
+    //   return {
+    //     ...state,
+    //     lunasTagihanLoading: action.payload.loading,
+    //     lunasTagihanResult: action.payload.data,
+    //     lunasTagihanError: action.payload.errorMessage,
+    //   };
 
     case GET_LIST_TAGIHAN_SISWA_BY_ID:
       return {

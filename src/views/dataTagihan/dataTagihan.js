@@ -1,3 +1,4 @@
+import moment from "moment";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
@@ -137,7 +138,7 @@ class dataTagihan extends Component {
             <thead className="text-primary">
               <tr>
                 <th scope="col">No</th>
-                <th scope="col">Tanggal</th>
+                <th scope="col">Tanggal Tagihan</th>
                 <th scope="col">Nama Siswa</th>
                 <th scope="col">Kelas</th>
                 <th scope="col">Tagihan</th>
@@ -170,10 +171,16 @@ class dataTagihan extends Component {
                     });
                   };
 
+                  const tanggal = currentData[key].waktuTagihan;
+                  const tanggalObj = moment(tanggal);
+                  const hari = tanggalObj.format("DD");
+                  const bulan = tanggalObj.format("MM");
+                  const tahun = tanggalObj.year();
+
                   return (
                     <tr key={key}>
                       <td>{index + 1 + "."}</td>
-                      <td>{currentData[key].waktuTagihan}</td>
+                      <td>{`${hari}-${bulan}-${tahun}`}</td>
                       <td>{currentData[key].nama}</td>
                       <td>{currentData[key].kelas}</td>
                       <td>{currentData[key].jenisTagihan}</td>

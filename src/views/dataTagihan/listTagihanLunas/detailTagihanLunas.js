@@ -1,3 +1,4 @@
+import moment from "moment";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Spinner } from "reactstrap";
@@ -26,6 +27,19 @@ class detailTagihanLunas extends Component {
   render() {
     const { getDetailTagihanLunasResult, getDetailTagihanLunasLoading } =
       this.props;
+
+    const tagihanObj = moment(getDetailTagihanLunasResult.waktuTagihan);
+    const hariTagihan = tagihanObj.format("DD");
+    const bulanTagihan = tagihanObj.format("MM");
+    const tahunTagihan = tagihanObj.year();
+
+    const pembayaranObj = moment(getDetailTagihanLunasResult.waktuPembayaran);
+    const hariPembayaran = pembayaranObj.format("DD");
+    const bulanPembayaran = pembayaranObj.format("MM");
+    const tahunPembayaran = pembayaranObj.year();
+    const waktuPembayaran = moment(
+      getDetailTagihanLunasResult.waktuPembayaran
+    ).format("LT");
 
     return (
       <div className="content">
@@ -76,8 +90,11 @@ class detailTagihanLunas extends Component {
                     <p className="mb-5">
                       : {getDetailTagihanLunasResult.keterangan}
                     </p>
-                    <p>: {getDetailTagihanLunasResult.waktuTagihan}</p>
-                    <p>: {getDetailTagihanLunasResult.waktuPembayaran}</p>
+                    <p>: {`${hariTagihan}-${bulanTagihan}-${tahunTagihan}`}</p>
+                    <p>
+                      :{" "}
+                      {`${hariPembayaran}-${bulanPembayaran}-${tahunPembayaran} - ${waktuPembayaran}`}
+                    </p>
                     <p>: {getDetailTagihanLunasResult.penagih}</p>
                   </div>
                 </div>

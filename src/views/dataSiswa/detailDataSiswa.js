@@ -1,3 +1,4 @@
+import moment from "moment";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getListKelas } from "store/actions/KelasAction";
@@ -184,14 +185,19 @@ class detailDataSiswa extends Component {
                                 }
                               });
                             };
+
+                            const tagihanObj = moment(
+                              getListTagihanSiswaByIdResult.waktuTagihan
+                            );
+                            const hariTagihan = tagihanObj.format("DD");
+                            const bulanTagihan = tagihanObj.format("MM");
+                            const tahunTagihan = tagihanObj.year();
+
                             return (
                               <>
                                 <tr id={key}>
                                   <td>
-                                    {
-                                      getListTagihanSiswaByIdResult[key]
-                                        .waktuTagihan
-                                    }
+                                    {`${hariTagihan}-${bulanTagihan}-${tahunTagihan}`}
                                   </td>
 
                                   <td>
@@ -336,6 +342,13 @@ class detailDataSiswa extends Component {
                             });
                           };
 
+                          const pembayaranObj = moment(
+                            getListTagihanSiswaByIdResult.waktuPembayaran
+                          );
+                          const hariPembayaran = pembayaranObj.format("DD");
+                          const bulanPembayaran = pembayaranObj.format("MM");
+                          const tahunPembayaran = pembayaranObj.year();
+
                           return (
                             <>
                               {listPembayaranSiswaResult[key].idSiswa ===
@@ -343,10 +356,7 @@ class detailDataSiswa extends Component {
                                 <>
                                   <tr id={key}>
                                     <td>
-                                      {
-                                        listPembayaranSiswaResult[key]
-                                          .waktuPembayaran2
-                                      }
+                                      {`${hariPembayaran}-${bulanPembayaran}-${tahunPembayaran}`}
                                     </td>
 
                                     <td>

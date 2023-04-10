@@ -2,13 +2,11 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { Spinner, Table } from "reactstrap";
-import {
-  deleteTagihanLunas,
-  listPembayaranSiswa,
-} from "store/actions/PaymentAction";
+import { listPembayaranSiswa } from "store/actions/PaymentAction";
 import Swal from "sweetalert2";
 import { numberWithCommas } from "utils";
 import { deleteTagihan } from "store/actions/TagihanAction";
+import moment from "moment";
 
 class listTagihanLunas extends Component {
   constructor(props) {
@@ -131,7 +129,7 @@ class listTagihanLunas extends Component {
             <thead className="text-primary">
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Tanggal</th>
+                <th scope="col">Tanggal Pembayaran</th>
                 <th scope="col">Nama Siswa</th>
                 <th scope="col">Kelas</th>
                 <th scope="col">Tagihan</th>
@@ -165,10 +163,16 @@ class listTagihanLunas extends Component {
                     });
                   };
 
+                  const tanggal = currentData[key].waktuPembayaran;
+                  const tanggalObj = moment(tanggal);
+                  const hari = tanggalObj.format("DD");
+                  const bulan = tanggalObj.format("MM");
+                  const tahun = tanggalObj.year();
+
                   return (
                     <tr key={key}>
                       <td>{index + 1} .</td>
-                      <td>{currentData[key].waktuTagihan}</td>
+                      <td>{`${hari}-${bulan}-${tahun}`}</td>
                       <td>{currentData[key].nama}</td>
                       <td>{currentData[key].kelas}</td>
                       <td>{currentData[key].jenisTagihan}</td>

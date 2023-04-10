@@ -5,6 +5,7 @@ import { updateTagihan, getDetailTagihan } from "store/actions/TagihanAction";
 import Swal from "sweetalert2";
 import { numberWithCommas } from "utils";
 import "../../assets/css/dataSiswa.css";
+import moment from "moment";
 
 class editDataTagihan extends Component {
   constructor(props) {
@@ -14,8 +15,6 @@ class editDataTagihan extends Component {
       id: this.props.match.params.id,
       jenisTagihan: "",
       keterangan: "",
-      bulan: "",
-      tahun: "",
       status: "",
       nominal: "",
     };
@@ -31,18 +30,6 @@ class editDataTagihan extends Component {
   handleJenisTagihan = (event) => {
     this.setState({
       jenisTagihan: event.target.value,
-    });
-  };
-
-  handleBulan = (event) => {
-    this.setState({
-      bulan: event.target.value,
-    });
-  };
-
-  handleTahun = (event) => {
-    this.setState({
-      tahun: event.target.value,
     });
   };
 
@@ -66,12 +53,11 @@ class editDataTagihan extends Component {
 
   handleSubmit = (event) => {
     const { getListJenisTagihanResult, getDetailTagihanResult } = this.props;
-    const { jenisTagihan, keterangan, bulan, tahun, nominal, status, id } =
-      this.state;
+    const { jenisTagihan, keterangan, nominal, status, id } = this.state;
 
     event.preventDefault();
 
-    if (jenisTagihan && keterangan && nominal && bulan && tahun && status) {
+    if (jenisTagihan && keterangan && nominal && status) {
       // eslint-disable-next-line no-lone-blocks
       {
         Object.keys(getListJenisTagihanResult).map((key) => {
@@ -80,12 +66,9 @@ class editDataTagihan extends Component {
               kelas: getDetailTagihanResult.kelas,
               nama: getDetailTagihanResult.nama,
               jenisTagihan: getListJenisTagihanResult[key].namaJenisTagihan,
-              bulan: bulan,
-              tahun: tahun,
               nominal: nominal,
               keterangan: keterangan,
               status: status,
-              waktuTagihan: getDetailTagihanResult.waktuTagihan,
               penagih: getDetailTagihanResult.penagih,
               idSiswa: getDetailTagihanResult.idSiswa,
               idJenisTagihan: jenisTagihan,
@@ -119,8 +102,6 @@ class editDataTagihan extends Component {
       this.setState({
         jenisTagihan: getDetailTagihanResult.idJenisTagihan,
         keterangan: getDetailTagihanResult.keterangan,
-        bulan: getDetailTagihanResult.bulan,
-        tahun: getDetailTagihanResult.tahun,
         status: getDetailTagihanResult.status,
         nominal: getDetailTagihanResult.nominal,
       });
@@ -135,8 +116,7 @@ class editDataTagihan extends Component {
   }
 
   render() {
-    const { jenisTagihan, keterangan, bulan, tahun, nominal, status } =
-      this.state;
+    const { jenisTagihan, keterangan, nominal, status } = this.state;
 
     const {
       getDetailTagihanResult,
@@ -144,7 +124,12 @@ class editDataTagihan extends Component {
       getListJenisTagihanResult,
     } = this.props;
 
-    console.log("detail Tagihan: ", getDetailTagihanResult);
+    const tanggalObj = moment(getDetailTagihanResult.waktuTagihan);
+    const hari = tanggalObj.format("DD");
+    const bulan = tanggalObj.format("MM");
+    const tahun = tanggalObj.year();
+    const waktu = moment(getDetailTagihanResult.waktuTagihan).format("LT");
+
     return (
       <div className="content">
         <div className="page">
@@ -168,12 +153,13 @@ class editDataTagihan extends Component {
             <div>
               <p>Nama : {getDetailTagihanResult.nama}</p>
               <p>Kelas : {getDetailTagihanResult.kelas}</p>
+              <p>Waktu Tagihan : {`${hari}-${bulan}-${tahun} - ${waktu}`}</p>
             </div>
 
             <table className="table table-bordered text-center">
               <thead className="text-primary">
                 <tr>
-                  <th scope="col">Tanggal</th>
+                  <th scope="col">Waktu Tagihan</th>
                   <th scope="col">Jenis Tagihan</th>
                   <th scope="col">Nominal</th>
                   <th scope="col">Status</th>
@@ -183,7 +169,7 @@ class editDataTagihan extends Component {
                 {getDetailTagihanResult ? (
                   <>
                     <tr>
-                      <td>{getDetailTagihanResult.waktuTagihan}</td>
+                      <td>{`${hari}-${bulan}-${tahun}`}</td>
                       <td>{getDetailTagihanResult.jenisTagihan}</td>
                       <td>
                         Rp. {numberWithCommas(getDetailTagihanResult.nominal)}
@@ -246,57 +232,6 @@ class editDataTagihan extends Component {
                 </select>
               </div>
               {/* END Form Jenis Tagihan */}
-              {/* Form Bulan */}
-              <div className="mb-3">
-                <strong>
-                  Bulan : <label style={{ color: "red" }}>*</label>
-                </strong>
-                <select
-                  className="form-select"
-                  aria-label="Default select example"
-                  value={bulan}
-                  onChange={(event) => this.handleBulan(event)}
-                >
-                  <option value="">-- PILIH --</option>
-                  <option value={"Januari"}>Januari</option>
-                  <option value={"Februari"}>Februari</option>
-                  <option value={"Maret"}>Maret</option>
-                  <option value={"April"}>April</option>
-                  <option value={"Mei"}>Mei</option>
-                  <option value={"Juni"}>Juni</option>
-                  <option value={"Juli"}>Juli</option>
-                  <option value={"Agustus"}>Agustus</option>
-                  <option value={"September"}>September</option>
-                  <option value={"Oktober"}>Oktober</option>
-                  <option value={"November"}>November</option>
-                  <option value={"Desember"}>Desember</option>
-                </select>
-              </div>
-              {/* Form Tahun */}
-              <div className="mb-3">
-                <strong>
-                  Tahun : <label style={{ color: "red" }}>*</label>
-                </strong>
-                <select
-                  className="form-select"
-                  aria-label="Default select example"
-                  value={tahun}
-                  onChange={(event) => this.handleTahun(event)}
-                >
-                  <option value="">-- PILIH --</option>
-                  <option value={"2023"}>2023</option>
-                  <option value={"2024"}>2024</option>
-                  <option value={"2025"}>2025</option>
-                  <option value={"2026"}>2026</option>
-                  <option value={"2027"}>2027</option>
-                  <option value={"2028"}>2028</option>
-                  <option value={"2029"}>2029</option>
-                  <option value={"2030"}>2030</option>
-                  <option value={"2031"}>2031</option>
-                  <option value={"2032"}>2032</option>
-                  <option value={"2033"}>2033</option>
-                </select>
-              </div>
 
               {/* Form Jumlah Nominal Tagihan*/}
               <div className="mb-3">

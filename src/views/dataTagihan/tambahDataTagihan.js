@@ -16,8 +16,6 @@ class tambahDataTagihan extends Component {
       kelas: "",
       nama: "",
       jenisTagihan: "",
-      bulan: "",
-      tahun: "",
       nominal: "",
       keterangan: "",
       status: "BELUM DIBAYAR",
@@ -71,18 +69,6 @@ class tambahDataTagihan extends Component {
     });
   };
 
-  handleBulan = (event) => {
-    this.setState({
-      bulan: event.target.value,
-    });
-  };
-
-  handleTahun = (event) => {
-    this.setState({
-      tahun: event.target.value,
-    });
-  };
-
   handleNominal = (event) => {
     this.setState({
       nominal: event.target.value,
@@ -113,27 +99,10 @@ class tambahDataTagihan extends Component {
       getListJenisTagihanResult,
       getListKelasResult,
     } = this.props;
-    const {
-      kelas,
-      nama,
-      jenisTagihan,
-      bulan,
-      tahun,
-      keterangan,
-      nominal,
-      status,
-      penagih,
-    } = this.state;
+    const { kelas, nama, jenisTagihan, keterangan, nominal, status, penagih } =
+      this.state;
     event.preventDefault();
-    if (
-      kelas &&
-      nama &&
-      jenisTagihan &&
-      nominal &&
-      bulan &&
-      tahun &&
-      keterangan
-    ) {
+    if (kelas && nama && jenisTagihan && nominal && keterangan) {
       // eslint-disable-next-line no-lone-blocks
       {
         Object.keys(getListKelasResult).map((x) => {
@@ -155,8 +124,6 @@ class tambahDataTagihan extends Component {
                       nama: getListSiswaResult[key].nama,
                       jenisTagihan:
                         getListJenisTagihanResult[id].namaJenisTagihan,
-                      bulan: bulan,
-                      tahun: tahun,
                       nominal: nominal,
                       keterangan: keterangan,
                       status: status,
@@ -189,8 +156,7 @@ class tambahDataTagihan extends Component {
   };
 
   render() {
-    const { nama, kelas, jenisTagihan, nominal, bulan, tahun, keterangan } =
-      this.state;
+    const { nama, kelas, jenisTagihan, nominal, keterangan } = this.state;
     console.log("Nama : ", nama);
     const {
       getListKelasResult,
@@ -279,61 +245,6 @@ class tambahDataTagihan extends Component {
                     </option>
                   );
                 })}
-              </select>
-            </div>
-
-            {/* Form Bulan */}
-            <div className="mb-3">
-              <label>
-                Bulan : <label className="btg-wajib">*</label>
-              </label>
-              <select
-                class="form-select"
-                aria-label="Default select example"
-                value={bulan}
-                onChange={(event) => this.handleBulan(event)}
-                data-testid="select-kelas"
-              >
-                <option value="">-- PILIH --</option>
-                <option value={"Januari"}>Januari</option>
-                <option value={"Februari"}>Februari</option>
-                <option value={"Maret"}>Maret</option>
-                <option value={"April"}>April</option>
-                <option value={"Mei"}>Mei</option>
-                <option value={"Juni"}>Juni</option>
-                <option value={"Juli"}>Juli</option>
-                <option value={"Agustus"}>Agustus</option>
-                <option value={"September"}>September</option>
-                <option value={"Oktober"}>Oktober</option>
-                <option value={"November"}>November</option>
-                <option value={"Desember"}>Desember</option>
-              </select>
-            </div>
-
-            {/* Form Tahun */}
-            <div className="mb-3">
-              <label>
-                Tahun : <label className="btg-wajib">*</label>
-              </label>
-              <select
-                class="form-select"
-                aria-label="Default select example"
-                value={tahun}
-                onChange={(event) => this.handleTahun(event)}
-                data-testid="select-kelas"
-              >
-                <option value="">-- PILIH --</option>
-                <option value={"2023"}>2023</option>
-                <option value={"2024"}>2024</option>
-                <option value={"2025"}>2025</option>
-                <option value={"2026"}>2026</option>
-                <option value={"2027"}>2027</option>
-                <option value={"2028"}>2028</option>
-                <option value={"2029"}>2029</option>
-                <option value={"2030"}>2030</option>
-                <option value={"2031"}>2031</option>
-                <option value={"2032"}>2032</option>
-                <option value={"2033"}>2033</option>
               </select>
             </div>
 
