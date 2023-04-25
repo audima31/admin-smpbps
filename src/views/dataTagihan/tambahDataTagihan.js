@@ -93,7 +93,7 @@ class tambahDataTagihan extends Component {
     });
   };
 
-  handleSubmit = (event) => {
+  handleTambahTagihan = (event) => {
     const {
       getListSiswaResult,
       getListJenisTagihanResult,
@@ -172,7 +172,7 @@ class tambahDataTagihan extends Component {
           Kembali
         </Link>
         <div className="page">
-          <form onSubmit={(event) => this.handleSubmit(event)}>
+          <form onSubmit={(event) => this.handleTambahTagihan(event)}>
             {/* Form Kelas */}
             <div className="mb-3">
               <label>

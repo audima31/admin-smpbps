@@ -30,7 +30,7 @@ class editJenisTagihan extends Component {
     });
   };
 
-  handleSubmit = (event) => {
+  handleEditJenisTagihan = (event) => {
     const { namaJenisTagihan } = this.state;
     event.preventDefault();
     if (namaJenisTagihan) {
@@ -75,7 +75,7 @@ class editJenisTagihan extends Component {
             </Link>
           </Col>
           <Col md={8}>
-            <form onSubmit={(event) => this.handleSubmit(event)}>
+            <form onSubmit={(event) => this.handleEditJenisTagihan(event)}>
               <div className="mb-3">
                 <label htmlFor="inputNamaJenisTagihan" className="form-label">
                   Nama Jenis Tagihan:

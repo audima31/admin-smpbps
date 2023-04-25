@@ -12,12 +12,9 @@ import {
   Table,
   Spinner,
 } from "reactstrap";
-import { getListTypeTagihan } from "store/actions/jenisTagihanAction";
-import { getListKelas } from "store/actions/KelasAction";
 import { totalKelas } from "store/actions/KelasAction";
 import { limitPembayaranLunas } from "store/actions/PaymentAction";
 import { totalPembayaranLunas } from "store/actions/PaymentAction";
-import { getListSiswa } from "store/actions/SiswaAction";
 import { totalSiswa } from "store/actions/SiswaAction";
 import { numberWithCommas } from "utils";
 
@@ -27,9 +24,6 @@ class Dashboard extends Component {
     this.props.dispatch(totalKelas());
     this.props.dispatch(totalPembayaranLunas());
     this.props.dispatch(limitPembayaranLunas());
-    this.props.dispatch(getListKelas());
-    this.props.dispatch(getListSiswa());
-    this.props.dispatch(getListTypeTagihan());
   }
 
   componentDidUpdate() {

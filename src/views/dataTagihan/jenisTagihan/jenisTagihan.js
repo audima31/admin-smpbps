@@ -13,7 +13,7 @@ class jenisTagihan extends Component {
     this.props.dispatch(getListTypeTagihan());
   }
 
-  removeData = (id) => {
+  hapusJenisTagihan = (id) => {
     Swal.fire({
       title: "Apakah anda yakin?",
       text: "Anda tidak dapat mengembalikan data ini!",
@@ -114,7 +114,7 @@ class jenisTagihan extends Component {
                                   <button
                                     type="submit"
                                     className="btn btn-danger ml-2"
-                                    onClick={() => this.removeData(key)}
+                                    onClick={() => this.hapusJenisTagihan(key)}
                                   >
                                     <i className="nc-icon nc-basket"></i> Hapus
                                   </button>

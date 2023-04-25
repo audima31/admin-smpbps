@@ -150,7 +150,7 @@ class dataTagihan extends Component {
             <tbody>
               {getListTagihanResult ? (
                 Object.keys(currentData).map((key, index) => {
-                  const removeData = (id) => {
+                  const hapusDataTagihan = (id) => {
                     Swal.fire({
                       title: "Apakah anda yakin?",
                       text: `menghapus tagihan "${currentData[key].nama} - ${currentData[key].jenisTagihan}"`,
@@ -245,7 +245,9 @@ class dataTagihan extends Component {
                                 type="submit"
                                 className="btn btn-danger ml-2"
                                 onClick={() =>
-                                  removeData(currentData[key].idTagihanDetail)
+                                  hapusDataTagihan(
+                                    currentData[key].idTagihanDetail
+                                  )
                                 }
                               >
                                 Hapus

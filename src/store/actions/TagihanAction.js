@@ -1,6 +1,7 @@
 import FIREBASE from "config/FIREBASE";
 import { dispatchError, dispatchLoading, dispatchSuccess } from "../../utils";
 import { format } from "date-fns";
+import moment from "moment";
 
 export const TAMBAH_TAGIHAN = "TAMBAH_TAGIHAN";
 export const GET_LIST_TAGIHAN = "GET_LIST_TAGIHAN";
@@ -8,7 +9,7 @@ export const UPDATE_TAGIHAN = "UPDATE_TAGIHAN";
 export const GET_DETAIL_TAGIHAN = "GET_DETAIL_TAGIHAN";
 export const GET_DETAIL_SISWA_TAGIHAN = "GET_DETAIL_SISWA_TAGIHAN";
 export const DELETE_TAGIHAN = "DELETE_TAGIHAN";
-// export const LUNAS_TAGIHAN = "LUNAS_TAGIHAN";
+export const LUNAS_TAGIHAN = "LUNAS_TAGIHAN";
 export const GET_LIST_TAGIHAN_SISWA_BY_ID = "GET_LIST_TAGIHAN_SISWA_BY_ID";
 
 export const tambahTagihan = (data) => {
@@ -30,6 +31,7 @@ export const tambahTagihan = (data) => {
       idTagihanDetail: data.id,
       idSiswa: data.idSiswa,
       idJenisTagihan: data.idJenisTagihan,
+      order_id: "",
     };
     //Tambah Tagihan
     FIREBASE.database()
@@ -169,85 +171,90 @@ export const deleteTagihan = (id) => {
 };
 
 //Mengganti status tagihan menjadi lunas
-// export const lunasTagihan = (id, data) => {
-//   return (dispatch) => {
-//     dispatchLoading(dispatch, LUNAS_TAGIHAN);
+export const lunasTagihan = (id, data, order_id) => {
+  return (dispatch) => {
+    dispatchLoading(dispatch, LUNAS_TAGIHAN);
 
-//     const uid = id.split("-")[1];
+    const uid = id.split("-")[1];
 
-//     const dataBaru = {
-//       status: data.status,
-//     };
+    const dataBaru = {
+      status: data.status,
+    };
 
-//     FIREBASE.database()
-//       .ref("tagihans/" + id)
-//       .update(dataBaru)
-//       .then((response) => {
-//         FIREBASE.database()
-//           .ref("tagihans/" + id)
-//           .once("value", (querySnapshot) => {
-//             const dataTagihans = querySnapshot.val();
+    FIREBASE.database()
+      .ref("tagihans/" + id)
+      .update(dataBaru)
+      .then((response) => {
+        FIREBASE.database()
+          .ref("tagihans/" + id)
+          .once("value", (querySnapshot) => {
+            const dataTagihans = querySnapshot.val();
 
-//             //Ini ngambil data dari tagihan, terus ditaruh ke riwayats
-//             const dataRiwayats = { ...dataTagihans };
-//             dataRiwayats.url = "PEMBAYARAN TUNAI";
-//             dataRiwayats.order_id = new Date().getTime() + "-" + uid;
-//             dataRiwayats.waktuPembayaran = new Date().toString();
-//             dataRiwayats.waktuPembayaran2 = new Date().toDateString();
-//             dataRiwayats.metodePembayaran = "Tunai";
+            //Ini ngambil data dari tagihan, terus ditaruh ke riwayats
 
-//             FIREBASE.database()
-//               .ref("riwayats")
-//               .child(dataRiwayats.order_id)
-//               .set(dataRiwayats)
-//               .then((response) => {
-//                 console.log("Nambah data riwayats");
-//                 dispatchSuccess(
-//                   dispatch,
-//                   LUNAS_TAGIHAN,
-//                   response ? response : []
-//                 );
+            const date = new Date();
+            const waktuPembayaran = format(date, "yyyy-MM-dd HH:mm:ss");
 
-//                 //Mengecek data 'riwayats/'
-//                 FIREBASE.database()
-//                   .ref("riwayats/")
-//                   .child(dataRiwayats.order_id)
-//                   .once("value", (querySnapshot) => {
-//                     let data = querySnapshot.val();
-//                     console.log("Cek data riwayats : ", data.status);
-//                     //MEMBUAT TABLE BARU, DENGAN NAMA tagihanLunas
-//                     if (data.status === "LUNAS") {
-//                       FIREBASE.database()
-//                         .ref("tagihanLunas")
-//                         .child(dataRiwayats.order_id)
-//                         .set(data)
-//                         .then((response) => {});
-//                     }
-//                   })
-//                   .catch((error) => {
-//                     alert(error);
-//                   });
-//               });
+            const dataRiwayats = { ...dataTagihans };
+            dataRiwayats.url = "PEMBAYARAN TUNAI";
+            dataRiwayats.order_id = order_id
+              ? order_id
+              : new Date().getTime() + "-" + uid;
+            dataRiwayats.waktuPembayaran = waktuPembayaran;
+            dataRiwayats.metodePembayaran = "Tunai";
 
-//             //Menghapus data lunas yang ada di tagihans
-//             console.log("status data : ", dataTagihans.status);
-//             if (dataTagihans.status === "LUNAS") {
-//               console.log("IFELSE pengahpusan");
-//               FIREBASE.database()
-//                 .ref("tagihans/" + id)
-//                 .remove()
-//                 .then(() => {})
-//                 .catch((error) => {});
-//             } else {
-//             }
-//           });
-//       })
-//       .catch((error) => {
-//         dispatchError(dispatch, LUNAS_TAGIHAN, error);
-//         alert(error);
-//       });
-//   };
-// };
+            FIREBASE.database()
+              .ref("riwayats")
+              .child(dataRiwayats.order_id)
+              .set(dataRiwayats)
+              .then((response) => {
+                console.log("Nambah data riwayats");
+                dispatchSuccess(
+                  dispatch,
+                  LUNAS_TAGIHAN,
+                  response ? response : []
+                );
+
+                //Mengecek data 'riwayats/'
+                FIREBASE.database()
+                  .ref("riwayats/")
+                  .child(dataRiwayats.order_id)
+                  .once("value", (querySnapshot) => {
+                    let data = querySnapshot.val();
+                    console.log("Cek data riwayats : ", data.status);
+                    //MEMBUAT TABLE BARU, DENGAN NAMA tagihanLunas
+                    if (data.status === "LUNAS") {
+                      FIREBASE.database()
+                        .ref("tagihanLunas")
+                        .child(dataRiwayats.order_id)
+                        .set(data)
+                        .then((response) => {});
+                    }
+                  })
+                  .catch((error) => {
+                    alert(error);
+                  });
+              });
+
+            //Menghapus data lunas yang ada di tagihans
+            console.log("status data : ", dataTagihans.status);
+            if (dataTagihans.status === "LUNAS") {
+              console.log("IFELSE pengahpusan");
+              FIREBASE.database()
+                .ref("tagihans/" + id)
+                .remove()
+                .then(() => {})
+                .catch((error) => {});
+            } else {
+            }
+          });
+      })
+      .catch((error) => {
+        dispatchError(dispatch, LUNAS_TAGIHAN, error);
+        alert(error);
+      });
+  };
+};
 
 //Untuk detail siswa pages
 export const getListTagihanSiswaById = (id) => {

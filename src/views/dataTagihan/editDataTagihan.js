@@ -51,7 +51,7 @@ class editDataTagihan extends Component {
     });
   };
 
-  handleSubmit = (event) => {
+  handleEditTagihan = (event) => {
     const { getListJenisTagihanResult, getDetailTagihanResult } = this.props;
     const { jenisTagihan, keterangan, nominal, status, id } = this.state;
 
@@ -208,7 +208,7 @@ class editDataTagihan extends Component {
               </tbody>
             </table>
 
-            <form onSubmit={(event) => this.handleSubmit(event)}>
+            <form onSubmit={(event) => this.handleEditTagihan(event)}>
               {/* Form Jenis Tagihan */}
               <div className="mb-3">
                 <strong>

@@ -25,7 +25,7 @@ class editDataKelas extends Component {
     });
   };
 
-  handleSubmit = (event) => {
+  handleEditKelas = (event) => {
     const { namaKelas } = this.state;
     event.preventDefault();
     if (namaKelas) {
@@ -76,7 +76,7 @@ class editDataKelas extends Component {
             </div>
           </Col>
           <Col md={8}>
-            <form onSubmit={(event) => this.handleSubmit(event)}>
+            <form onSubmit={(event) => this.handleEditKelas(event)}>
               <div className="mb-3">
                 <label htmlFor="inputNama" className="form-label">
                   Nama Kelas :

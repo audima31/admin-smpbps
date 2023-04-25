@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getListKelas } from "store/actions/KelasAction";
 import Swal from "sweetalert2";
-import { Link } from "react-router-dom";
 import { getDetailSiswa } from "store/actions/SiswaAction";
 import { updateSiswa } from "store/actions/SiswaAction";
 import "../../assets/css/dataSiswa.css";
@@ -92,7 +91,7 @@ class editDataSiswa extends Component {
     });
   };
 
-  handleSubmit = (event) => {
+  handleEditSiswa = (event) => {
     const {
       NIS,
       nama,
@@ -194,7 +193,7 @@ class editDataSiswa extends Component {
         </div>
 
         <div className="page">
-          <form onSubmit={(event) => this.handleSubmit(event)}>
+          <form onSubmit={(event) => this.handleEditSiswa(event)}>
             {/* Form NIS */}
             <div className="mb-3">
               <label htmlFor="inputNama" className="form-label">

@@ -20,7 +20,7 @@ class tambahDataKelas extends Component {
     });
   };
 
-  handleSubmit = (event) => {
+  handleTambahKelas = (event) => {
     const { namaKelas } = this.state;
     event.preventDefault();
     const data = {
@@ -68,7 +68,7 @@ class tambahDataKelas extends Component {
             </Link>
           </Col>
           <Col md={8}>
-            <form onSubmit={(event) => this.handleSubmit(event)}>
+            <form onSubmit={(event) => this.handleTambahKelas(event)}>
               <div className="mb-3">
                 <label htmlFor="inputNama" className="form-label">
                   Nama Kelas :

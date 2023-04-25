@@ -130,7 +130,7 @@ class dataKelas extends Component {
                   <tbody>
                     {getListKelasResult ? (
                       Object.keys(currentData).map((key, index) => {
-                        const removeData = (id) => {
+                        const hapusDataKelas = (id) => {
                           Swal.fire({
                             title: "Apakah anda yakin?",
                             text: `menghapus kelas "${currentData[key].namaKelas}"`,
@@ -191,7 +191,7 @@ class dataKelas extends Component {
                                   type="submit"
                                   className="btn btn-danger ml-2"
                                   onClick={() =>
-                                    removeData(currentData[key].kelasId)
+                                    hapusDataKelas(currentData[key].kelasId)
                                   }
                                 >
                                   Hapus

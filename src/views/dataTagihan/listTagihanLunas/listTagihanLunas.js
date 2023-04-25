@@ -172,7 +172,11 @@ class listTagihanLunas extends Component {
                   return (
                     <tr key={key}>
                       <td>{index + 1} .</td>
-                      <td>{`${hari}-${bulan}-${tahun}`}</td>
+                      <td>
+                        {currentData[key].waktuPembayaran
+                          ? `${hari}-${bulan}-${tahun}`
+                          : "Dalam proses pembayaran"}
+                      </td>
                       <td>{currentData[key].nama}</td>
                       <td>{currentData[key].kelas}</td>
                       <td>{currentData[key].jenisTagihan}</td>

@@ -1,8 +1,9 @@
 import moment from "moment";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-// import { lunasTagihan } from "store/actions/TagihanAction";
+import { lunasTagihan } from "store/actions/TagihanAction";
 import { getDetailTagihan } from "store/actions/TagihanAction";
+import Swal from "sweetalert2";
 import { numberWithCommas } from "utils";
 
 class detailDataTagihan extends Component {
@@ -22,66 +23,64 @@ class detailDataTagihan extends Component {
     this.props.dispatch(getDetailTagihan(id));
   }
 
-  // handleSubmit = (event) => {
-  //   const { status, id } = this.state;
-  //   console.log("Status : ", status);
-  //   event.preventDefault();
+  handleLunas = (order_id) => {
+    const { status, id } = this.state;
+    console.log("Status : ", status);
+    // event.preventDefault();
 
-  //   const data = {
-  //     status: "LUNAS",
-  //   };
-  //   Swal.fire({
-  //     title: "Apakah anda yakin melunaskan pembayaran?",
-  //     text: "Anda tidak dapat mengembalikan data ini!",
-  //     icon: "warning",
-  //     showCancelButton: true,
-  //     confirmButtonColor: "#3085d6",
-  //     cancelButtonColor: "#d33",
-  //     confirmButtonText: "Iya, lunaskan pembayaran!",
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       this.props.dispatch(lunasTagihan(id, data));
-  //     }
-  //   });
-  // };
+    const data = {
+      status: "LUNAS",
+    };
+    Swal.fire({
+      title: "Apakah anda yakin melunaskan pembayaran?",
+      text: "Anda tidak dapat mengembalikan data ini!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Iya, lunaskan pembayaran!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.props.dispatch(lunasTagihan(id, data, order_id));
+      }
+    });
+  };
 
-  // componentDidUpdate(prevProps) {
-  //   const { getDetailTagihanResult, lunasTagihanResult } = this.props;
+  componentDidUpdate(prevProps) {
+    const { getDetailTagihanResult, lunasTagihanResult } = this.props;
 
-  //   if (
-  //     getDetailTagihanResult &&
-  //     prevProps.getDetailTagihanResult !== getDetailTagihanResult
-  //   ) {
-  //     this.setState({
-  //       status: getDetailTagihanResult.status,
-  //     });
-  //   }
+    if (
+      getDetailTagihanResult &&
+      prevProps.getDetailTagihanResult !== getDetailTagihanResult
+    ) {
+      this.setState({
+        status: getDetailTagihanResult.status,
+      });
+    }
 
-  //   if (
-  //     lunasTagihanResult &&
-  //     prevProps.lunasTagihanResult !== lunasTagihanResult
-  //   ) {
-  //     Swal.fire("Berhasil", `Tagihan telah lunas`, "success");
-  //     this.props.history.push("/admin/tagihan");
-  //   }
-  // }
+    if (
+      lunasTagihanResult &&
+      prevProps.lunasTagihanResult !== lunasTagihanResult
+    ) {
+      Swal.fire("Berhasil", `Tagihan telah lunas`, "success");
+      this.props.history.push("/admin/tagihan");
+    }
+  }
 
   handleBack = () => {
     this.props.history.goBack();
   };
 
   render() {
-    const {
-      getDetailTagihanResult,
-      // getListJenisTagihanResult,
-      // lunasTagihanLoading,
-    } = this.props;
+    const { getDetailTagihanResult, lunasTagihanLoading } = this.props;
 
     const tanggalObj = moment(getDetailTagihanResult.waktuTagihan);
     const hari = tanggalObj.format("DD");
     const bulan = tanggalObj.format("MM");
     const tahun = tanggalObj.year();
     const waktu = moment(getDetailTagihanResult.waktuTagihan).format("LT");
+
+    console.log("Data Tagihan Detail : ", getDetailTagihanResult);
 
     return (
       <div className="content">
@@ -160,7 +159,7 @@ class detailDataTagihan extends Component {
               </tbody>
             </table>
 
-            {/* <div>
+            <div>
               {lunasTagihanLoading ? (
                 <div className="vstack gap-2 col-md-5 mx-auto">
                   <button type="submit" className="btn btn-primary">
@@ -174,7 +173,13 @@ class detailDataTagihan extends Component {
                   <button
                     type="submit"
                     className="btn btn-primary"
-                    onClick={(event) => this.handleSubmit(event)}
+                    onClick={() =>
+                      this.handleLunas(
+                        getDetailTagihanResult.order_id
+                          ? getDetailTagihanResult.order_id
+                          : ""
+                      )
+                    }
                   >
                     BAYAR SEKARANG
                   </button>
@@ -187,7 +192,7 @@ class detailDataTagihan extends Component {
                   </button>
                 </div>
               )}
-            </div> */}
+            </div>
           </div>
         </div>
       </div>
@@ -200,9 +205,9 @@ const mapStateToProps = (state) => ({
   getDetailTagihanResult: state.TagihanReducer.getDetailTagihanResult,
   getDetailTagihanError: state.TagihanReducer.getDetailTagihanError,
 
-  // lunasTagihanLoading: state.TagihanReducer.lunasTagihanLoading,
-  // lunasTagihanResult: state.TagihanReducer.lunasTagihanResult,
-  // lunasTagihanError: state.TagihanReducer.getDetailTagihanError,
+  lunasTagihanLoading: state.TagihanReducer.lunasTagihanLoading,
+  lunasTagihanResult: state.TagihanReducer.lunasTagihanResult,
+  lunasTagihanError: state.TagihanReducer.getDetailTagihanError,
 });
 
 export default connect(mapStateToProps, null)(detailDataTagihan);

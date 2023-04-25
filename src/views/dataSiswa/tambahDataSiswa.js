@@ -91,7 +91,7 @@ class tambahDataSiswa extends Component {
     this.props.history.goBack();
   };
 
-  handleSubmit = (event) => {
+  handleTambahSiswa = (event) => {
     const {
       NIS,
       nama,
@@ -181,7 +181,7 @@ class tambahDataSiswa extends Component {
           </button>
         </div>
         <div className="page">
-          <form onSubmit={(event) => this.handleSubmit(event)}>
+          <form onSubmit={(event) => this.handleTambahSiswa(event)}>
             {/* Form NIS */}
             <div className="mb-3">
               <label htmlFor="inputNama" className="form-label">

@@ -90,7 +90,7 @@ class detailDataKelas extends Component {
             <tbody>
               {getListSiswaResult ? (
                 Object.keys(getListSiswaResult).map((key) => {
-                  const removeData = (id) => {
+                  const removeDataSiswa = (id) => {
                     Swal.fire({
                       title: `Apakah anda yakin?`,
                       text: `menghapus data "${getListSiswaResult[key].nama}"`,
@@ -166,7 +166,7 @@ class detailDataKelas extends Component {
                               <button
                                 type="submit"
                                 className="btn btn-danger ml-2"
-                                onClick={() => removeData(key)}
+                                onClick={() => removeDataSiswa(key)}
                               >
                                 <i className="nc-icon nc-basket"></i> Hapus
                               </button>
