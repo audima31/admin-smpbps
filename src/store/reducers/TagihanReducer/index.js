@@ -5,7 +5,7 @@ import {
   GET_DETAIL_SISWA_TAGIHAN,
   UPDATE_TAGIHAN,
   DELETE_TAGIHAN,
-  LUNAS_TAGIHAN,
+  PEMBAYARAN_TUNAI,
   GET_LIST_TAGIHAN_SISWA_BY_ID,
 } from "store/actions/TagihanAction";
 
@@ -34,9 +34,9 @@ const initialState = {
   deleteTagihanResult: false,
   deleteTagihanError: false,
 
-  // lunasTagihanLoading: false,
-  // lunasTagihanResult: false,
-  // lunasTagihanError: false,
+  pembayaranTunaiLoading: false,
+  pembayaranTunaiResult: false,
+  pembayaranTunaiError: false,
 
   getListTagihanSiswaByIdLoading: false,
   getListTagihanSiswaByIdResult: false,
@@ -94,12 +94,12 @@ export default function (state = initialState, action) {
         deleteTagihanError: action.payload.errorMessage,
       };
 
-    case LUNAS_TAGIHAN:
+    case PEMBAYARAN_TUNAI:
       return {
         ...state,
-        lunasTagihanLoading: action.payload.loading,
-        lunasTagihanResult: action.payload.data,
-        lunasTagihanError: action.payload.errorMessage,
+        pembayaranTunaiLoading: action.payload.loading,
+        pembayaranTunaiResult: action.payload.data,
+        pembayaranTunaiError: action.payload.errorMessage,
       };
 
     case GET_LIST_TAGIHAN_SISWA_BY_ID:

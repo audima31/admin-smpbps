@@ -1,7 +1,7 @@
 import moment from "moment";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { lunasTagihan } from "store/actions/TagihanAction";
+import { pembayaranTunai } from "store/actions/TagihanAction";
 import { getDetailTagihan } from "store/actions/TagihanAction";
 import Swal from "sweetalert2";
 import { numberWithCommas } from "utils";
@@ -23,7 +23,7 @@ class detailDataTagihan extends Component {
     this.props.dispatch(getDetailTagihan(id));
   }
 
-  handleLunas = (order_id) => {
+  handleTunai = (order_id) => {
     const { status, id } = this.state;
     console.log("Status : ", status);
     // event.preventDefault();
@@ -41,13 +41,13 @@ class detailDataTagihan extends Component {
       confirmButtonText: "Iya, lunaskan pembayaran!",
     }).then((result) => {
       if (result.isConfirmed) {
-        this.props.dispatch(lunasTagihan(id, data, order_id));
+        this.props.dispatch(pembayaranTunai(id, data, order_id));
       }
     });
   };
 
   componentDidUpdate(prevProps) {
-    const { getDetailTagihanResult, lunasTagihanResult } = this.props;
+    const { getDetailTagihanResult, pembayaranTunaiResult } = this.props;
 
     if (
       getDetailTagihanResult &&
@@ -59,8 +59,8 @@ class detailDataTagihan extends Component {
     }
 
     if (
-      lunasTagihanResult &&
-      prevProps.lunasTagihanResult !== lunasTagihanResult
+      pembayaranTunaiResult &&
+      prevProps.pembayaranTunaiResult !== pembayaranTunaiResult
     ) {
       Swal.fire("Berhasil", `Tagihan telah lunas`, "success");
       this.props.history.push("/admin/tagihan");
@@ -72,7 +72,7 @@ class detailDataTagihan extends Component {
   };
 
   render() {
-    const { getDetailTagihanResult, lunasTagihanLoading } = this.props;
+    const { getDetailTagihanResult, pembayaranTunaiLoading } = this.props;
 
     const tanggalObj = moment(getDetailTagihanResult.waktuTagihan);
     const hari = tanggalObj.format("DD");
@@ -160,7 +160,7 @@ class detailDataTagihan extends Component {
             </table>
 
             <div>
-              {lunasTagihanLoading ? (
+              {pembayaranTunaiLoading ? (
                 <div className="vstack gap-2 col-md-5 mx-auto">
                   <button type="submit" className="btn btn-primary">
                     <div className="spinner-border text-light" role="status">
@@ -174,14 +174,14 @@ class detailDataTagihan extends Component {
                     type="submit"
                     className="btn btn-primary"
                     onClick={() =>
-                      this.handleLunas(
+                      this.handleTunai(
                         getDetailTagihanResult.order_id
                           ? getDetailTagihanResult.order_id
                           : ""
                       )
                     }
                   >
-                    BAYAR SEKARANG
+                    BAYAR TUNAI
                   </button>
                   <button
                     onClick={this.handleBack}
@@ -205,9 +205,9 @@ const mapStateToProps = (state) => ({
   getDetailTagihanResult: state.TagihanReducer.getDetailTagihanResult,
   getDetailTagihanError: state.TagihanReducer.getDetailTagihanError,
 
-  lunasTagihanLoading: state.TagihanReducer.lunasTagihanLoading,
-  lunasTagihanResult: state.TagihanReducer.lunasTagihanResult,
-  lunasTagihanError: state.TagihanReducer.getDetailTagihanError,
+  pembayaranTunaiLoading: state.TagihanReducer.pembayaranTunaiLoading,
+  pembayaranTunaiResult: state.TagihanReducer.pembayaranTunaiResult,
+  pembayaranTunaiError: state.TagihanReducer.pembayaranTunaiError,
 });
 
 export default connect(mapStateToProps, null)(detailDataTagihan);

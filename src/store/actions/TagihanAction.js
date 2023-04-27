@@ -1,7 +1,6 @@
 import FIREBASE from "config/FIREBASE";
 import { dispatchError, dispatchLoading, dispatchSuccess } from "../../utils";
 import { format } from "date-fns";
-import moment from "moment";
 
 export const TAMBAH_TAGIHAN = "TAMBAH_TAGIHAN";
 export const GET_LIST_TAGIHAN = "GET_LIST_TAGIHAN";
@@ -9,7 +8,7 @@ export const UPDATE_TAGIHAN = "UPDATE_TAGIHAN";
 export const GET_DETAIL_TAGIHAN = "GET_DETAIL_TAGIHAN";
 export const GET_DETAIL_SISWA_TAGIHAN = "GET_DETAIL_SISWA_TAGIHAN";
 export const DELETE_TAGIHAN = "DELETE_TAGIHAN";
-export const LUNAS_TAGIHAN = "LUNAS_TAGIHAN";
+export const PEMBAYARAN_TUNAI = "PEMBAYARAN_TUNAI";
 export const GET_LIST_TAGIHAN_SISWA_BY_ID = "GET_LIST_TAGIHAN_SISWA_BY_ID";
 
 export const tambahTagihan = (data) => {
@@ -171,9 +170,9 @@ export const deleteTagihan = (id) => {
 };
 
 //Mengganti status tagihan menjadi lunas
-export const lunasTagihan = (id, data, order_id) => {
+export const pembayaranTunai = (id, data, order_id) => {
   return (dispatch) => {
-    dispatchLoading(dispatch, LUNAS_TAGIHAN);
+    dispatchLoading(dispatch, PEMBAYARAN_TUNAI);
 
     const uid = id.split("-")[1];
 
@@ -211,7 +210,7 @@ export const lunasTagihan = (id, data, order_id) => {
                 console.log("Nambah data riwayats");
                 dispatchSuccess(
                   dispatch,
-                  LUNAS_TAGIHAN,
+                  PEMBAYARAN_TUNAI,
                   response ? response : []
                 );
 
@@ -250,7 +249,7 @@ export const lunasTagihan = (id, data, order_id) => {
           });
       })
       .catch((error) => {
-        dispatchError(dispatch, LUNAS_TAGIHAN, error);
+        dispatchError(dispatch, PEMBAYARAN_TUNAI, error);
         alert(error);
       });
   };
