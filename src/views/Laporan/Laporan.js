@@ -119,19 +119,17 @@ class Laporan extends Component {
                       filename={
                         "Laporan keuangan " +
                         " " +
-                        "Bulan" +
+                        "Bulan " +
                         this.state.bulan +
                         " " +
-                        "Tahun" +
+                        "Tahun " +
                         this.state.tahun
                       }
                       sheet={
-                        "Laporan keuangan " +
-                        " " +
-                        "Bulan" +
+                        "Bulan " +
                         this.state.bulan +
                         " " +
-                        "Tahun" +
+                        "Tahun " +
                         this.state.tahun
                       }
                       currentTableRef={this.tableRef.current}
