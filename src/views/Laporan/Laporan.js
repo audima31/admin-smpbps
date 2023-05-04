@@ -118,8 +118,11 @@ class Laporan extends Component {
                     <DownloadTableExcel
                       filename={
                         "Laporan keuangan " +
+                        " " +
+                        "Bulan" +
                         this.state.bulan +
                         " " +
+                        "Tahun" +
                         this.state.tahun
                       }
                       sheet={
