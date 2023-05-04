@@ -127,8 +127,11 @@ class Laporan extends Component {
                       }
                       sheet={
                         "Laporan keuangan " +
+                        " " +
+                        "Bulan" +
                         this.state.bulan +
                         " " +
+                        "Tahun" +
                         this.state.tahun
                       }
                       currentTableRef={this.tableRef.current}
