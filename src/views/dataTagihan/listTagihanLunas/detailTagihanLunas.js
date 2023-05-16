@@ -92,7 +92,7 @@ class detailTagihanLunas extends Component {
                     </p>
                     <p>: {`${hariTagihan}-${bulanTagihan}-${tahunTagihan}`}</p>
                     <p>
-                      :
+                      :{" "}
                       {getDetailTagihanLunasResult.waktuPembayaran
                         ? `${hariPembayaran}-${bulanPembayaran}-${tahunPembayaran} - ${waktuPembayaran}`
                         : "Dalam proses pembayaran"}

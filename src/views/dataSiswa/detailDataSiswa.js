@@ -187,12 +187,13 @@ class detailDataSiswa extends Component {
                             };
 
                             const tagihanObj = moment(
-                              getListTagihanSiswaByIdResult.waktuTagihan
+                              getListTagihanSiswaByIdResult[key].waktuTagihan
                             );
                             const hariTagihan = tagihanObj.format("DD");
                             const bulanTagihan = tagihanObj.format("MM");
                             const tahunTagihan = tagihanObj.year();
 
+                            console.log("Waktu Tagihan : ", tagihanObj);
                             return (
                               <>
                                 <tr id={key}>
@@ -343,11 +344,13 @@ class detailDataSiswa extends Component {
                           };
 
                           const pembayaranObj = moment(
-                            getListTagihanSiswaByIdResult.waktuPembayaran
+                            listPembayaranSiswaResult[key].waktuPembayaran
                           );
                           const hariPembayaran = pembayaranObj.format("DD");
                           const bulanPembayaran = pembayaranObj.format("MM");
                           const tahunPembayaran = pembayaranObj.year();
+
+                          console.log("Waktu bayar", pembayaranObj);
 
                           return (
                             <>
