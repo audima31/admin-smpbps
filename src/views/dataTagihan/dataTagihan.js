@@ -62,6 +62,9 @@ class dataTagihan extends Component {
       ? Object.values(getListTagihanResult).filter(
           (item) =>
             item.nama.toLowerCase().includes(searchInput.toLowerCase()) ||
+            item.idTagihanDetail
+              .toLowerCase()
+              .includes(searchInput.toLowerCase()) ||
             item.status.toLowerCase().includes(searchInput.toLowerCase()) ||
             item.kelas.toLowerCase().includes(searchInput.toLowerCase()) ||
             item.jenisTagihan.toLowerCase().includes(searchInput.toLowerCase())

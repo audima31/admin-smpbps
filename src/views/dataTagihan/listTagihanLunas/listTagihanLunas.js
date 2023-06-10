@@ -64,6 +64,7 @@ class listTagihanLunas extends Component {
       ? Object.values(listPembayaranSiswaResult).filter(
           (item) =>
             item.nama.toLowerCase().includes(searchInput.toLowerCase()) ||
+            item.order_id.toLowerCase().includes(searchInput.toLowerCase()) ||
             item.status.toLowerCase().includes(searchInput.toLowerCase()) ||
             item.kelas.toLowerCase().includes(searchInput.toLowerCase()) ||
             item.jenisTagihan.toLowerCase().includes(searchInput.toLowerCase())
