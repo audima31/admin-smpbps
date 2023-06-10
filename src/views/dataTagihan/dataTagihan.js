@@ -180,7 +180,33 @@ class dataTagihan extends Component {
                   return (
                     <tr key={key}>
                       <td>{index + 1 + "."}</td>
-                      <td>{`${hari}-${bulan}-${tahun}`}</td>
+                      <td>{`${hari} ${
+                        bulan === "01"
+                          ? "Januari"
+                          : bulan === "02"
+                          ? "Februari"
+                          : bulan === "03"
+                          ? "Maret"
+                          : bulan === "04"
+                          ? "April"
+                          : bulan === "05"
+                          ? "Mei"
+                          : bulan === "06"
+                          ? "Juni"
+                          : bulan === "07"
+                          ? "Juli"
+                          : bulan === "08"
+                          ? "Agustus"
+                          : bulan === "09"
+                          ? "September"
+                          : bulan === "10"
+                          ? "Oktober"
+                          : bulan === "11"
+                          ? "November"
+                          : bulan === "12"
+                          ? "Desember"
+                          : "error"
+                      } ${tahun}`}</td>
                       <td>{currentData[key].nama}</td>
                       <td>{currentData[key].kelas}</td>
                       <td>{currentData[key].jenisTagihan}</td>

@@ -198,7 +198,33 @@ class detailDataSiswa extends Component {
                               <>
                                 <tr id={key}>
                                   <td>
-                                    {`${hariTagihan}-${bulanTagihan}-${tahunTagihan}`}
+                                    {`${hariTagihan} ${
+                                      bulanTagihan === "01"
+                                        ? "Januari"
+                                        : bulanTagihan === "02"
+                                        ? "Februari"
+                                        : bulanTagihan === "03"
+                                        ? "Maret"
+                                        : bulanTagihan === "04"
+                                        ? "April"
+                                        : bulanTagihan === "05"
+                                        ? "Mei"
+                                        : bulanTagihan === "06"
+                                        ? "Juni"
+                                        : bulanTagihan === "07"
+                                        ? "Juli"
+                                        : bulanTagihan === "08"
+                                        ? "Agustus"
+                                        : bulanTagihan === "09"
+                                        ? "September"
+                                        : bulanTagihan === "10"
+                                        ? "Oktober"
+                                        : bulanTagihan === "11"
+                                        ? "November"
+                                        : bulanTagihan === "12"
+                                        ? "Desember"
+                                        : "error"
+                                    } ${tahunTagihan}`}
                                   </td>
 
                                   <td>
@@ -359,7 +385,33 @@ class detailDataSiswa extends Component {
                                 <>
                                   <tr id={key}>
                                     <td>
-                                      {`${hariPembayaran}-${bulanPembayaran}-${tahunPembayaran}`}
+                                      {`${hariPembayaran} ${
+                                        bulanPembayaran === "01"
+                                          ? "Januari"
+                                          : bulanPembayaran === "02"
+                                          ? "Februari"
+                                          : bulanPembayaran === "03"
+                                          ? "Maret"
+                                          : bulanPembayaran === "04"
+                                          ? "April"
+                                          : bulanPembayaran === "05"
+                                          ? "Mei"
+                                          : bulanPembayaran === "06"
+                                          ? "Juni"
+                                          : bulanPembayaran === "07"
+                                          ? "Juli"
+                                          : bulanPembayaran === "08"
+                                          ? "Agustus"
+                                          : bulanPembayaran === "09"
+                                          ? "September"
+                                          : bulanPembayaran === "10"
+                                          ? "Oktober"
+                                          : bulanPembayaran === "11"
+                                          ? "November"
+                                          : bulanPembayaran === "12"
+                                          ? "Desember"
+                                          : "error"
+                                      } ${tahunPembayaran}`}
                                     </td>
 
                                     <td>

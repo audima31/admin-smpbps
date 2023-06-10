@@ -174,7 +174,33 @@ class listTagihanLunas extends Component {
                       <td>{index + 1} .</td>
                       <td>
                         {currentData[key].waktuPembayaran
-                          ? `${hari}-${bulan}-${tahun}`
+                          ? `${hari} ${
+                              bulan === "01"
+                                ? "Januari"
+                                : bulan === "02"
+                                ? "Februari"
+                                : bulan === "03"
+                                ? "Maret"
+                                : bulan === "04"
+                                ? "April"
+                                : bulan === "05"
+                                ? "Mei"
+                                : bulan === "06"
+                                ? "Juni"
+                                : bulan === "07"
+                                ? "Juli"
+                                : bulan === "08"
+                                ? "Agustus"
+                                : bulan === "09"
+                                ? "September"
+                                : bulan === "10"
+                                ? "Oktober"
+                                : bulan === "11"
+                                ? "November"
+                                : bulan === "12"
+                                ? "Desember"
+                                : "error"
+                            } ${tahun}`
                           : "Dalam proses pembayaran"}
                       </td>
                       <td>{currentData[key].nama}</td>

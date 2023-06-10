@@ -102,7 +102,36 @@ class detailDataTagihan extends Component {
             <div className="ml-3">
               <p>Nama : {getDetailTagihanResult.nama}</p>
               <p>Kelas : {getDetailTagihanResult.kelas}</p>
-              <p>Waktu Tagihan : {`${hari}-${bulan}-${tahun} - ${waktu}`}</p>
+              <p>
+                Waktu Tagihan :{" "}
+                {`${hari} ${
+                  bulan === "01"
+                    ? "Januari"
+                    : bulan === "02"
+                    ? "Februari"
+                    : bulan === "03"
+                    ? "Maret"
+                    : bulan === "04"
+                    ? "April"
+                    : bulan === "05"
+                    ? "Mei"
+                    : bulan === "06"
+                    ? "Juni"
+                    : bulan === "07"
+                    ? "Juli"
+                    : bulan === "08"
+                    ? "Agustus"
+                    : bulan === "09"
+                    ? "September"
+                    : bulan === "10"
+                    ? "Oktober"
+                    : bulan === "11"
+                    ? "November"
+                    : bulan === "12"
+                    ? "Desember"
+                    : "error"
+                } ${tahun} - ${waktu}`}
+              </p>
               <p>Keterangan : {getDetailTagihanResult.keterangan}</p>
             </div>
             <table className="table table-bordered text-center">
@@ -118,7 +147,33 @@ class detailDataTagihan extends Component {
                 {getDetailTagihanResult ? (
                   <>
                     <tr>
-                      <td>{`${hari}-${bulan}-${tahun}`}</td>
+                      <td>{`${hari} ${
+                        bulan === "01"
+                          ? "Januari"
+                          : bulan === "02"
+                          ? "Februari"
+                          : bulan === "03"
+                          ? "Maret"
+                          : bulan === "04"
+                          ? "April"
+                          : bulan === "05"
+                          ? "Mei"
+                          : bulan === "06"
+                          ? "Juni"
+                          : bulan === "07"
+                          ? "Juli"
+                          : bulan === "08"
+                          ? "Agustus"
+                          : bulan === "09"
+                          ? "September"
+                          : bulan === "10"
+                          ? "Oktober"
+                          : bulan === "11"
+                          ? "November"
+                          : bulan === "12"
+                          ? "Desember"
+                          : "error"
+                      } ${tahun}`}</td>
                       <td>{getDetailTagihanResult.jenisTagihan}</td>
                       <td>
                         Rp. {numberWithCommas(getDetailTagihanResult.nominal)}

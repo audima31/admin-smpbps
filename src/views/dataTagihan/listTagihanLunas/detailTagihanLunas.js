@@ -90,11 +90,66 @@ class detailTagihanLunas extends Component {
                     <p className="mb-5">
                       : {getDetailTagihanLunasResult.keterangan}
                     </p>
-                    <p>: {`${hariTagihan}-${bulanTagihan}-${tahunTagihan}`}</p>
+                    <p>
+                      :{" "}
+                      {`${hariTagihan} ${
+                        bulanTagihan === "01"
+                          ? "Januari"
+                          : bulanTagihan === "02"
+                          ? "Februari"
+                          : bulanTagihan === "03"
+                          ? "Maret"
+                          : bulanTagihan === "04"
+                          ? "April"
+                          : bulanTagihan === "05"
+                          ? "Mei"
+                          : bulanTagihan === "06"
+                          ? "Juni"
+                          : bulanTagihan === "07"
+                          ? "Juli"
+                          : bulanTagihan === "08"
+                          ? "Agustus"
+                          : bulanTagihan === "09"
+                          ? "September"
+                          : bulanTagihan === "10"
+                          ? "Oktober"
+                          : bulanTagihan === "11"
+                          ? "November"
+                          : bulanTagihan === "12"
+                          ? "Desember"
+                          : "error"
+                      } ${tahunTagihan}`}
+                    </p>
                     <p>
                       :{" "}
                       {getDetailTagihanLunasResult.waktuPembayaran
-                        ? `${hariPembayaran}-${bulanPembayaran}-${tahunPembayaran} - ${waktuPembayaran}`
+                        ? `${hariPembayaran} ${
+                            bulanPembayaran === "01"
+                              ? "Januari"
+                              : bulanPembayaran === "02"
+                              ? "Februari"
+                              : bulanPembayaran === "03"
+                              ? "Maret"
+                              : bulanPembayaran === "04"
+                              ? "April"
+                              : bulanPembayaran === "05"
+                              ? "Mei"
+                              : bulanPembayaran === "06"
+                              ? "Juni"
+                              : bulanPembayaran === "07"
+                              ? "Juli"
+                              : bulanPembayaran === "08"
+                              ? "Agustus"
+                              : bulanPembayaran === "09"
+                              ? "September"
+                              : bulanPembayaran === "10"
+                              ? "Oktober"
+                              : bulanPembayaran === "11"
+                              ? "November"
+                              : bulanPembayaran === "12"
+                              ? "Desember"
+                              : "error"
+                          } ${tahunPembayaran} - ${waktuPembayaran}`
                         : "Dalam proses pembayaran"}
                     </p>
                     <p>: {getDetailTagihanLunasResult.penagih}</p>
