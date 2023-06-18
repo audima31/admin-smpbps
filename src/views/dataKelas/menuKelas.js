@@ -6,7 +6,7 @@ import { Card, CardBody, Col, Row, Spinner, Table } from "reactstrap";
 import Swal from "sweetalert2";
 import "../../assets/css/table.css";
 
-class dataKelas extends Component {
+class menuKelas extends Component {
   constructor(props) {
     super(props);
 
@@ -243,4 +243,4 @@ const mapStateToProps = (state) => ({
   deleteKelasError: state.KelasReducer.deleteKelasError,
 });
 
-export default connect(mapStateToProps, null)(dataKelas);
+export default connect(mapStateToProps, null)(menuKelas);

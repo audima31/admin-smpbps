@@ -28,6 +28,7 @@ export const tambahSiswa = (data) => {
         FIREBASE.database().ref("users/").child(dataBaru.uid).set(dataBaru);
 
         //SUKSES
+        console.log("Data Baru : ", dataBaru);
         dispatchSuccess(dispatch, TAMBAH_SISWA, dataBaru);
       })
       .catch((error) => {
@@ -37,7 +38,7 @@ export const tambahSiswa = (data) => {
         Swal.fire({
           icon: "error",
           title: "Error...",
-          text: "Data tidak boleh kosong!",
+          text: error.message,
         });
       });
   };

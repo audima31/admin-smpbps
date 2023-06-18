@@ -268,7 +268,7 @@ class editDataTagihan extends Component {
                   Status : <label style={{ color: "red" }}>*</label>
                 </strong>
                 <select
-                  class="form-select"
+                  className="form-select"
                   aria-label="Default select example"
                   value={status}
                   onChange={(event) => this.handleStatusPembayaran(event)}
@@ -321,8 +321,8 @@ const mapStateToProps = (state) => ({
   getListJenisTagihanError: state.jenisTagihanReducer.getListJenisTagihanError,
 
   updateTagihanLoading: state.TagihanReducer.updateTagihanLoading,
-  updateTagihanResult: state.TagihanReducer.updateTagihanLoading,
-  updateTagihanError: state.TagihanReducer.updateTagihanLoading,
+  updateTagihanResult: state.TagihanReducer.updateTagihanResult,
+  updateTagihanError: state.TagihanReducer.updateTagihanError,
 });
 
 export default connect(mapStateToProps, null)(editDataTagihan);

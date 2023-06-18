@@ -313,8 +313,8 @@ const mapStateToProps = (state) => ({
   getListJenisTagihanError: state.jenisTagihanReducer.getListJenisTagihanError,
 
   tambahTagihanLoading: state.TagihanReducer.tambahTagihanLoading,
-  tambahTagihanResult: state.TagihanReducer.tambahTagihanLoading,
-  tambahTagihanError: state.TagihanReducer.tambahTagihanLoading,
+  tambahTagihanResult: state.TagihanReducer.tambahTagihanResult,
+  tambahTagihanError: state.TagihanReducer.tambahTagihanError,
 });
 
 export default connect(mapStateToProps, null)(tambahDataTagihan);

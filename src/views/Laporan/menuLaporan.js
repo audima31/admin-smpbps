@@ -5,7 +5,7 @@ import { DownloadTableExcel } from "react-export-table-to-excel";
 import { listPembayaranSiswa } from "store/actions/PaymentAction";
 import moment from "moment/moment";
 
-class Laporan extends Component {
+class menuLaporan extends Component {
   constructor(props) {
     super(props);
 
@@ -223,4 +223,4 @@ const mapStateToProps = (state) => ({
   listPembayaranSiswaError: state.PaymentReducer.listPembayaranSiswaError,
 });
 
-export default connect(mapStateToProps, null)(Laporan);
+export default connect(mapStateToProps, null)(menuLaporan);

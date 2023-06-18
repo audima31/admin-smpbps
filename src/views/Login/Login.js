@@ -37,14 +37,14 @@ class Login extends Component {
     });
   };
 
-  handleSubmit = (event) => {
+  handleLogin = (event) => {
     event.preventDefault();
 
     if (this.state.email && this.state.password) {
       //Action Login
       this.props.dispatch(loginUser(this.state.email, this.state.password));
     } else {
-      Swal.fire("Gagal Login", "Email dan password tidak terdaftar", "error");
+      Swal.fire("Gagal Login", "Masukan email dan password", "error");
     }
   };
 
@@ -79,7 +79,7 @@ class Login extends Component {
               </CardHeader>
 
               <CardBody>
-                <form onSubmit={(event) => this.handleSubmit(event)}>
+                <form onSubmit={(event) => this.handleLogin(event)}>
                   <FormGroup>
                     <Label for="email">Email Address</Label>
                     <Input

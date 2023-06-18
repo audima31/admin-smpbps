@@ -1,24 +1,24 @@
 import EditProfile from "components/Navbars/EditProfile";
 import UbahPassword from "components/Navbars/UbahPassword";
 import Dashboard from "views/Dashboard.js";
-import dataKelas from "views/dataKelas/dataKelas";
 import detailDataKelas from "views/dataKelas/detailDataKelas";
 import editDataKelas from "views/dataKelas/editDataKelas";
+import menuKelas from "views/dataKelas/menuKelas";
 import tambahDataKelas from "views/dataKelas/tambahDataKelas";
-import dataSiswa from "views/dataSiswa/dataSiswa";
 import detailDataSiswa from "views/dataSiswa/detailDataSiswa";
 import editDataSiwa from "views/dataSiswa/editDataSiwa";
+import menuSiswa from "views/dataSiswa/menuSiswa";
 import tambahDataSiswa from "views/dataSiswa/tambahDataSiswa";
-import dataTagihan from "views/dataTagihan/dataTagihan";
 import detailDataTagihan from "views/dataTagihan/detailDataTagihan";
 import editDataTagihan from "views/dataTagihan/editDataTagihan";
 import editJenisTagihan from "views/dataTagihan/jenisTagihan/editJenisTagihan";
-import jenisTagihan from "views/dataTagihan/jenisTagihan/jenisTagihan";
+import menuJenisTagihan from "views/dataTagihan/jenisTagihan/menuJenisTagihan";
 import tambahJenisTagihan from "views/dataTagihan/jenisTagihan/tambahJenisTagihan";
 import detailTagihanLunas from "views/dataTagihan/listTagihanLunas/detailTagihanLunas";
 import listTagihanLunas from "views/dataTagihan/listTagihanLunas/listTagihanLunas";
+import menuTagihan from "views/dataTagihan/menuTagihan";
 import tambahDataTagihan from "views/dataTagihan/tambahDataTagihan";
-import Laporan from "views/Laporan/Laporan";
+import menuLaporan from "views/Laporan/menuLaporan";
 import RegisterAdmin from "views/Login/RegisterAdmin";
 
 var routes = [
@@ -57,7 +57,7 @@ var routes = [
     path: "/siswa",
     name: "Data Siswa",
     icon: "nc-icon nc-hat-3",
-    component: dataSiswa,
+    component: menuSiswa,
     layout: "/admin",
     sidebar: true,
   },
@@ -86,7 +86,7 @@ var routes = [
     path: "/kelas",
     name: "Data Kelas",
     icon: "nc-icon nc-bullet-list-67",
-    component: dataKelas,
+    component: menuKelas,
     layout: "/admin",
     sidebar: true,
   },
@@ -115,7 +115,7 @@ var routes = [
     path: "/tagihan",
     name: "Data Tagihan",
     icon: "nc-icon nc-money-coins",
-    component: dataTagihan,
+    component: menuTagihan,
     layout: "/admin",
     sidebar: true,
   },
@@ -143,7 +143,7 @@ var routes = [
   {
     path: "/jenistagihan",
     name: "Jenis Tagihan",
-    component: jenisTagihan,
+    component: menuJenisTagihan,
     layout: "/admin",
     sidebar: false,
   },
@@ -180,7 +180,7 @@ var routes = [
     path: "/laporan",
     name: "Laporan Pembayaran",
     icon: "nc-icon nc-single-copy-04",
-    component: Laporan,
+    component: menuLaporan,
     layout: "/admin",
     sidebar: true,
   },

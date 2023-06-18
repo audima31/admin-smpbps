@@ -9,7 +9,7 @@ import { deleteSiswa } from "store/actions/SiswaAction";
 import Swal from "sweetalert2";
 import "../../assets/css/Pagination.css";
 
-class dataSiswa extends Component {
+class menuSiswa extends Component {
   constructor(props) {
     super(props);
 
@@ -287,4 +287,4 @@ const mapStateToProps = (state) => ({
   deleteSiswaError: state.SiswaReducer.deleteSiswaError,
 });
 
-export default connect(mapStateToProps, null)(dataSiswa);
+export default connect(mapStateToProps, null)(menuSiswa);

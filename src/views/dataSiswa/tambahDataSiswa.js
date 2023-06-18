@@ -121,24 +121,38 @@ class tambahDataSiswa extends Component {
       };
       //ke Auth Action
       this.props.dispatch(tambahSiswa(data));
-    } else if (password.length < 6) {
+    } else if (
+      NIS &&
+      nama &&
+      jenisKelamin &&
+      kelas &&
+      email &&
+      password.length < 6
+    ) {
       Swal.fire({
         icon: "error",
         title: "Error...",
         text: "Password minimal berjumlah 6 karakter",
       });
-    } else {
+    } else if (
+      !NIS ||
+      !nama ||
+      !jenisKelamin ||
+      !kelas ||
+      !email ||
+      !password
+    ) {
       Swal.fire({
         icon: "error",
         title: "Error...",
-        text: "Data tidak boleh kosong!",
+        text: "Terdapat data wajib yang belum terisi",
       });
     }
   };
 
   componentDidUpdate(prevProps) {
     const { tambahSiswaResult } = this.props;
-
+    console.log("Di view: ", tambahSiswaResult);
     if (
       tambahSiswaResult &&
       prevProps.tambahSiswaResult !== tambahSiswaResult
@@ -219,7 +233,7 @@ class tambahDataSiswa extends Component {
                 Kelas<label className="btg-wajib">*</label> :
               </label>
               <select
-                class="form-select"
+                className="form-select"
                 aria-label="Default select example"
                 value={kelas}
                 onChange={(event) => this.handleKelas(event)}
@@ -242,7 +256,7 @@ class tambahDataSiswa extends Component {
                 Jenis Kelamin<label className="btg-wajib">*</label> :
               </label>
               <select
-                class="form-select"
+                className="form-select"
                 aria-label="Default select example"
                 value={jenisKelamin}
                 onChange={(event) => this.handleJenisKelamin(event)}
@@ -344,8 +358,8 @@ class tambahDataSiswa extends Component {
               {tambahSiswaLoading ? (
                 <div className="vstack gap-2 col-md-5 mx-auto">
                   <button type="submit" color="primary" disabled>
-                    <div class="spinner-border" role="status">
-                      <span class="visually-hidden">Loading...</span>
+                    <div className="spinner-border" role="status">
+                      <span className="visually-hidden">Loading...</span>
                     </div>
                   </button>
                 </div>

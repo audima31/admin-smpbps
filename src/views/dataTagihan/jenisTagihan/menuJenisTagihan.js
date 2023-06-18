@@ -8,7 +8,7 @@ import {
   deleteTypeTagihan,
 } from "store/actions/jenisTagihanAction";
 
-class jenisTagihan extends Component {
+class menuJenisTagihan extends Component {
   componentDidMount() {
     this.props.dispatch(getListTypeTagihan());
   }
@@ -166,4 +166,4 @@ const mapStateToProps = (state) => ({
   deleteJenisTagihanError: state.jenisTagihanReducer.deleteJenisTagihanError,
 });
 
-export default connect(mapStateToProps, null)(jenisTagihan);
+export default connect(mapStateToProps, null)(menuJenisTagihan);

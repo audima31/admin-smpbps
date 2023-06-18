@@ -7,7 +7,7 @@ import { deleteTagihan, getListTagihan } from "store/actions/TagihanAction";
 import Swal from "sweetalert2";
 import { numberWithCommas } from "utils";
 
-class dataTagihan extends Component {
+class menuTagihan extends Component {
   constructor(props) {
     super(props);
 
@@ -329,4 +329,4 @@ const mapStateToProps = (state) => ({
   deleteTagihanError: state.TagihanReducer.deleteTagihanError,
 });
 
-export default connect(mapStateToProps, null)(dataTagihan);
+export default connect(mapStateToProps, null)(menuTagihan);
