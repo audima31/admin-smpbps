@@ -112,6 +112,12 @@ export const updateSiswa = (data) => {
       .catch((error) => {
         dispatchError(dispatch, UPDATE_SISWA, error);
         alert(error);
+
+        Swal.fire({
+          icon: "error",
+          title: "Error...",
+          text: error.message,
+        });
       });
   };
 };

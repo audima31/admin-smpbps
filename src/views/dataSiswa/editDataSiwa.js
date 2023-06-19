@@ -123,11 +123,18 @@ class editDataSiswa extends Component {
       };
       //ke Auth Action
       this.props.dispatch(updateSiswa(data));
-    } else {
+    } else if (
+      !NIS ||
+      !nama ||
+      !jenisKelamin ||
+      !kelas ||
+      !email ||
+      !password
+    ) {
       Swal.fire({
         icon: "error",
         title: "Error...",
-        text: "Data tidak boleh kosong!",
+        text: "Terdapat data wajib yang belum terisi",
       });
     }
   };
@@ -201,6 +208,7 @@ class editDataSiswa extends Component {
               </label>
               <input
                 className="form-control"
+                type="number"
                 id="inputNIS"
                 placeholder="NIS"
                 data-testid="input-NIS"
