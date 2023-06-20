@@ -28,7 +28,17 @@ class editDataKelas extends Component {
   handleEditKelas = (event) => {
     const { namaKelas } = this.state;
     event.preventDefault();
-    if (namaKelas) {
+
+    var x = document.forms["FormEditKelas"]["FormNamaKelas"].value;
+
+    if (x.trim() == null || x.trim() == "" || x === " ") {
+      Swal.fire({
+        icon: "error",
+        title: "Error...",
+        text: "Data tidak boleh kosong!",
+      });
+      return false;
+    } else if (namaKelas) {
       //ke Auth Action
       this.props.dispatch(updateKelas(this.state));
       console.log("Data", this.state);
@@ -76,7 +86,10 @@ class editDataKelas extends Component {
             </div>
           </Col>
           <Col md={8}>
-            <form onSubmit={(event) => this.handleEditKelas(event)}>
+            <form
+              name="FormEditKelas"
+              onSubmit={(event) => this.handleEditKelas(event)}
+            >
               <div className="mb-3">
                 <label htmlFor="inputNama" className="form-label">
                   Nama Kelas :
@@ -88,6 +101,7 @@ class editDataKelas extends Component {
                   data-testid="input-namaSiswa"
                   value={namaKelas}
                   onChange={(event) => this.handleNamaKelas(event)}
+                  name="FormNamaKelas"
                 />
               </div>
               {updateKelasLoading ? (

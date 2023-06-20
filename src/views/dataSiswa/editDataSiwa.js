@@ -214,6 +214,7 @@ class editDataSiswa extends Component {
                 data-testid="input-NIS"
                 value={NIS}
                 onChange={(event) => this.handleNIS(event)}
+                required
               />
             </div>
 
@@ -229,6 +230,7 @@ class editDataSiswa extends Component {
                 data-testid="input-namaSiswa"
                 value={nama}
                 onChange={(event) => this.handleNama(event)}
+                required
               />
             </div>
 
@@ -243,6 +245,7 @@ class editDataSiswa extends Component {
                 value={kelas}
                 onChange={(event) => this.handleKelas(event)}
                 data-testid="select-kelas"
+                required
               >
                 <option value="">--Pilih--</option>
                 {Object.keys(getListKelasResult).map((key) => {
@@ -266,6 +269,7 @@ class editDataSiswa extends Component {
                 value={jenisKelamin}
                 onChange={(event) => this.handleJenisKelamin(event)}
                 data-testid="select-jenisKelamin"
+                required
               >
                 <option value="">-- PILIH --</option>
                 <option value="Laki-laki">Laki - laki</option>

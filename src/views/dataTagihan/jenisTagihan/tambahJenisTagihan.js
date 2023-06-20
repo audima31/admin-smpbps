@@ -23,7 +23,18 @@ class tambahJenisTagihan extends Component {
   handleTambahJenisTagihan = (event) => {
     const { namaJenisTagihan } = this.state;
     event.preventDefault();
-    if (namaJenisTagihan) {
+
+    var x =
+      document.forms["FormTambahJenistagihan"]["FormNamaJenisTagihan"].value;
+
+    if (x.trim() == null || x.trim() == "" || x === " ") {
+      Swal.fire({
+        icon: "error",
+        title: "Error...",
+        text: "Data tidak boleh kosong!",
+      });
+      return false;
+    } else if (namaJenisTagihan) {
       //ke Auth Action
       this.props.dispatch(tambahTypeTagihan(namaJenisTagihan));
     } else {
@@ -57,7 +68,10 @@ class tambahJenisTagihan extends Component {
             </Link>
           </Col>
           <Col md={8}>
-            <form onSubmit={(event) => this.handleTambahJenisTagihan(event)}>
+            <form
+              name="FormTambahJenistagihan"
+              onSubmit={(event) => this.handleTambahJenisTagihan(event)}
+            >
               <div className="mb-3">
                 <label htmlFor="inputNamaJenisTagihan" className="form-label">
                   Nama Tagihan :
@@ -69,6 +83,7 @@ class tambahJenisTagihan extends Component {
                   data-testid="input-namaJenisTagihan"
                   value={namaJenisTagihan}
                   onChange={(event) => this.handleNamaJenisTagihan(event)}
+                  name="FormNamaJenisTagihan"
                 />
               </div>
               {tambahJenisTagihanLoading ? (
