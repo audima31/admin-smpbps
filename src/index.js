@@ -18,6 +18,7 @@ import Login from "views/Login/Login";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
+  //Provider berguna untuk menghubungkan komponen dengan redux
   <Provider store={store}>
     <BrowserRouter>
       <Switch>
