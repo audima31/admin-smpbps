@@ -53,11 +53,6 @@ class RegisterAdmin extends Component {
       };
       //ke Auth Action
       this.props.dispatch(registerAdmin(data));
-      Swal.fire({
-        icon: "success",
-        title: "Akun admin berhasil dibuat",
-        showConfirmButton: false,
-      });
     } else {
       Swal.fire({
         icon: "error",

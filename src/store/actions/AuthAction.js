@@ -68,7 +68,10 @@ export const registerAdmin = (data) => {
         console.log("SUKSES : ", success.user);
         // Ambil UID, dan buat DataBaru (data+uid)
         const dataBaru = {
-          ...data,
+          NBM: data.NBM,
+          nama: data.nama,
+          email: data.email,
+          status: "admin",
           uid: success.user.uid,
         };
 
@@ -79,12 +82,21 @@ export const registerAdmin = (data) => {
 
         //SUKSES
         dispatchSuccess(dispatch, REGISTER_ADMIN, dataBaru);
+        Swal.fire({
+          icon: "success",
+          title: "Akun admin berhasil dibuat",
+          showConfirmButton: false,
+        });
       })
       .catch((error) => {
         // ERROR
         dispatchError(dispatch, REGISTER_ADMIN, error.message);
 
-        alert(error.message);
+        Swal.fire({
+          icon: "error",
+          title: "Error...",
+          text: error.message,
+        });
         console.log("ERROR : ", error.message);
       });
   };

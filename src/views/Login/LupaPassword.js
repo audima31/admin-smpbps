@@ -17,8 +17,9 @@ import { loginUser } from "store/actions/AuthAction";
 import Swal from "sweetalert2";
 import logo from "../../assets//img/Logo.png";
 import { Link } from "react-router-dom";
+import FIREBASE from "config/FIREBASE";
 
-class Login extends Component {
+class LupaPassword extends Component {
   constructor(props) {
     super(props);
 
@@ -28,9 +29,7 @@ class Login extends Component {
     };
   }
 
-  componentDidMount() {
-    this.props.dispatch(checkLogin(this.props.history));
-  }
+  componentDidMount() {}
 
   handleChange = (event) => {
     this.setState({
@@ -38,31 +37,26 @@ class Login extends Component {
     });
   };
 
-  handleLogin = (event) => {
+  handleResetPassword = (event) => {
     event.preventDefault();
 
-    if (this.state.email && this.state.password) {
-      //Action Login
-      this.props.dispatch(loginUser(this.state.email, this.state.password));
-    } else {
-      Swal.fire("Gagal Login", "Masukan email dan password", "error");
-    }
+    FIREBASE.auth()
+      .sendPasswordResetEmail(this.state.email)
+      .then(() => {
+        Swal.fire(
+          "Reset Password",
+          "Email untuk mereset password telah dikirim",
+          "success"
+        );
+        this.props.history.push("/login");
+      })
+      .catch((error) => {
+        Swal.fire("Error", error.message, "error");
+      });
   };
 
-  componentDidUpdate(prevProps) {
-    const { loginResult, checkLoginResult } = this.props;
-
-    if (checkLoginResult && prevProps.checkLoginResult !== checkLoginResult) {
-      this.props.history.push("/admin/dashboard");
-    }
-
-    if (loginResult && prevProps.loginResult !== loginResult) {
-      this.props.history.push("/admin/dashboard");
-    }
-  }
-
   render() {
-    const { email, password } = this.state;
+    const { email } = this.state;
     const { loginLoading } = this.props;
 
     return (
@@ -76,11 +70,11 @@ class Login extends Component {
                 style={{ width: "35%" }}
               />
               <CardHeader tag={"h5"} className="text-center">
-                ADMIN LOGIN
+                LUPA PASSWORD
               </CardHeader>
 
               <CardBody>
-                <form onSubmit={(event) => this.handleLogin(event)}>
+                <form onSubmit={(event) => this.handleResetPassword(event)}>
                   <FormGroup>
                     <Label for="email">Email Address</Label>
                     <Input
@@ -88,17 +82,6 @@ class Login extends Component {
                       name="email"
                       value={email}
                       placeholder="Masukan Email"
-                      onChange={(event) => this.handleChange(event)}
-                    ></Input>
-                  </FormGroup>
-
-                  <FormGroup>
-                    <Label for="password">Password</Label>
-                    <Input
-                      type="password"
-                      name="password"
-                      value={password}
-                      placeholder="Masukan password"
                       onChange={(event) => this.handleChange(event)}
                     ></Input>
                   </FormGroup>
@@ -112,14 +95,8 @@ class Login extends Component {
                   ) : (
                     <div className="vstack gap-2 mx-auto">
                       <Button color="primary" type="submit">
-                        Login
+                        Reset Password
                       </Button>
-                      <Link
-                        to={"/lupaPassword"}
-                        className="d-flex justify-content-center"
-                      >
-                        Lupa password?
-                      </Link>
                     </div>
                   )}
                 </form>
@@ -142,4 +119,4 @@ const mapStateToProps = (state) => ({
   checkLoginError: state.AuthReducer.checkLoginError,
 });
 
-export default connect(mapStateToProps, null)(Login);
+export default connect(mapStateToProps, null)(LupaPassword);

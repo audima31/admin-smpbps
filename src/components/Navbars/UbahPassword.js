@@ -90,6 +90,7 @@ class ubahPassword extends Component {
       prevProps.changePasswordResult !== changePasswordResult
     ) {
       Swal.fire("Berhasil", "Ganti Password Berhasil", "success");
+      this.props.history.push("/admin/dashboard");
     }
   }
 

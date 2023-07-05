@@ -14,6 +14,7 @@ import Finish from "views/Midtrans/Finish";
 import Unfinish from "views/Midtrans/Unfinish";
 import Gagal from "views/Midtrans/Gagal";
 import Login from "views/Login/Login";
+import LupaPassword from "views/Login/LupaPassword";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -24,6 +25,7 @@ root.render(
       <Switch>
         <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
         <Route path="/login" component={Login} exact />
+        <Route path="/lupaPassword" component={LupaPassword} exact />
         <Route path="/payment/finish" component={Finish} exact />
         <Route path="/payment/unfinish" component={Unfinish} exact />
         <Route path="/payment/error" component={Gagal} exact />

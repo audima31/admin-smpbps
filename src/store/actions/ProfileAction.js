@@ -55,31 +55,6 @@ export const changePassword = (data) => {
           .then(function () {
             // Update successful.
 
-            FIREBASE.database()
-              .ref("users/")
-              .child(data.uid)
-              .once("value", (querySnapshot) => {
-                let res = querySnapshot.val();
-                console.log("data siswa : ", res.password);
-                if (res) {
-                  FIREBASE.database()
-                    .ref("users/")
-                    .child(data.uid)
-                    .update({
-                      password: `${data.newPassword}`,
-                    })
-                    .then((response) => {
-                      console.log("Berhasil", response);
-                    })
-                    .catch((error) => {
-                      console.log("Gagal", error);
-                    });
-                }
-              })
-              .catch((error) => {
-                console.log("error", error);
-              });
-
             dispatchSuccess(dispatch, CHANGE_PASSWORD, "Sukses Ganti Password");
           })
           .catch(function (error) {

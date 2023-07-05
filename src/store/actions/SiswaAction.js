@@ -20,7 +20,16 @@ export const tambahSiswa = (data) => {
         console.log("SUKSES : ", success.user);
         // Ambil UID, dan buat DataBaru (data+uid)
         const dataBaru = {
-          ...data,
+          NIS: data.NIS,
+          nama: data.nama,
+          jenisKelamin: data.jenisKelamin,
+          kelas: data.kelas,
+          email: data.email,
+          alamatRumah: data.alamatRumah,
+          noHandphoneSiswa: data.noHandphoneSiswa,
+          namaOrangTua: data.namaOrangTua,
+          noHandphoneOrangTua: data.noHandphoneOrangTua,
+          status: "siswa",
           uid: success.user.uid,
         };
 
