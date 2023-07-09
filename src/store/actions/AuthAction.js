@@ -7,6 +7,7 @@ export const LOGIN_ADMIN = "LOGIN_ADMIN";
 export const REGISTER_ADMIN = "REGISTER_ADMIN";
 export const CHECK_LOGIN = "CHECK_LOGIN";
 export const LOGOUT_ADMIN = "LOGOUT_ADMIN";
+export const RESET_PASSWORD = "RESET_PASSWORD";
 
 export const loginUser = (email, password) => {
   return (dispatch) => {
@@ -145,13 +146,43 @@ export const logoutUser = (history) => {
       .then((res) => {
         //menghapus localStorage yang namanya user
         window.localStorage.removeItem("user");
-        dispatchSuccess(dispatch, LOGOUT_ADMIN, res);
+        dispatchSuccess(dispatch, LOGOUT_ADMIN, "Berhasil keluar");
         Swal.fire("Berhasil Logout", "", "success");
         history.push({ pathname: "/login" });
       })
       .catch((error) => {
         dispatchError(dispatch, LOGOUT_ADMIN, error.message);
         Swal.fire("Gagal!", error.message, "error");
+      });
+  };
+};
+
+export const resetPassword = (email) => {
+  return (dispatch) => {
+    dispatchLoading(dispatch, RESET_PASSWORD);
+
+    console.log("Action 1");
+
+    FIREBASE.auth()
+      .sendPasswordResetEmail(email)
+      .then((response) => {
+        console.log("Action 2");
+
+        dispatchSuccess(
+          dispatch,
+          RESET_PASSWORD,
+          "Email untuk mereset password telah dikirim"
+        );
+        Swal.fire(
+          "Reset Password",
+          "Email untuk mereset password telah dikirim",
+          "success"
+        );
+      })
+      .catch((error) => {
+        console.log("Action 3 Error");
+        dispatchError(dispatch, RESET_PASSWORD, error.message);
+        Swal.fire("Error", error.message, "error");
       });
   };
 };

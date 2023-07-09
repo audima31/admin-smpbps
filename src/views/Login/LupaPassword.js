@@ -12,12 +12,8 @@ import {
   Row,
   Spinner,
 } from "reactstrap";
-import { checkLogin } from "store/actions/AuthAction";
-import { loginUser } from "store/actions/AuthAction";
-import Swal from "sweetalert2";
 import logo from "../../assets//img/Logo.png";
-import { Link } from "react-router-dom";
-import FIREBASE from "config/FIREBASE";
+import { resetPassword } from "store/actions/AuthAction";
 
 class LupaPassword extends Component {
   constructor(props) {
@@ -25,39 +21,32 @@ class LupaPassword extends Component {
 
     this.state = {
       email: "",
-      password: "",
     };
   }
 
-  componentDidMount() {}
-
-  handleChange = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
-  };
-
   handleResetPassword = (event) => {
+    const { email } = this.state;
     event.preventDefault();
-
-    FIREBASE.auth()
-      .sendPasswordResetEmail(this.state.email)
-      .then(() => {
-        Swal.fire(
-          "Reset Password",
-          "Email untuk mereset password telah dikirim",
-          "success"
-        );
-        this.props.history.push("/login");
-      })
-      .catch((error) => {
-        Swal.fire("Error", error.message, "error");
-      });
+    this.props.dispatch(resetPassword(email));
   };
 
+  componentDidUpdate(prevProps) {
+    const { resetPasswordResult } = this.props;
+
+    console.log("Result : ", resetPasswordResult);
+
+    if (
+      resetPasswordResult &&
+      prevProps.resetPasswordResult !== resetPasswordResult
+    ) {
+      this.props.history.push("/login");
+    }
+  }
   render() {
     const { email } = this.state;
-    const { loginLoading } = this.props;
+    const { resetPasswordLoading, resetPasswordError } = this.props;
+    console.log("Loading : ", resetPasswordLoading);
+    console.log("Error : ", resetPasswordError);
 
     return (
       <div>
@@ -82,11 +71,11 @@ class LupaPassword extends Component {
                       name="email"
                       value={email}
                       placeholder="Masukan Email"
-                      onChange={(event) => this.handleChange(event)}
+                      onChange={() => this.setState({ email })}
                     ></Input>
                   </FormGroup>
 
-                  {loginLoading ? (
+                  {resetPasswordLoading ? (
                     <div className="vstack gap-2 mx-auto">
                       <Button color="primary" type="submit" disabled>
                         <Spinner />
@@ -110,13 +99,9 @@ class LupaPassword extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  loginLoading: state.AuthReducer.loginLoading,
-  loginResult: state.AuthReducer.loginResult,
-  loginError: state.AuthReducer.loginError,
-
-  checkLoginLoading: state.AuthReducer.checkLoginLoading,
-  checkLoginResult: state.AuthReducer.checkLoginResult,
-  checkLoginError: state.AuthReducer.checkLoginError,
+  resetPasswordLoading: state.AuthReducer.resetPasswordLoading,
+  resetPasswordResult: state.AuthReducer.resetPasswordResult,
+  resetPasswordError: state.AuthReducer.resetPasswordError,
 });
 
 export default connect(mapStateToProps, null)(LupaPassword);

@@ -142,4 +142,10 @@ function Header(props) {
   );
 }
 
-export default connect()(Header);
+const mapStateToProps = (state) => ({
+  logoutLoading: state.AuthReducer.logoutLoading,
+  logoutResult: state.AuthReducer.logoutResult,
+  logoutError: state.AuthReducer.logoutLError,
+});
+
+export default connect(mapStateToProps, null)(Header);

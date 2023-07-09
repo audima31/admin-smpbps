@@ -3,6 +3,7 @@ import {
   REGISTER_ADMIN,
   CHECK_LOGIN,
   LOGOUT_ADMIN,
+  RESET_PASSWORD,
 } from "store/actions/AuthAction";
 
 const initialState = {
@@ -21,13 +22,16 @@ const initialState = {
   logoutLoading: false,
   logoutResult: false,
   logoutError: false,
+
+  resetPasswordLoading: false,
+  resetPasswordResult: false,
+  resetPasswordError: false,
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default function (state = initialState, action) {
   switch (action.type) {
     case LOGIN_ADMIN:
-      console.log("Reducer");
       return {
         ...state,
         loginLoading: action.payload.loading,
@@ -57,6 +61,15 @@ export default function (state = initialState, action) {
         logoutLoading: action.payload.loading,
         logoutResult: action.payload.data,
         logoutError: action.payload.errorMessage,
+      };
+
+    case RESET_PASSWORD:
+      console.log("Reducer");
+      return {
+        ...state,
+        resetPasswordLoading: action.payload.loading,
+        resetPasswordResult: action.payload.data,
+        resetPasswordError: action.payload.errorMessage,
       };
     default:
       return state;
