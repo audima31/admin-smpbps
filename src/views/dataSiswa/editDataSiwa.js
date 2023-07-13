@@ -17,7 +17,6 @@ class editDataSiswa extends Component {
       jenisKelamin: "",
       kelas: "",
       email: "",
-      password: "",
       alamatRumah: "",
       noHandphoneSiswa: "",
       namaOrangTua: "",
@@ -61,12 +60,6 @@ class editDataSiswa extends Component {
     });
   };
 
-  handlePassword = (event) => {
-    this.setState({
-      password: event.target.value,
-    });
-  };
-
   handleAlamatRumah = (event) => {
     this.setState({
       alamatRumah: event.target.value,
@@ -98,7 +91,6 @@ class editDataSiswa extends Component {
       jenisKelamin,
       kelas,
       email,
-      password,
       alamatRumah,
       noHandphoneSiswa,
       namaOrangTua,
@@ -106,14 +98,13 @@ class editDataSiswa extends Component {
       id,
     } = this.state;
     event.preventDefault();
-    if (NIS && nama && jenisKelamin && kelas && email && password) {
+    if (NIS && nama && jenisKelamin && kelas && email) {
       const data = {
         NIS: NIS,
         nama: nama,
         jenisKelamin: jenisKelamin,
         kelas: kelas,
         email: email,
-        password: password,
         alamatRumah: alamatRumah,
         noHandphoneSiswa: noHandphoneSiswa,
         namaOrangTua: namaOrangTua,
@@ -123,14 +114,7 @@ class editDataSiswa extends Component {
       };
       //ke Auth Action
       this.props.dispatch(updateSiswa(data));
-    } else if (
-      !NIS ||
-      !nama ||
-      !jenisKelamin ||
-      !kelas ||
-      !email ||
-      !password
-    ) {
+    } else if (!NIS || !nama || !jenisKelamin || !kelas || !email) {
       Swal.fire({
         icon: "error",
         title: "Error...",
@@ -154,7 +138,6 @@ class editDataSiswa extends Component {
         nama: detailSiswaResult.nama,
         jenisKelamin: detailSiswaResult.jenisKelamin,
         email: detailSiswaResult.email,
-        password: detailSiswaResult.password,
         alamatRumah: detailSiswaResult.alamatRumah,
         noHandphoneSiswa: detailSiswaResult.noHandphoneSiswa,
         namaOrangTua: detailSiswaResult.namaOrangTua,
@@ -178,7 +161,6 @@ class editDataSiswa extends Component {
       jenisKelamin,
       kelas,
       email,
-      password,
       alamatRumah,
       noHandphoneSiswa,
       namaOrangTua,
@@ -303,8 +285,6 @@ class editDataSiswa extends Component {
                 type="password"
                 className="form-control"
                 id="inputPasswordSiswa"
-                value={password}
-                onChange={(event) => this.handlePassword(event)}
               />
             </div>
 
