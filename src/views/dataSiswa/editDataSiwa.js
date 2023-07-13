@@ -285,6 +285,7 @@ class editDataSiswa extends Component {
                 type="password"
                 className="form-control"
                 id="inputPasswordSiswa"
+                value="********"
               />
             </div>
 
