@@ -30,6 +30,12 @@ class LupaPassword extends Component {
     this.props.dispatch(resetPassword(email));
   };
 
+  handleEmail = (event) => {
+    this.setState({
+      email: event.target.value,
+    });
+  };
+
   componentDidUpdate(prevProps) {
     const { resetPasswordResult } = this.props;
 
@@ -71,7 +77,7 @@ class LupaPassword extends Component {
                       name="email"
                       value={email}
                       placeholder="Masukan Email"
-                      onChange={() => this.setState({ email })}
+                      onChange={(event) => this.handleEmail(event)}
                     ></Input>
                   </FormGroup>
 
