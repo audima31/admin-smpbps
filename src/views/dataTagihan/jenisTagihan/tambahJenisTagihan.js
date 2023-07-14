@@ -94,7 +94,7 @@ class tambahJenisTagihan extends Component {
                 </button>
               ) : (
                 <button type="submit" className="btn btn-primary">
-                  Submit
+                  SIMPAN
                 </button>
               )}
             </form>
