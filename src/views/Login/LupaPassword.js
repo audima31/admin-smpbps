@@ -90,7 +90,7 @@ class LupaPassword extends Component {
                   ) : (
                     <div className="vstack gap-2 mx-auto">
                       <Button color="primary" type="submit">
-                        Reset Password
+                        SUBMIT
                       </Button>
                     </div>
                   )}
