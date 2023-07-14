@@ -87,6 +87,7 @@ class EditProfile extends Component {
         timer: 3500,
       });
     }
+    this.props.history.push("/admin/dashboard");
   }
 
   render() {
