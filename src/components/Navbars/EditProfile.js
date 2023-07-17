@@ -86,8 +86,8 @@ class EditProfile extends Component {
         showConfirmButton: false,
         timer: 3500,
       });
-    }
     this.props.history.push("/admin/dashboard");
+    }
   }
 
   render() {
